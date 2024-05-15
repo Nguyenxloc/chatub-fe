@@ -2,14 +2,14 @@
   "type": "module",
   "name": "vercel-app",
   "version": "2.0.0",
-  "description": "Basic dashboard example using Flowbite React on Next.js 14",
-  "homepage": "https://github.com/tulupinc/flowbite-next-starter",
-  "bugs": "https://github.com/tulupinc/flowbite-next-starter/issues",
+  "description": "",
+  "homepage": "",
+  "bugs": "",
   "license": "MIT",
   "author": "Conner Davis <conner@tulup.io>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tulupinc/flowbite-next-starter.git"
+    "url": ""
   },
   "scripts": {
     "build": "next build",
