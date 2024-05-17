@@ -37,7 +37,7 @@ export const Navbarx: NextPage = function () {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link href="#" active>
+          <Navbar.Link href="/home" active>
             Home
           </Navbar.Link>
           <Navbar.Link href="#">About</Navbar.Link>

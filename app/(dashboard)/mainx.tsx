@@ -1,7 +1,6 @@
-
 "use client"
-import { createBrowserRouter } from "react-router-dom";
 import { HomePage } from "./routes-page/homePage";
+import { BrowserRouter, Route, Routes, createBrowserRouter } from "react-router-dom"
 export const Mainx = createBrowserRouter(
   [
     {
@@ -10,11 +9,3 @@ export const Mainx = createBrowserRouter(
     }
   ]
 )
-export default function Page() {
-  Mainx
-  return (
-    <div>
-       hello world
-    </div>
-  );
-}
