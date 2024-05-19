@@ -21,7 +21,9 @@ export default function Page() {
             </div>
         </div>
       </div>
-      <Footerx />
+       <div className="mt-5">
+       <Footerx />
+       </div>
     </div>
   );
 }

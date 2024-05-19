@@ -3,6 +3,7 @@ import CellProduct from "./cellProduct";
 export default function Products() {
   const data = [
     {
+      id:"1",
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-01",
@@ -10,6 +11,7 @@ export default function Products() {
       url: "https://www.o2leather.com/cdn/shop/files/0T0A0311.jpg?v=1694762071",
     },
     {
+      id:2,
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-02",
@@ -17,6 +19,7 @@ export default function Products() {
       url: "https://www.o2leather.com/cdn/shop/files/0T0A0311.jpg?v=1694762071",
     },
     {
+      id:3,
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-03",
@@ -24,6 +27,7 @@ export default function Products() {
       url: "https://www.o2leather.com/cdn/shop/files/0T0A0311.jpg?v=1694762071",
     },
     {
+      id:4,
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-04",
@@ -31,6 +35,7 @@ export default function Products() {
       url: "https://www.o2leather.com/cdn/shop/files/0T0A0311.jpg?v=1694762071",
     },
     {
+      id:5,
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-05",
@@ -38,6 +43,7 @@ export default function Products() {
       url: "https://www.o2leather.com/cdn/shop/files/0T0A0311.jpg?v=1694762071",
     },
     {
+      id:6,
       name: "Dây da apple watch",
       price: "840,000 VNĐ",
       code: "APL-06",
