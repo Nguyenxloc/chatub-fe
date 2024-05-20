@@ -4,7 +4,7 @@ export default function CellProduct({ productCell }) {
   const router = useRouter();
   return (
     <Card
-      onClick={() => router.push("/products/detail?"+productCell.id)}
+      onClick={() => router.push("/products/detail/"+productCell.id)}
       imgSrc={productCell.url}
       className="mt-5 w-[300px]"
     >
