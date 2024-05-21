@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 export default function DetailProduct({ id }) {
   console.log("id: " + id);
-  const data = {};
-
+  const [idx,setIdx] = useState(1);
+  const [data,setData] = useState(null);
+  const [isLoading,setIsLoading] = useState(true);
+  const fetcher = (...args) =>fetch(...args).then((res)= )
   return (
     <div className="flex w-full flex-wrap border">
       <div className="flex w-6/12 flex-col gap-5 border">

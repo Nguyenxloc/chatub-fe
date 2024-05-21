@@ -1,13 +1,25 @@
-import { Card } from "flowbite-react";
 import { useRouter } from "next/navigation";
 export default function CellProduct({ productCell }) {
   const router = useRouter();
   return (
-    <Card
-      onClick={() => router.push("/products/detail/"+productCell.id)}
-      imgSrc={productCell.url}
+    <div
+      onClick={() => router.push("/products/detail/" + productCell.id)}
       className="mt-5 w-[300px]"
     >
+      <div
+        className="relative h-[280px] w-[320px] overflow-hidden border bg-cover bg-no-repeat"
+        data-twe-ripple-init
+        data-twe-ripple-color="light"
+      >
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnEWUIceil35U7DxH9_MSd1eKfSH9sPbcXeEzeFGDwAQ&s"
+          className="h-[280px] w-[320px]"
+          alt="Louvre"
+        />
+        <a onClick={() => console.log("tes")}>
+          <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
+        </a>
+      </div>
       <a>
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
@@ -24,6 +36,6 @@ export default function CellProduct({ productCell }) {
           Add to cart
         </a>
       </div>
-    </Card>
+    </div>
   );
 }
