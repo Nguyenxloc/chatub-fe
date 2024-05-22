@@ -1,13 +1,24 @@
+
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 export default function DetailProduct({ id }) {
-  console.log("id: " + id);
   const [idx,setIdx] = useState(1);
   const [data,setData] = useState(null);
   const [isLoading,setIsLoading] = useState(true);
-  const fetcher = (...args) =>fetch(...args).then((res)= )
+  useEffect(() => {
+    fetch('http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/hdct/index')
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data)
+        setIsLoading(false)
+      })
+  }, [])
+  const selectIMG = ((selected)=>{setIdx(selected);});
+  console.log("data:", data);
   return (
     <div className="flex w-full flex-wrap border">
       <div className="flex w-6/12 flex-col gap-5 border">
+        <h2>{idx}</h2>
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnEWUIceil35U7DxH9_MSd1eKfSH9sPbcXeEzeFGDwAQ&s"
           alt=""
@@ -23,7 +34,7 @@ export default function DetailProduct({ id }) {
               className="h-[80px] w-[120px]"
               alt="Louvre"
             />
-            <a onClick={()=>console.log("tes")}>
+            <a onClick={()=>{selectIMG(1)}}>
               <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
             </a>
           </div>
@@ -37,7 +48,7 @@ export default function DetailProduct({ id }) {
               className="h-[80px] w-[120px]"
               alt="Louvre"
             />
-            <a href="#!">
+            <a onClick={()=>{selectIMG(2)}}>
               <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
             </a>
           </div>
@@ -51,7 +62,7 @@ export default function DetailProduct({ id }) {
               className="h-[80px] w-[120px]"
               alt="Louvre"
             />
-            <a onClick={()=>console.log("tes")}>
+            <a onClick={()=>{selectIMG(3)}}>
               <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
             </a>
           </div>
@@ -66,7 +77,7 @@ export default function DetailProduct({ id }) {
               className="h-[80px] w-[120px]"
               alt="Louvre"
             />
-            <a onClick={()=>console.log("tes")}>
+            <a onClick={()=>{selectIMG(4)}}>
               <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
             </a>
           </div>
@@ -80,7 +91,7 @@ export default function DetailProduct({ id }) {
               className="h-[80px] w-[120px]"
               alt="Louvre"
             />
-            <a onClick={()=>console.log("tes")}>
+            <a onClick={()=>{selectIMG(5)}}>
               <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsl(0,0%,98.4%,0.2)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
             </a>
           </div>
