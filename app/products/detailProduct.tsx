@@ -1,12 +1,11 @@
 
 import { useEffect, useState } from "react";
-import useSWR from "swr";
 export default function DetailProduct({ id }) {
   const [idx,setIdx] = useState(1);
   const [data,setData] = useState(null);
   const [isLoading,setIsLoading] = useState(true);
   useEffect(() => {
-    fetch('http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/hdct/index')
+    fetch('http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/hoa-don/index')
       .then((res) => res.json())
       .then((data) => {
         setData(data)

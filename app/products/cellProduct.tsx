@@ -12,7 +12,7 @@ export default function CellProduct({ productCell }) {
         data-twe-ripple-color="light"
       >
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnEWUIceil35U7DxH9_MSd1eKfSH9sPbcXeEzeFGDwAQ&s"
+          src={productCell.hinhAnh}
           className="h-[280px] w-[320px]"
           alt="Louvre"
         />
@@ -22,7 +22,7 @@ export default function CellProduct({ productCell }) {
       </div>
       <a>
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+          {productCell.ten}
         </h5>
       </a>
       <div className="flex items-center justify-between">
