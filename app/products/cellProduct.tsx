@@ -27,7 +27,7 @@ export default function CellProduct({ productCell }) {
       </a>
       <div className="flex items-center justify-between">
         <span className="text-3xl font-bold text-gray-900 dark:text-white">
-          $599
+          {productCell.giaBan}
         </span>
         <a
           href="#"
