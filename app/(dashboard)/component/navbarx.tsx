@@ -1,7 +1,6 @@
-"use client";
+
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { NextPage } from "next";
-export const Navbarx: NextPage = function () {
+export default function Navbarx () {
   return (
     <div>
       <Navbar fluid rounded>
