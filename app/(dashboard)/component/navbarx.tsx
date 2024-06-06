@@ -1,14 +1,18 @@
 
+import { DrawerComp } from "@/app/admin/components/drawer";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 export default function Navbarx () {
   return (
-    <div>
+    <div className="">
       <Navbar fluid rounded>
+        <div className="flex">
+        <DrawerComp/>
         <Navbar.Brand href="https://flowbite-react.com">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <span className="self-center whitespace-nowrap ms-5 text-xl font-semibold dark:text-white">
             IwakLeather
           </span>
         </Navbar.Brand>
+        </div>
         <div className="flex md:order-2">
           <Dropdown
             arrowIcon={false}
