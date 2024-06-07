@@ -1,14 +1,24 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
-import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
+import {
+  Button,
+  Label,
+  Modal,
+  Pagination,
+  TextInput,
+  ToggleSwitch,
+} from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import CellSanPham from "./cellSanPham";
 export default function SanPhamMobile() {
   const [data, setData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [switch1, setSwitch1] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState("");
+  const onPageChange = (page: number) => setCurrentPage(page);
   useEffect(() => {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index",
@@ -24,6 +34,7 @@ export default function SanPhamMobile() {
     setOpenModal(false);
     setEmail("");
   }
+  function saveProduct() {}
   if (isLoading == false) {
     return (
       <div className="ms-1">
@@ -36,62 +47,88 @@ export default function SanPhamMobile() {
           </Button>
           <div className="grid grid-cols-1 grid-rows-3 gap-4">
             {data.map((sp, i) => (
-              <CellSanPham cellSanPham={sp} />
+              <CellSanPham cellSanPham={sp} i={i} />
             ))}
           </div>
           <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Sign in to our platform
+                  Nhập sản phẩm
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="email" value="Your email" />
+                    <Label htmlFor="email" value="Mã sản phẩm" />
                   </div>
                   <TextInput
-                    id="email"
-                    placeholder="name@company.com"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    id="ma"
+                    placeholder=""
+                    value={ma}
+                    onChange={(event) => setMa(event.target.value)}
                     required
                   />
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="password" value="Your password" />
+                    <Label htmlFor="password" value="Tên sản phẩm" />
                   </div>
-                  <TextInput id="password" type="password" required />
+                  <TextInput
+                    id="ma"
+                    value={ten}
+                    onChange={() => setTen(event.target.value)}
+                    required
+                  />
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex items-center gap-2">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember">Remember me</Label>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="password" value="Ngày tạo" />
                   </div>
-                  <a
-                    href="#"
-                    className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
-                  >
-                    Lost Password?
-                  </a>
+                  <TextInput id="password" type="password" required readOnly />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh" value="Hình ảnh" />
+                  </div>
+                  <TextInput
+                    id="hinhAnh"
+                    value={hinhAnh}
+                    onChange={() => setHinhAnh(event.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="password" value="Giá bán" />
+                  </div>
+                  <TextInput
+                    id="giaBan"
+                    value={giaBan}
+                    onChange={() => setGiaBan(event.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="password" value="Trạng thái" />
+                  </div>
+                  <ToggleSwitch
+                    checked={switch1}
+                    label="Toggle me"
+                    onChange={setSwitch1}
+                  />
                 </div>
                 <div className="w-full">
-                  <Button>Log in to your account</Button>
-                </div>
-                <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-                  Not registered?&nbsp;
-                  <a
-                    href="#"
-                    className="text-cyan-700 hover:underline dark:text-cyan-500"
-                  >
-                    Create account
-                  </a>
+                  <Button>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>
           </Modal>
-          <div className="me-[115px] flex flex-row-reverse"></div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={100}
+            onPageChange={onPageChange}
+          />
         </div>
         <div className="mt-5">
           <Footerx />
