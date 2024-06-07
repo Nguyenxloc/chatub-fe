@@ -4,7 +4,8 @@ import { useState } from "react";
 export default function CellSanPham({ cellSanPham, i }) {
   const router = useRouter();
   function routePage(idSPCT:String){
-      console.log("route to show all detail product");
+      router.push("/admin/san-pham/" + idSPCT)
+      console.log("route to show all detail product: ", idSPCT);
   }
   return (
     <div
@@ -43,7 +44,7 @@ export default function CellSanPham({ cellSanPham, i }) {
           Giá bán: {cellSanPham.giaBan}
         </h5>
         <a
-          onClick={() => routePage("page spct")}
+          onClick={() => routePage(cellSanPham.id)}
           className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
         >
           Sửa

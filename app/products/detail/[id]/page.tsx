@@ -1,9 +1,9 @@
 "use client";
 import { Footerx } from "@/app/(dashboard)/component/footer";
-import { Navbarx } from "@/app/(dashboard)/component/navbarx";
 import { Sidebarx } from "@/app/(dashboard)/component/sidebarx";
 import DetailProduct from "../../detailProduct";
 import { useParams } from "next/navigation";
+import Navbarx from "@/app/(dashboard)/component/navbarx";
 
 export default function HomePage() {
   const params = useParams<{id:string}>();
