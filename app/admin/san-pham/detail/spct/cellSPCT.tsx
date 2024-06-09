@@ -2,8 +2,21 @@ import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 
 export default function CellSPCT({ idSP }) {
+  // inital hooks useeffect
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  //spct hooks
+  const [sp,setSP] = useState(null);
+  const [mauSac,setMauSac] = useState(null); 
+  const [kichThuoc,setKichThuoc] = useState(null);
+  const [chatLieu,setChatLieu] = useState(null);
+  const [namBH,setNamBH] = useState(null);
+  const [moTa, setMoTa] = useState(null); 
+  const [soLuong, setSoLuong] = useState(null);
+  const [giaNhap, setGiaNhap] = useState(null);
+  const [giaBan, setGiaBan] = useState(null);
+  const [ngayTao, setNgayTao] = useState(Date);
+  const [trangThai, setTrangThai] = useState(false);
   useEffect(() => {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
@@ -15,6 +28,9 @@ export default function CellSPCT({ idSP }) {
         console.log("data:", data);
       });
   }, []);
+  function getSPCT(idSPCT:String){
+    
+  }
   if (isLoading) {
     return (
       <div>
