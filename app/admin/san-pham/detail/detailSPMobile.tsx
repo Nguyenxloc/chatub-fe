@@ -4,6 +4,7 @@ import { Button, Label, TextInput, ToggleSwitch } from "flowbite-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
+import CellSPCT from "./spct/cellSPCT";
 export default function DetailSPMobile({ id }) {
   const [openModal, setOpenModal] = useState(false);
   const [dataSanPham, setDataSanPham] = useState();
@@ -44,10 +45,11 @@ export default function DetailSPMobile({ id }) {
         <div className="z-0 w-full bg-white">
         <div>
             <h2>Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}</h2>
-            
+
         </div>
         <div> 
             <h2>Danh sách sản phẩm chi tiết</h2>
+            <CellSPCT idSP={dataSanPham.id}/>
             
         </div>
           {/* <Modal show={openModal} size="xl" onClose={onCloseModal} popup>

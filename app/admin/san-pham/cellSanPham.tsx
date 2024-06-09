@@ -131,9 +131,7 @@ export default function CellSanPham({ cellSanPham, i }) {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -155,9 +153,7 @@ export default function CellSanPham({ cellSanPham, i }) {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -173,9 +169,7 @@ export default function CellSanPham({ cellSanPham, i }) {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
