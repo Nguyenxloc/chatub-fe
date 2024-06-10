@@ -34,12 +34,12 @@ export default function DetailSPMobile({ id }) {
   const [giaBan, setGiaBan] = useState("");
   const [ngayTao, setNgayTao] = useState("");
   const [trangThai, setTrangThai] = useState(false);
-  const [lstMauSac, setLstMauSac] = useState(null);
-  const [lstKichThuoc, setLstKichThuoc] = useState(null);
-  const [lstChatLieu, setLstChatLieu] = useState(null);
-  const [isLoadingLstMS, setIsLoadingLstMS] = useState(false);
-  const [isLoadingLstKT, setIsLoadingLstKT] = useState(false);
-  const [isLoadingLstCL, setIsLoadingLstCL] = useState(false);
+  const [lstMauSac, setLstMauSac] = useState();
+  const [lstKichThuoc, setLstKichThuoc] = useState();
+  const [lstChatLieu, setLstChatLieu] = useState();
+  const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
+  const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
+  const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
   const onPageChange = (page: number) => setCurrentPage(page);
   let validateOK = false;
   function onCloseModal() {
@@ -80,7 +80,7 @@ export default function DetailSPMobile({ id }) {
           }),
         },
       ).then((res) => console.log("test response: ", res.ok));
-      setIsReloadSPCT(true);
+      setIsReloadSPCT(false);
     } else {
       console.log("not do post");
     }
@@ -92,7 +92,7 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setLstMauSac(data);
-        setIsLoadingLstMS(true);
+        setIsLoadingLstMS(false);
         console.log("data lst mau sac :", data);
       });
 
@@ -102,7 +102,7 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setLstKichThuoc(data);
-        setIsLoadingLstKT(true);
+        setIsLoadingLstKT(false);
         console.log("data kich thuoc:", data);
       });
 
@@ -127,7 +127,7 @@ export default function DetailSPMobile({ id }) {
         setIsLoading(true);
         console.log("data:", data);
       });
-      fillUpCBO();
+    fillUpCBO();
   }, []);
   if (isLoading) {
     return (
@@ -165,50 +165,49 @@ export default function DetailSPMobile({ id }) {
                     id="idSP"
                     placeholder=""
                     value={dataSanPham.ten + " " + dataSanPham.ma}
-                    onChange={(event) => setIdSP(event.target.value)}
                     readOnly
                     required
                   />
                 </div>
+
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="idMauSac" value="Màu sắc" />
                   </div>
                   <Dropdown
-                    label="Dropdown button"
-                    value={idMauSac}
-                    onChange={() => setIdMauSac(event.target.value)}
+                    label={idMauSac ? idMauSac.ten : 'Chọn màu sắc'}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstMS ? (
                       lstMauSac.map((ms) => (
-                        <Dropdown.Item>{ms.ten}</Dropdown.Item>
+                        <Dropdown.Item key={ms.id} value={ms} onClick={() => setIdMauSac(ms)}>
+                          {ms.ten}
+                        </Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
                 </div>
+
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="idKichThuoc" value="Kích thước" />
                   </div>
                   <Dropdown
-                    label="Dropdown button"
-                    value={idKichThuoc}
-                    onChange={() => setIdKichThuoc(event.target.value)}
+                    label={idKichThuoc ? idKichThuoc.ten : 'Chọn kích thước'}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstKT ? (
                       lstKichThuoc.map((kt) => (
-                        <Dropdown.Item>{kt.ten}</Dropdown.Item>
+                        <Dropdown.Item key={kt.id} value={kt} onClick={() => setIdKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
                 </div>
-                <div>
+                {/* <div>
                   <div className="mb-2 block">
                     <Label htmlFor="idKichThuoc" value="Kích thước" />
                   </div>
@@ -226,7 +225,7 @@ export default function DetailSPMobile({ id }) {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                </div>
+                </div> */}
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="namBH" value="Năm bảo hành" />

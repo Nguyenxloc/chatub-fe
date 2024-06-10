@@ -121,234 +121,240 @@ export default function DetailSP({ id }) {
         setIsLoading(true);
         console.log("data:", data);
       });
-      fillUpCBO();
+      // fillUpCBO();
   }, []);
-  
-  return (
-    <div className="ms-2">
-      <h2>this is the admin san pham page</h2>
-      <Navbarx />
-      <div className="z-0 w-full bg-white">
-      <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
-            <Modal.Header />
-            <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Nhập sản phẩm chi tiết
-                </h3>
-                <div>
-                  <div className="mb-2 block">
-                    <Label
-                      htmlFor="ma"
-                      value="Mã sản phẩm(fix server tự tăng)"
+
+  if(isLoading){
+    return (
+      <div className="ms-2">
+        <h2>this is the admin san pham page</h2>
+        <Navbarx />
+        <div className="z-0 w-full bg-white">
+        <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
+              <Modal.Header />
+              <Modal.Body className="overflow-auto">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                    Nhập sản phẩm chi tiết
+                  </h3>
+                  <div>
+                    <div className="mb-2 block">
+                      <Label
+                        htmlFor="ma"
+                        value="Mã sản phẩm(fix server tự tăng)"
+                      />
+                    </div>
+                    <TextInput
+                      id="idSP"
+                      placeholder=""
+                      value={dataSanPham.ten + " " + dataSanPham.ma}
+                      readOnly
+                      required
                     />
                   </div>
-                  <TextInput
-                    id="idSP"
-                    placeholder=""
-                    value={dataSanPham.ten + " " + dataSanPham.ma}
-                    onChange={(event) => setIdSP(event.target.value)}
-                    readOnly
-                    required
-                  />
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="idMauSac" value="Màu sắc" />
+
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="idMauSac" value="Màu sắc" />
+                    </div>
+                    <Dropdown
+                      label="Dropdown button"
+                      value={idMauSac}
+                      onChange={() => setIdMauSac(event.target.value)}
+                      dismissOnClick={false}
+                    >
+                      {!isLoadingLstMS ? (
+                        lstMauSac.map((ms) => (
+                          <Dropdown.Item>{ms.ten}</Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
                   </div>
-                  <Dropdown
-                    label="Dropdown button"
-                    value={idMauSac}
-                    onChange={() => setIdMauSac(event.target.value)}
-                    dismissOnClick={false}
-                  >
-                    {!isLoadingLstMS ? (
-                      lstMauSac.map((ms) => (
-                        <Dropdown.Item>{ms.ten}</Dropdown.Item>
-                      ))
+
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="idKichThuoc" value="Kích thước" />
+                    </div>
+                    <Dropdown
+                      label="Dropdown button"
+                      value={idKichThuoc}
+                      onChange={() => setIdKichThuoc(event.target.value)}
+                      dismissOnClick={false}
+                    >
+                      {!isLoadingLstKT ? (
+                        lstKichThuoc.map((kt) => (
+                          <Dropdown.Item>{kt.ten}</Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                  </div>
+
+                  {/* <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="idKichThuoc" value="Kích thước" />
+                    </div>
+                    <Dropdown
+                      label="Dropdown button"
+                      value={idChatLieu}
+                      onChange={() => setIdChatLieu(event.target.value)}
+                      dismissOnClick={false}
+                    >
+                      {!isLoadingLstCL ? (
+                        lstChatLieu.map((cl) => (
+                          <Dropdown.Item>{cl.ten}</Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                  </div> */}
+
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="namBH" value="Năm bảo hành" />
+                    </div>
+                    <TextInput
+                      id="namBH"
+                      value={idMauSac}
+                      onChange={() => setIdMauSac(event.target.value)}
+                      required
+                    />
+                    {!validatorNull(idMauSac) ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
                     ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      <HiCheckCircle className="text-green-600 " />
                     )}
-                  </Dropdown>
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
                   </div>
-                  <Dropdown
-                    label="Dropdown button"
-                    value={idKichThuoc}
-                    onChange={() => setIdKichThuoc(event.target.value)}
-                    dismissOnClick={false}
-                  >
-                    {!isLoadingLstKT ? (
-                      lstKichThuoc.map((kt) => (
-                        <Dropdown.Item>{kt.ten}</Dropdown.Item>
-                      ))
+  
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="moTa" value="Mô tả" />
+                    </div>
+                    <TextInput
+                      id="moTa"
+                      value={moTa}
+                      onChange={() => setMoTa(event.target.value)}
+                      required
+                    />
+                    {!validatorNull(moTa) ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
                     ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      <HiCheckCircle className="text-green-600 " />
                     )}
-                  </Dropdown>
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
                   </div>
-                  <Dropdown
-                    label="Dropdown button"
-                    value={idChatLieu}
-                    onChange={() => setIdChatLieu(event.target.value)}
-                    dismissOnClick={false}
-                  >
-                    {!isLoadingLstCL ? (
-                      lstChatLieu.map((cl) => (
-                        <Dropdown.Item>{cl.ten}</Dropdown.Item>
-                      ))
+  
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="soLuongTon" value="Số lượng tồn" />
+                    </div>
+                    <TextInput
+                      id="soLuongTon"
+                      value={idMauSac}
+                      onChange={() => setSoLuongTon(event.target.value)}
+                      required
+                    />
+                    {!validatorNull(soLuongTon) ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
                     ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      <HiCheckCircle className="text-green-600 " />
                     )}
-                  </Dropdown>
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="namBH" value="Năm bảo hành" />
                   </div>
-                  <TextInput
-                    id="namBH"
-                    value={idMauSac}
-                    onChange={() => setIdMauSac(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(idMauSac) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="moTa" value="Mô tả" />
+  
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="giaNhap" value="Giá nhập" />
+                    </div>
+                    <TextInput
+                      id="giaNhap"
+                      value={giaNhap}
+                      onChange={() => setGiaNhap(event.target.value)}
+                      required
+                    />
+                    {!validatorNull(giaNhap) ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
+                    ) : (
+                      <HiCheckCircle className="text-green-600 " />
+                    )}
                   </div>
-                  <TextInput
-                    id="moTa"
-                    value={moTa}
-                    onChange={() => setMoTa(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(moTa) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="soLuongTon" value="Số lượng tồn" />
+  
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="giaBan" value="Giá bán" />
+                    </div>
+                    <TextInput
+                      id="giaBan"
+                      value={giaNhap}
+                      onChange={() => setGiaBan(event.target.value)}
+                      required
+                    />
+                    {!validatorNull(giaBan) ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
+                    ) : (
+                      <HiCheckCircle className="text-green-600 " />
+                    )}
                   </div>
-                  <TextInput
-                    id="soLuongTon"
-                    value={idMauSac}
-                    onChange={() => setSoLuongTon(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(soLuongTon) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="giaNhap" value="Giá nhập" />
+  
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="ngayTao" value="Ngày tạo" />
+                    </div>
+                    <TextInput id="ngayTao" value={todayNow} required readOnly />
                   </div>
-                  <TextInput
-                    id="giaNhap"
-                    value={giaNhap}
-                    onChange={() => setGiaNhap(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(giaNhap) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="giaBan" value="Giá bán" />
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                    </div>
+                    <TextInput id="hinhAnh" value={"pending...."} required />
+                    {!validatorNull("pending.....") ? (
+                      <p className="text-red-600">
+                        Không để trống trường dữ liệu này
+                      </p>
+                    ) : (
+                      <HiCheckCircle className="text-green-600 " />
+                    )}
                   </div>
-                  <TextInput
-                    id="giaBan"
-                    value={giaNhap}
-                    onChange={() => setGiaBan(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(giaBan) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="ngayTao" value="Ngày tạo" />
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="trangThai" value="Trạng thái" />
+                    </div>
+                    <ToggleSwitch
+                      checked={trangThai}
+                      label="Toggle me"
+                      onChange={setTrangThai}
+                    />
                   </div>
-                  <TextInput id="ngayTao" value={todayNow} required readOnly />
-                </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                  <div className="w-full">
+                    <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
                   </div>
-                  <TextInput id="hinhAnh" value={"pending...."} required />
-                  {!validatorNull("pending.....") ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
                 </div>
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="trangThai" value="Trạng thái" />
-                  </div>
-                  <ToggleSwitch
-                    checked={trangThai}
-                    label="Toggle me"
-                    onChange={setTrangThai}
-                  />
-                </div>
-                <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
-                </div>
-              </div>
-            </Modal.Body>
-          </Modal>
-        <div className="me-[115px] flex flex-row-reverse">
-          <Button gradientMonochrome="info" onClick={() => setOpenModal(true)}>
-            <HiFolderAdd size={20} />
-            Thêm sản phẩm
-          </Button>
+              </Modal.Body>
+            </Modal>
+          <div className="me-[115px] flex flex-row-reverse">
+            <Button gradientMonochrome="info" onClick={() => setOpenModal(true)}>
+              <HiFolderAdd size={20} />
+              Thêm sản phẩm
+            </Button>
+          </div>
+        </div>
+        <div className="mt-5">
+          <Footerx />
         </div>
       </div>
-      <div className="mt-5">
-        <Footerx />
-      </div>
-    </div>
-  );
+    );
+  }
+
 }
