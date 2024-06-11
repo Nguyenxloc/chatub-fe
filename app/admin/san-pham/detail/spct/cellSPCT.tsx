@@ -59,11 +59,11 @@ export default function CellSPCT({ idSP,isReload }) {
         {data.map((spct, i) => (
           <div>
             <div className="flex-cols flex gap-5">
-              <h2>{i}</h2>
+              <h2>{i+1}</h2>
               <h2>spct.chatLieu</h2>
-              <h2>{spct.mauSac}</h2>
-              <h2>{spct.kichThuoc}</h2>
-              <h2>{spct.soLuong}</h2>
+              <h2>{spct.mauSac.ten}</h2>
+              <h2>{spct.kichThuoc.ten}</h2>
+              <h2 className="ms-[50px]">{spct.soLuongTon}</h2>
             </div>
             <div className="flex flex-row-reverse"> 
             <Button>Sửa</Button>

@@ -18,6 +18,7 @@ export default function DetailSPMobile({ id }) {
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
   var todayNow = mm + "/" + dd + "/" + yyyy;
+  var todayPost = yyyy+"-"+mm+"-"+dd;
   const [openModal, setOpenModal] = useState(false);
   const [dataSanPham, setDataSanPham] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -67,19 +68,19 @@ export default function DetailSPMobile({ id }) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: idSP,
-            idMauSac: idMauSac,
-            idKichThuoc: idKichThuoc,
+            idSp: params.id,
+            idMauSac: idMauSac.id,
+            idKichThuoc: idKichThuoc.id,
             namBH: namBH,
             moTa: moTa,
             soLuongTon: soLuongTon,
             giaNhap: giaNhap,
             giaBan: giaBan,
-            ngayTao: todayNow,
+            ngayTao: todayPost,
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res.ok));
+      ).then((res) => console.log("test response: ", res));
       setIsReloadSPCT(false);
     } else {
       console.log("not do post");
@@ -232,11 +233,11 @@ export default function DetailSPMobile({ id }) {
                   </div>
                   <TextInput
                     id="namBH"
-                    value={idMauSac}
-                    onChange={() => setIdMauSac(event.target.value)}
+                    value={namBH}
+                    onChange={() => setNamBH(event.target.value)}
                     required
                   />
-                  {!validatorNull(idMauSac) ? (
+                  {!validatorNull(namBH) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -270,7 +271,7 @@ export default function DetailSPMobile({ id }) {
                   </div>
                   <TextInput
                     id="soLuongTon"
-                    value={idMauSac}
+                    value={soLuongTon}
                     onChange={() => setSoLuongTon(event.target.value)}
                     required
                   />
@@ -308,7 +309,7 @@ export default function DetailSPMobile({ id }) {
                   </div>
                   <TextInput
                     id="giaBan"
-                    value={giaNhap}
+                    value={giaBan}
                     onChange={() => setGiaBan(event.target.value)}
                     required
                   />
