@@ -1,7 +1,7 @@
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 
-export default function CellSPCT({ idSP,isReload }) {
+export default function CellSPCT({ spct,i }) {
   // inital hooks useeffect
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +27,6 @@ export default function CellSPCT({ idSP,isReload }) {
         setIsLoading(true);
         console.log("data:", data);
       });
-      if(isReload==true){
         fetch(
           "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
         )
@@ -37,9 +36,6 @@ export default function CellSPCT({ idSP,isReload }) {
             setIsLoading(true);
             console.log("data:", data);
           });
-          console.log("do reload spct: ", isReload);
-          isReload =false;
-      }
   }, []);
 
   function getSPCT(idSPCT:String){
@@ -56,7 +52,6 @@ export default function CellSPCT({ idSP,isReload }) {
           <h2>Kích thước</h2>
           <h2>Số lượng</h2>
         </div>
-        {data.map((spct, i) => (
           <div>
             <div className="flex-cols flex gap-5">
               <h2>{i+1}</h2>
@@ -70,7 +65,6 @@ export default function CellSPCT({ idSP,isReload }) {
             </div>
             <hr />
           </div>
-        ))}
       </div>
     );
   }
