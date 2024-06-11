@@ -3,13 +3,54 @@ import { useEffect, useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
 export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
   // inital hooks
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, "0");
+  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var yyyy = today.getFullYear();
+  var todayNow = mm + "/" + dd + "/" + yyyy;
+  var todayPost = yyyy+"-"+mm+"-"+dd;
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [sp, setSP] = useState(spct.sp);
+  const [mauSac, setMauSac] = useState(spct.mauSac);
+  const [kichThuoc, setKichThuoc] = useState(spct.kichThuoc);
+  const [idChatLieu, setIdChatLieu] = useState("");
+  const [namBH, setNamBH] = useState(spct.namBH);
+  const [moTa, setMoTa] = useState(spct.moTa);
+  const [soLuongTon, setSoLuongTon] = useState(spct.soLuongTon);
+  const [giaNhap, setGiaNhap] = useState(spct.giaNhap);
+  const [giaBan, setGiaBan] = useState(spct.giaBan);
+  const [ngayTao, setNgayTao] = useState(spct.ngayTao);
+  const [trangThai, setTrangThai] = useState(false);
   let validateOK = false;
   function onCloseModalEdit() {
     setOpenModalEdit(false);
   }
-  function editSPCT(){
-    
+  function updateSPCT() {
+    if (validateOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/update/"+spct.id,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
+            namBH: namBH,
+            moTa: moTa,
+            soLuongTon: soLuongTon,
+            giaNhap: giaNhap,
+            giaBan: giaBan,
+            ngayTao: todayPost,
+            trangThai: "0",
+          }),
+        },
+      ).then((res) => console.log("test response: ", res));
+    } else {
+      console.log("not do post");
+    }
   }
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
@@ -20,7 +61,6 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
       return true;
     }
   }
-
     return (
       <div>
         <hr />
@@ -42,7 +82,7 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
               <h2>{spct.trangThai}</h2>
             </div>
             <div className="flex flex-row-reverse"> 
-            <Button>Sửa</Button>
+            <Button onClick={()=>setOpenModalEdit(true)}>Sửa</Button>
             </div>
             <hr />
           </div>
@@ -62,7 +102,7 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
                     />
                   </div>
                   <TextInput
-                    id="idSP"
+                    id="sp"
                     placeholder=""
                     value={spct.sp.ten + " " + spct.sp.ma}
                     readOnly
@@ -247,7 +287,7 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => editSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => updateSPCT()}>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>

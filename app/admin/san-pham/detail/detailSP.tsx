@@ -370,7 +370,7 @@ export default function DetailSP({ id }) {
               {
               !isLoadingSPCT
                 ?(dataSPCT.map((spctLocal, i) => (
-                      <CellSPCTBrowser spct={spctLocal} indx={i}/>
+                      <CellSPCTBrowser spct={spctLocal} lstKichThuoc={lstKichThuoc} lstMauSac={lstMauSac} indx={i}/>
                 )))
                 :("Không có dữ liệu")
                 }
