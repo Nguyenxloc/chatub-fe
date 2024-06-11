@@ -27,8 +27,8 @@ export default function DetailSPMobile({ id }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isReloadSPCT, setIsReloadSPCT] = useState(false);
   const [idSP, setIdSP] = useState("");
-  const [idMauSac, setIdMauSac] = useState("");
-  const [idKichThuoc, setIdKichThuoc] = useState("");
+  const [mauSac, setMauSac] = useState("");
+  const [kichThuoc, setKichThuoc] = useState("");
   const [idChatLieu, setIdChatLieu] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
@@ -71,8 +71,8 @@ export default function DetailSPMobile({ id }) {
           },
           body: JSON.stringify({
             idSp: params.id,
-            idMauSac: idMauSac.id,
-            idKichThuoc: idKichThuoc.id,
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
             namBH: namBH,
             moTa: moTa,
             soLuongTon: soLuongTon,
@@ -190,15 +190,15 @@ export default function DetailSPMobile({ id }) {
 
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="idMauSac" value="Màu sắc" />
+                    <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
                   <Dropdown
-                    label={idMauSac ? idMauSac.ten : 'Chọn màu sắc'}
+                    label={mauSac ? mauSac.ten : 'Chọn màu sắc'}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstMS ? (
                       lstMauSac.map((ms) => (
-                        <Dropdown.Item key={ms.id} value={ms} onClick={() => setIdMauSac(ms)}>
+                        <Dropdown.Item key={ms.id} value={ms} onClick={() => setMauSac(ms)}>
                           {ms.ten}
                         </Dropdown.Item>
                       ))
@@ -210,15 +210,15 @@ export default function DetailSPMobile({ id }) {
 
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
+                    <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
                   <Dropdown
-                    label={idKichThuoc ? idKichThuoc.ten : 'Chọn kích thước'}
+                    label={kichThuoc ? kichThuoc.ten : 'Chọn kích thước'}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstKT ? (
                       lstKichThuoc.map((kt) => (
-                        <Dropdown.Item key={kt.id} value={kt} onClick={() => setIdKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
+                        <Dropdown.Item key={kt.id} value={kt} onClick={() => setKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>

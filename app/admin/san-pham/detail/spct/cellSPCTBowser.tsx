@@ -1,50 +1,16 @@
-import { Footerx } from "@/app/(dashboard)/component/footer";
-import Navbarx from "@/app/(dashboard)/component/navbarx";
-import { Button, Dropdown, Label, Modal, Table, TextInput, ToggleSwitch } from "flowbite-react";
-import { useParams } from "next/navigation";
+import { Button, Dropdown, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { GiH2O } from "react-icons/gi";
-import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
-import CellSPCTBrowser from "./spct/cellSPCTBowser";
-export default function DetailSP({ id }) {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var todayNow = mm + "/" + dd + "/" + yyyy;
-  var todayPost = yyyy+"-"+mm+"-"+dd;
-  const [openModalAdd, setOpenModalAdd] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState();
-  const [dataSPCT, setDataSPCT] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [idSP, setIdSP] = useState("");
-  const [mauSac, setMauSac] = useState("");
-  const [kichThuoc, setKichThuoc] = useState("");
-  const [idChatLieu, setIdChatLieu] = useState("");
-  const [namBH, setNamBH] = useState("");
-  const [moTa, setMoTa] = useState("");
-  const [soLuongTon, setSoLuongTon] = useState("");
-  const [giaNhap, setGiaNhap] = useState("");
-  const [giaBan, setGiaBan] = useState("");
-  const [ngayTao, setNgayTao] = useState("");
-  const [trangThai, setTrangThai] = useState(false);
-  const [lstMauSac, setLstMauSac] = useState();
-  const [lstKichThuoc, setLstKichThuoc] = useState();
-  const [lstChatLieu, setLstChatLieu] = useState();
-  const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
-  const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
-  const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
-  const onPageChange = (page: number) => setCurrentPage(page);
+import { HiCheckCircle } from "react-icons/hi";
+export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
+  // inital hooks
+  const [openModalEdit, setOpenModalEdit] = useState(false);
   let validateOK = false;
-  function onCloseModalAdd() {
-    setOpenModalAdd(false);
-  }
   function onCloseModalEdit() {
     setOpenModalEdit(false);
   }
-  const params = useParams<{ id: string }>();
+  function editSPCT(){
+    
+  }
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
       validateOK = false;
@@ -55,106 +21,38 @@ export default function DetailSP({ id }) {
     }
   }
 
-  function addSPCT() {
-    if (validateOK) {
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            idSp: params.id,
-            idMauSac: mauSac.id,
-            idKichThuoc: kichThuoc.id,
-            namBH: namBH,
-            moTa: moTa,
-            soLuongTon: soLuongTon,
-            giaNhap: giaNhap,
-            giaBan: giaBan,
-            ngayTao: todayPost,
-            trangThai: "0",
-          }),
-        },
-      ).then((res) => console.log("test response: ", res));
-    } else {
-      console.log("not do post");
-    }
-  }
-  function fillUpCBO() {
-    fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setLstMauSac(data);
-        setIsLoadingLstMS(false);
-        console.log("data lst mau sac :", data);
-      });
-
-    fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/kich-thuoc/index",
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setLstKichThuoc(data);
-        setIsLoadingLstKT(false);
-        console.log("data kich thuoc:", data);
-      });
-
-    // fetch(
-    //   "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setLstChatLieu(data);
-    //     setIsLoadingLstCL(true);
-    //     console.log("data chat lieu:", data);
-    //   });
-  }
-  
-  useEffect(() => {
-    fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
-        params.id,
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setDataSanPham(data);
-        setIsLoading(false);
-        console.log("data sp:", data);
-      });
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
-          console.log("data spct:", data);
-        });
-    fillUpCBO();
-  }, []);
-  if(!isLoading){
     return (
-      <div className="ms-2">
-        <h2>this is the admin san pham page</h2>
-        <Navbarx />
-        <div className="z-0 w-full bg-white">
-        <div>
-            <h2>
-              Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
-            </h2>
+      <div>
+        <hr />
+        <div className="flex-cols flex gap-5">
+          <h2>STT</h2>
+          <h2>Chất liệu</h2>
+          <h2>Màu sắc</h2>
+          <h2>Kích thước</h2>
+          <h2>Số lượng Tồn</h2>
+          <h2>Trạng thái</h2>
+        </div>
+          <div>
+            <div className="flex-cols flex gap-5">
+              <h2>{indx+1}</h2>
+              <h2>spct.chatLieu</h2>
+              <h2>{spct.mauSac.ten}</h2>
+              <h2>{spct.kichThuoc.ten}</h2>
+              <h2 className="ms-[50px]">{spct.soLuongTon}</h2>
+              <h2>{spct.trangThai}</h2>
+            </div>
+            <div className="flex flex-row-reverse"> 
+            <Button>Sửa</Button>
+            </div>
+            <hr />
           </div>
-        {/* modal add start */}
-        <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+                    {/* modal edit start */}
+                    <Modal show={openModalEdit} size="xl" onClose={onCloseModalEdit} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Nhập sản phẩm chi tiết
+                  Chỉnh sửa sản phẩm chi tiết
                 </h3>
                 <div>
                   <div className="mb-2 block">
@@ -166,7 +64,7 @@ export default function DetailSP({ id }) {
                   <TextInput
                     id="idSP"
                     placeholder=""
-                    value={dataSanPham.ten + " " + dataSanPham.ma}
+                    value={spct.sp.ten + " " + spct.sp.ma}
                     readOnly
                     required
                   />
@@ -180,15 +78,13 @@ export default function DetailSP({ id }) {
                     label={mauSac ? mauSac.ten : 'Chọn màu sắc'}
                     dismissOnClick={false}
                   >
-                    {!isLoadingLstMS ? (
+                    {
                       lstMauSac.map((ms) => (
                         <Dropdown.Item key={ms.id} value={ms} onClick={() => setMauSac(ms)}>
                           {ms.ten}
                         </Dropdown.Item>
                       ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
+                    }
                   </Dropdown>
                 </div>
 
@@ -200,13 +96,11 @@ export default function DetailSP({ id }) {
                     label={kichThuoc ? kichThuoc.ten : 'Chọn kích thước'}
                     dismissOnClick={false}
                   >
-                    {!isLoadingLstKT ? (
+                    {
                       lstKichThuoc.map((kt) => (
                         <Dropdown.Item key={kt.id} value={kt} onClick={() => setKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
                       ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
+                    }
                   </Dropdown>
                 </div>
                 {/* <div>
@@ -353,34 +247,12 @@ export default function DetailSP({ id }) {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => editSPCT()}>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>
           </Modal>
-          {/* modal add end */}
-
-          <div className="flex flex-row-reverse">
-          <Button gradientMonochrome="info" onClick={() => setOpenModalAdd(true)}>
-              <HiFolderAdd size={20} />
-              Thêm sản phẩm
-          </Button>
-          </div>
-          <div className="">
-              {
-              !isLoadingSPCT
-                ?(dataSPCT.map((spctLocal, i) => (
-                      <CellSPCTBrowser spct={spctLocal} indx={i}/>
-                )))
-                :("Không có dữ liệu")
-                }
-          </div>
-        </div>
-        <div className="mt-5">
-          <Footerx />
-        </div>
+          {/* end modal spct */}
       </div>
     );
-  }
-
 }
