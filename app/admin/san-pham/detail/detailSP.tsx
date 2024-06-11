@@ -3,6 +3,7 @@ import Navbarx from "@/app/(dashboard)/component/navbarx";
 import { Button, Dropdown, Label, Modal, Table, TextInput, ToggleSwitch } from "flowbite-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { GiH2O } from "react-icons/gi";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 export default function DetailSP({ id }) {
   var today = new Date();
@@ -13,9 +14,10 @@ export default function DetailSP({ id }) {
   var todayPost = yyyy+"-"+mm+"-"+dd;
   const [openModal, setOpenModal] = useState(false);
   const [dataSanPham, setDataSanPham] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [dataSPCT, setDataSPCT] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isReloadSPCT, setIsReloadSPCT] = useState(false);
   const [idSP, setIdSP] = useState("");
   const [idMauSac, setIdMauSac] = useState("");
   const [idKichThuoc, setIdKichThuoc] = useState("");
@@ -73,7 +75,6 @@ export default function DetailSP({ id }) {
           }),
         },
       ).then((res) => console.log("test response: ", res));
-      setIsReloadSPCT(false);
     } else {
       console.log("not do post");
     }
@@ -120,10 +121,19 @@ export default function DetailSP({ id }) {
         setIsLoading(true);
         console.log("data:", data);
       });
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setDataSPCT(data);
+          setIsLoadingSPCT(true);
+          console.log("data:", data);
+        });
     fillUpCBO();
   }, []);
 
-  if(isLoading){
+  if(!isLoading){
     return (
       <div className="ms-2">
         <h2>this is the admin san pham page</h2>
@@ -346,44 +356,50 @@ export default function DetailSP({ id }) {
             <Table>
             <Table.Head>
               <Table.HeadCell colSpan={1}>Stt</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Hình ảnh</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Mã</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Tên</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Ngày tạo</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Giá bán</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Hành động</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Mã sp</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Tên sp</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Màu sắc</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Kích thước</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Số lượng tồn</Table.HeadCell>
+              <Table.HeadCell colSpan={1}>Trạng thái</Table.HeadCell>
               <Table.HeadCell>
                 <span className="sr-only">Edit</span>
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y">
-              {data.map((sp, i) => (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell colSpan={1}>1</Table.Cell>
-                  <Table.Cell colSpan={1}>
-                    <img className="h-30 w-20" src={sp.hinhAnh} alt="" />
-                  </Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.ma}</Table.Cell>
-                  <Table.Cell
-                    colSpan={1}
-                    className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-                  >
-                    {sp.ten}
-                  </Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.ngayTao}</Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.giaBan}</Table.Cell>
-                  <Table.Cell colSpan={1}>
-                    <div>
-                      <Button
-                        gradientMonochrome="success"
-                        onClick={() => setOpenModal(true)}
-                      >
-                        <HiFolderAdd size={20} /> Sửa
-                      </Button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+              {
+              !isLoadingSPCT
+                ?(dataSPCT.map((spctLocal, i) => (
+                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Cell colSpan={1}>{i+1}</Table.Cell>
+                    <Table.Cell colSpan={1}>
+                      <img className="h-30 w-20" src={spctLocal.hinhAnh} alt="" />
+                    </Table.Cell>
+                    <Table.Cell colSpan={1}>{spctLocal.sp.ma}</Table.Cell>
+                    <Table.Cell
+                      colSpan={1}
+                      className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
+                    >
+                      {spctLocal.sp.ten}
+                    </Table.Cell>
+                    <Table.Cell colSpan={1}>{spctLocal.mauSac.ten}</Table.Cell>
+                    <Table.Cell colSpan={1}>{spctLocal.kichThuoc.ten}</Table.Cell>
+                    <Table.Cell colSpan={1}>{spctLocal.soLuongTon}</Table.Cell>
+                    <Table.Cell colSpan={1}>{spctLocal.trangThai}</Table.Cell>
+                    <Table.Cell colSpan={1}>
+                      <div>
+                        <Button
+                          gradientMonochrome="success"
+                          onClick={() => setOpenModal(true)}
+                        >
+                          <HiFolderAdd size={20} /> Sửa
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                )))
+                :(<Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">Không có dữ liệu</Table.Row>)
+                }
             </Table.Body>
           </Table>
           </div>

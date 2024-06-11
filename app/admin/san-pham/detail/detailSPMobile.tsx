@@ -20,8 +20,10 @@ export default function DetailSPMobile({ id }) {
   var todayNow = mm + "/" + dd + "/" + yyyy;
   var todayPost = yyyy+"-"+mm+"-"+dd;
   const [openModal, setOpenModal] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState();
-  const [isLoading, setIsLoading] = useState(false);
+  const [dataSanPham, setDataSanPham] = useState(null);
+  const [dataSPCT, setDataSPCT] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isReloadSPCT, setIsReloadSPCT] = useState(false);
   const [idSP, setIdSP] = useState("");
@@ -125,12 +127,21 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setDataSanPham(data);
-        setIsLoading(true);
-        console.log("data:", data);
+        setIsLoading(false);
+        console.log("data sp:", data);
       });
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setDataSPCT(data);
+          setIsLoadingSPCT(false);
+          console.log("data spct:", data);
+        });
     fillUpCBO();
   }, []);
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <div className="ms-2">
         <h2>this is the admin san pham page</h2>
@@ -146,7 +157,13 @@ export default function DetailSPMobile({ id }) {
             <div className="flex flex-row-reverse">
               <Button onClick={() => setOpenModal(true)}>Thêm</Button>
             </div>
-            <CellSPCT idSP={dataSanPham.id} isReload={isReloadSPCT} />
+            {
+            !isLoadingSPCT
+            ?(dataSPCT.map((spctLocal,i) => (
+                  <CellSPCT spct={spctLocal} indx={i} />
+            )))
+            :("Không có dữ liệu")
+            }
           </div>
           <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
             <Modal.Header />
