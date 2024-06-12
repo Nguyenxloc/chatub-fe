@@ -1,5 +1,5 @@
 import { Button, Dropdown, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
 export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
   // inital hooks

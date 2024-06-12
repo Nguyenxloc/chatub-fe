@@ -14,8 +14,8 @@ export default function DetailSP({ id }) {
   var todayNow = mm + "/" + dd + "/" + yyyy;
   var todayPost = yyyy+"-"+mm+"-"+dd;
   const [openModalAdd, setOpenModalAdd] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState();
-  const [dataSPCT, setDataSPCT] = useState();
+  const [dataSanPham, setDataSanPham] = useState(null);
+  const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,9 +40,6 @@ export default function DetailSP({ id }) {
   let validateOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
-  }
-  function onCloseModalEdit() {
-    setOpenModalEdit(false);
   }
   const params = useParams<{ id: string }>();
   function validatorNull(textValidate: String) {

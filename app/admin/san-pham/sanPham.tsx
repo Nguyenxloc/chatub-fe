@@ -10,6 +10,8 @@ import {
 } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
+import CellSPCTBrowser from "./detail/spct/cellSPCTBowser";
+import CellSanPhamBrowser from "./cellSanPhamBrowser";
 export default function SanPham() {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,50 +37,19 @@ export default function SanPham() {
       <div className="ms-2">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
+        <div className="me-[115px] flex flex-row-reverse">
+            <Button
+              gradientMonochrome="info"
+              onClick={() => setOpenModal(true)}
+            >
+              <HiFolderAdd size={20} />
+              Thêm sản phẩm
+            </Button>
+          </div>
         <div className="z-0 w-full bg-white">
-          <Table>
-            <Table.Head>
-              <Table.HeadCell colSpan={1}>Stt</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Hình ảnh</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Mã</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Tên</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Ngày tạo</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Giá bán</Table.HeadCell>
-              <Table.HeadCell colSpan={1}>Hành động</Table.HeadCell>
-              <Table.HeadCell>
-                <span className="sr-only">Edit</span>
-              </Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
               {data.map((sp, i) => (
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                  <Table.Cell colSpan={1}>1</Table.Cell>
-                  <Table.Cell colSpan={1}>
-                    <img className="h-30 w-20" src={sp.hinhAnh} alt="" />
-                  </Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.ma}</Table.Cell>
-                  <Table.Cell
-                    colSpan={1}
-                    className="whitespace-nowrap font-medium text-gray-900 dark:text-white"
-                  >
-                    {sp.ten}
-                  </Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.ngayTao}</Table.Cell>
-                  <Table.Cell colSpan={1}>{sp.giaBan}</Table.Cell>
-                  <Table.Cell colSpan={1}>
-                    <div>
-                      <Button
-                        gradientMonochrome="success"
-                        onClick={() => setOpenModal(true)}
-                      >
-                        <HiFolderAdd size={20} /> Sửa
-                      </Button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
+                  <CellSanPhamBrowser cellSanPham={sp} i={i}/>
               ))}
-            </Table.Body>
-          </Table>
           <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
             <Modal.Header />
             <Modal.Body>
@@ -131,15 +102,6 @@ export default function SanPham() {
               </div>
             </Modal.Body>
           </Modal>
-          <div className="me-[115px] flex flex-row-reverse">
-            <Button
-              gradientMonochrome="info"
-              onClick={() => setOpenModal(true)}
-            >
-              <HiFolderAdd size={20} />
-              Thêm sản phẩm
-            </Button>
-          </div>
         </div>
         <div className="mt-5">
           <Footerx />

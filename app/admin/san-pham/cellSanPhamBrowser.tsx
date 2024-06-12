@@ -2,7 +2,7 @@ import { Button, Checkbox, Label, Modal, TextInput, ToggleSwitch } from "flowbit
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
-export default function CellSanPham({ cellSanPham, i }) {
+export default function CellSanPhamBrowser({ cellSanPham, i }) {
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [ma, setMa] = useState(cellSanPham.ma);

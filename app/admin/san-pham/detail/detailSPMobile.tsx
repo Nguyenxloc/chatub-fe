@@ -160,7 +160,7 @@ export default function DetailSPMobile({ id }) {
             {
             !isLoadingSPCT
             ?(dataSPCT.map((spctLocal,i) => (
-                  <CellSPCT spct={spctLocal} indx={i} />
+                  <CellSPCT spct={spctLocal} lstMauSac={lstMauSac} lstKichThuoc={lstKichThuoc} indx={i} />
             )))
             :("Không có dữ liệu")
             }

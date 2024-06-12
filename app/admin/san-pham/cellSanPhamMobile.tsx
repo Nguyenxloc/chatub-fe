@@ -1,46 +1,26 @@
-import { Footerx } from "@/app/(dashboard)/component/footer";
-import Navbarx from "@/app/(dashboard)/component/navbarx";
-import {
-  Button,
-  Label,
-  Modal,
-  Pagination,
-  TextInput,
-  ToggleSwitch,
-} from "flowbite-react";
-import { useEffect, useState } from "react";
-import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
-import CellSanPham from "./cellSanPhamMobile";
-import CellSanPhamMobile from "./cellSanPhamMobile";
-export default function SanPhamMobile() {
-  const [data, setData] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+import { Button, Checkbox, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { HiCheckCircle } from "react-icons/hi";
+export default function CellSanPhamMobile({ cellSanPham, i }) {
+  const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
-  const [ma, setMa] = useState("");
-  const [ten, setTen] = useState("");
+  const [ma, setMa] = useState(cellSanPham.ma);
+  const [ten, setTen] = useState(cellSanPham.ten);
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
   var todayNow = mm + "/" + dd + "/" + yyyy;
   var ngayTao = yyyy+"-"+mm+"-"+dd;
-  const [hinhAnh, setHinhAnh] = useState("");
-  const [giaBan, setGiaBan] = useState("");
+  const [hinhAnh, setHinhAnh] = useState(cellSanPham.hinhAnh);
+  const [giaBan, setGiaBan] = useState(cellSanPham.giaBan);
   const [trangThai, setTrangThai] = useState(false);
   let validateOK = false;
-  const onPageChange = (page: number) => setCurrentPage(page);
-  useEffect(() => {
-    fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index",
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setIsLoading(false);
-        console.log("data:", data);
-      });
-  }, []);
+  function routePage(idSPCT:String){
+      router.push("/admin/san-pham/detail/" + idSPCT)
+      console.log("route to show all detail product: ", idSPCT);
+  }
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
       validateOK = false;
@@ -74,48 +54,70 @@ export default function SanPhamMobile() {
       console.log("not do post");
     }
   }
-  if (isLoading == false) {
-    return (
-      <div className="ms-1">
-        <h2>this is the admin san pham page</h2>
-        <Navbarx />
-        <div className="z-0 w-full bg-white">
-          <Button gradientMonochrome="info" onClick={() => setOpenModal(true)}>
-            <HiFolderAdd size={20} />
-            Thêm sản phẩm
-          </Button>
-          <div className="grid grid-cols-1 grid-rows-3 gap-4">
-            {data.map((sp, i) => (
-              <CellSanPhamMobile cellSanPham={sp} i={i} />
-            ))}
-          </div>
-          <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
+
+  return (
+    <div
+      // onClick={() => router.push("/products/detail/" + cellSanPham.id)}
+      className="mt-5 w-[400px]"
+    >
+      <div
+        className="relative w-[420px] overflow-hidden border bg-cover bg-no-repeat"
+        data-twe-ripple-init
+        data-twe-ripple-color="light"
+      ></div>
+      <a>
+        <div className="flex-cols flex gap-5">
+          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+            STT: {i + 1}{" "}
+          </h5>
+          <h5 className="text-xl font-semibold trackfing-tight text-gray-900 dark:text-white">
+            Mã: {cellSanPham.ma}{" "}
+          </h5>
+        </div>
+        <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          Tên: {cellSanPham.ten}
+        </h5>
+      </a>
+      <div className="">
+        <h5 className="text-xl text-gray-900 dark:text-white">
+          Ngày tạo: {cellSanPham.ngayTao}
+        </h5>
+        <h5 className="text-xl text-gray-900 dark:text-white">
+          Trạng thái:{" "}
+          {!(cellSanPham.giaBan == 1) ? "Hoạt động" : "Dừng hoạt động"}
+        </h5>
+      </div>
+      <div className="flex items-center justify-between">
+        <h5 className="text-xl text-gray-900 dark:text-white">
+          Giá bán: {cellSanPham.giaBan}
+        </h5>
+        <div className="flex flex-cols gap-1">
+        <a
+          onClick={() => setOpenModal(true)}
+          className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+        >
+          Sửa
+        </a>
+        <a
+          onClick={() => routePage(cellSanPham.id)}
+          className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+        >
+           Quản lý
+        </a>
+        </div>
+      
+      </div>
+      <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
             <Modal.Header />
             <Modal.Body>
               <div className="space-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Nhập sản phẩm
+                  Sửa sản phẩm
                 </h3>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="ma" value="Mã sản phẩm(fix server tự tăng)" />
+                  <div className="flex justify-center">
+                  <img className="h-[200px]" src={cellSanPham.hinhAnh} alt="" />
                   </div>
-                  <TextInput
-                    id="ma"
-                    placeholder=""
-                    value={ma}
-                    onChange={(event) => setMa(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(ma) ? (
-                    <p className="text-red-600">
-                      Không để trống trường dữ liệu này
-                    </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
-                </div>
-                <div>
                   <div className="mb-2 block">
                     <Label htmlFor="ten" value="Tên sản phẩm" />
                   </div>
@@ -129,9 +131,7 @@ export default function SanPhamMobile() {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -153,9 +153,7 @@ export default function SanPhamMobile() {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -171,9 +169,7 @@ export default function SanPhamMobile() {
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
-                  ) : (
-                    <HiCheckCircle className="text-green-600 " />
-                  )}
+                  ) : ("")}
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -191,16 +187,6 @@ export default function SanPhamMobile() {
               </div>
             </Modal.Body>
           </Modal>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={100}
-            onPageChange={onPageChange}
-          />
-        </div>
-        <div className="mt-5">
-          <Footerx />
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 }
