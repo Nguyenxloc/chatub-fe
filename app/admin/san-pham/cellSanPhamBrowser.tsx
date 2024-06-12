@@ -32,7 +32,7 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
   function onCloseModal() {
     setOpenModal(false);
   }
-  function saveProduct() {
+  function updateProduct() {
     if (validateOK) {
       fetch(
         "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
@@ -62,32 +62,31 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
       // onClick={() => router.push("/products/detail/" + cellSanPham.id)}
       className="mt-5 flex flex-cols gap-[50px]"
     >
-      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white border w-5">
+      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white w-5">
         {i + 1}{" "}
       </h5>
-      <h5 className="trackfing-tight text-xl font-semibold text-gray-900 dark:text-white border w-[200px]">
+      <h5 className="trackfing-tight text-xl font-semibold text-gray-900 dark:text-white w-1/12">
         {cellSanPham.ma}{" "}
       </h5>
-      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white border w-[300px]">
+      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white w-2/12">
         {cellSanPham.ten}
       </h5>
-      <h5 className="text-xl text-gray-900 dark:text-white border w-[150px]">
+      <h5 className="text-xl text-gray-900 dark:text-white w-1/12">
         {cellSanPham.ngayTao}
       </h5>
-      <h5 className="text-xl text-gray-900 dark:text-white">
-        Trạng thái:{" "}
+      <h5 className="text-xl text-gray-900 dark:text-white w-1/12">
         {!(cellSanPham.giaBan == 1) ? "Hoạt động" : "Dừng hoạt động"}
       </h5>
-      <h5 className="text-xl text-gray-900 dark:text-white">
-        Giá bán: {cellSanPham.giaBan}
+      <h5 className="text-xl text-gray-900 dark:text-white w-1/12">
+        {cellSanPham.giaBan}
       </h5>
-      <div className="flex-cols flex gap-1">
-        <Button onClick={() => setOpenModal(true)}>Sửa</Button>
-        <Button onClick={() => routePage(cellSanPham.id)}>Quản lý</Button>
+      <div className="flex-cols flex gap-1 w-2/12">
+        <Button className="w-4/12" onClick={() => setOpenModal(true)}>Sửa</Button>
+        <Button className="w-4/12" onClick={() => routePage(cellSanPham.id)}>Quản lý</Button>
       </div>
       <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
         <Modal.Header />
-        <Modal.Body>
+        <Modal.Body className="overflow-auto">
           <div className="space-y-2">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               Sửa sản phẩm
@@ -166,7 +165,7 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
               />
             </div>
             <div className="w-full">
-              <Button onClick={() => saveProduct()}>Lưu sản phẩm</Button>
+              <Button onClick={() => updateProduct()}>Lưu sản phẩm</Button>
             </div>
           </div>
         </Modal.Body>

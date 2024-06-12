@@ -158,7 +158,7 @@ export default function DetailSPMobile({ id }) {
               <Button onClick={() => setOpenModal(true)}>Thêm</Button>
             </div>
             {
-            !isLoadingSPCT
+            !isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
             ?(dataSPCT.map((spctLocal,i) => (
                   <CellSPCT spct={spctLocal} lstMauSac={lstMauSac} lstKichThuoc={lstKichThuoc} indx={i} />
             )))

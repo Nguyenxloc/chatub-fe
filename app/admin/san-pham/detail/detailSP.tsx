@@ -365,7 +365,7 @@ export default function DetailSP({ id }) {
           </div>
           <div className="">
               {
-              !isLoadingSPCT
+              !isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
                 ?(dataSPCT.map((spctLocal, i) => (
                       <CellSPCTBrowser spct={spctLocal} lstKichThuoc={lstKichThuoc} lstMauSac={lstMauSac} indx={i}/>
                 )))
