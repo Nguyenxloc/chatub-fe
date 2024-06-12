@@ -383,6 +383,16 @@ export default function DetailSP({ id }) {
             </Button>
           </div>
           <div className="">
+            <div className="flex flex-cols">
+              <h2 className="w-1/12 flex items-center font-semibold">STT</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Chất liệu</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Màu sắc</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Kích thước</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Số lượng Tồn</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Trạng thái</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Hành động</h2>
+            </div>
+            <div className="space-y-5">
             {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
               ? dataSPCT.map((spctLocal, i) => (
                   <CellSPCTBrowser
@@ -393,6 +403,7 @@ export default function DetailSP({ id }) {
                   />
                 ))
               : "Không có dữ liệu"}
+            </div>
           </div>
         </div>
         <div className="mt-5">

@@ -79,7 +79,7 @@ export default function SanPham() {
           </Button>
         </div>
         <div className="z-0 w-full bg-white">
-          <div className="flex-cols flex gap-[50px]">
+          <div className="flex-cols flex gap-[50px] md-[20px]">
             <h5 className="w-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
               STT
             </h5>

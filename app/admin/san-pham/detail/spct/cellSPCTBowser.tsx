@@ -63,28 +63,16 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
   }
     return (
       <div>
-        <hr />
-        <div className="flex-cols flex gap-5">
-          <h2>STT</h2>
-          <h2>Chất liệu</h2>
-          <h2>Màu sắc</h2>
-          <h2>Kích thước</h2>
-          <h2>Số lượng Tồn</h2>
-          <h2>Trạng thái</h2>
-        </div>
           <div>
-            <div className="flex-cols flex gap-5">
-              <h2>{indx+1}</h2>
-              <h2>spct.chatLieu</h2>
-              <h2>{spct.mauSac.ten}</h2>
-              <h2>{spct.kichThuoc.ten}</h2>
-              <h2 className="ms-[50px]">{spct.soLuongTon}</h2>
-              <h2>{spct.trangThai}</h2>
+            <div className="flex flex-cols border-b-2">
+              <h2 className="w-1/12 flex items-center">{indx+1}</h2>
+              <h2 className="w-1/12 flex items-center">spct.chatLieu</h2>
+              <h2 className="w-1/12 flex items-center">{spct.mauSac.ten}</h2>
+              <h2 className="w-1/12 flex items-center">{spct.kichThuoc.ten}</h2>
+              <h2 className="w-1/12 flex items-center">{spct.soLuongTon}</h2>
+              <h2 className="w-1/12 flex items-center">{spct.trangThai}</h2>
+              <Button className="" onClick={()=>setOpenModalEdit(true)}>Sửa</Button>
             </div>
-            <div className="flex flex-row-reverse"> 
-            <Button onClick={()=>setOpenModalEdit(true)}>Sửa</Button>
-            </div>
-            <hr />
           </div>
                     {/* modal edit start */}
                     <Modal show={openModalEdit} size="xl" onClose={onCloseModalEdit} popup>
