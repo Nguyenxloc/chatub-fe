@@ -62,13 +62,13 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
       // onClick={() => router.push("/products/detail/" + cellSanPham.id)}
       className="mt-5 flex flex-cols gap-[50px]"
     >
-      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white w-5">
+      <h5 className="text-xl tracking-tight text-gray-900 dark:text-white w-5">
         {i + 1}{" "}
       </h5>
-      <h5 className="trackfing-tight text-xl font-semibold text-gray-900 dark:text-white w-1/12">
+      <h5 className="trackfing-tight text-xl text-gray-900 dark:text-white w-1/12">
         {cellSanPham.ma}{" "}
       </h5>
-      <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white w-2/12">
+      <h5 className="text-xl tracking-tight text-gray-900 dark:text-white w-2/12">
         {cellSanPham.ten}
       </h5>
       <h5 className="text-xl text-gray-900 dark:text-white w-1/12">

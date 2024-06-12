@@ -1,9 +1,15 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
-import { Button, Dropdown, Label, Modal, Table, TextInput, ToggleSwitch } from "flowbite-react";
+import {
+  Button,
+  Dropdown,
+  Label,
+  Modal,
+  TextInput,
+  ToggleSwitch,
+} from "flowbite-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GiH2O } from "react-icons/gi";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import CellSPCTBrowser from "./spct/cellSPCTBowser";
 export default function DetailSP({ id }) {
@@ -12,7 +18,7 @@ export default function DetailSP({ id }) {
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
   var todayNow = mm + "/" + dd + "/" + yyyy;
-  var todayPost = yyyy+"-"+mm+"-"+dd;
+  var todayPost = yyyy + "-" + mm + "-" + dd;
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
@@ -111,7 +117,7 @@ export default function DetailSP({ id }) {
     //     console.log("data chat lieu:", data);
     //   });
   }
-  
+
   useEffect(() => {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
@@ -123,30 +129,30 @@ export default function DetailSP({ id }) {
         setIsLoading(false);
         console.log("data sp:", data);
       });
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
-          console.log("data spct:", data);
-        });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setDataSPCT(data);
+        setIsLoadingSPCT(false);
+        console.log("data spct:", data);
+      });
     fillUpCBO();
   }, []);
-  if(!isLoading){
+  if (!isLoading) {
     return (
       <div className="ms-2">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
         <div className="z-0 w-full bg-white">
-        <div>
+          <div>
             <h2>
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
             </h2>
           </div>
-        {/* modal add start */}
-        <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+          {/* modal add start */}
+          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
@@ -174,12 +180,16 @@ export default function DetailSP({ id }) {
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
                   <Dropdown
-                    label={mauSac ? mauSac.ten : 'Chọn màu sắc'}
+                    label={mauSac ? mauSac.ten : "Chọn màu sắc"}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstMS ? (
                       lstMauSac.map((ms) => (
-                        <Dropdown.Item key={ms.id} value={ms} onClick={() => setMauSac(ms)}>
+                        <Dropdown.Item
+                          key={ms.id}
+                          value={ms}
+                          onClick={() => setMauSac(ms)}
+                        >
                           {ms.ten}
                         </Dropdown.Item>
                       ))
@@ -194,12 +204,18 @@ export default function DetailSP({ id }) {
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
                   <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : 'Chọn kích thước'}
+                    label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstKT ? (
                       lstKichThuoc.map((kt) => (
-                        <Dropdown.Item key={kt.id} value={kt} onClick={() => setKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
+                        <Dropdown.Item
+                          key={kt.id}
+                          value={kt}
+                          onClick={() => setKichThuoc(kt)}
+                        >
+                          {kt.ten}
+                        </Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
@@ -358,19 +374,25 @@ export default function DetailSP({ id }) {
           {/* modal add end */}
 
           <div className="flex flex-row-reverse">
-          <Button gradientMonochrome="info" onClick={() => setOpenModalAdd(true)}>
+            <Button
+              gradientMonochrome="info"
+              onClick={() => setOpenModalAdd(true)}
+            >
               <HiFolderAdd size={20} />
               Thêm sản phẩm
-          </Button>
+            </Button>
           </div>
           <div className="">
-              {
-              !isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
-                ?(dataSPCT.map((spctLocal, i) => (
-                      <CellSPCTBrowser spct={spctLocal} lstKichThuoc={lstKichThuoc} lstMauSac={lstMauSac} indx={i}/>
-                )))
-                :("Không có dữ liệu")
-                }
+            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+              ? dataSPCT.map((spctLocal, i) => (
+                  <CellSPCTBrowser
+                    spct={spctLocal}
+                    lstKichThuoc={lstKichThuoc}
+                    lstMauSac={lstMauSac}
+                    indx={i}
+                  />
+                ))
+              : "Không có dữ liệu"}
           </div>
         </div>
         <div className="mt-5">
@@ -379,5 +401,4 @@ export default function DetailSP({ id }) {
       </div>
     );
   }
-
 }
