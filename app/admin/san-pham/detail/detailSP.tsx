@@ -12,6 +12,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import CellSPCTBrowser from "./spct/cellSPCTBowser";
+import Skeleton from "react-loading-skeleton";
 export default function DetailSP({ id }) {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -140,19 +141,51 @@ export default function DetailSP({ id }) {
       });
     fillUpCBO();
   }, []);
-  if (!isLoading) {
     return (
       <div className="ms-2">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
-        <div className="z-0 w-full bg-white">
+        {!isLoading 
+        ? ( <div className="z-0 w-full bg-white">
           <div>
             <h2>
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
             </h2>
           </div>
-          {/* modal add start */}
-          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+          <div className="flex flex-row-reverse">
+            <Button
+              gradientMonochrome="info"
+              onClick={() => setOpenModalAdd(true)}
+            >
+              <HiFolderAdd size={20} />
+              Thêm sản phẩm
+            </Button>
+          </div>
+          <div className="">
+            <div className="flex flex-cols">
+              <h2 className="w-1/12 flex items-center font-semibold">STT</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Chất liệu</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Màu sắc</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Kích thước</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Số lượng Tồn</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Trạng thái</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Hành động</h2>
+            </div>
+            <div className="space-y-5">
+            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+              ? dataSPCT.map((spctLocal, i) => (
+                  <CellSPCTBrowser
+                    spct={spctLocal}
+                    lstKichThuoc={lstKichThuoc}
+                    lstMauSac={lstMauSac}
+                    indx={i}
+                  />
+                ))
+              : "Không có dữ liệu"}
+            </div>
+          </div>
+                      {/* modal add start */}
+                      <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
@@ -372,44 +405,11 @@ export default function DetailSP({ id }) {
             </Modal.Body>
           </Modal>
           {/* modal add end */}
-
-          <div className="flex flex-row-reverse">
-            <Button
-              gradientMonochrome="info"
-              onClick={() => setOpenModalAdd(true)}
-            >
-              <HiFolderAdd size={20} />
-              Thêm sản phẩm
-            </Button>
-          </div>
-          <div className="">
-            <div className="flex flex-cols">
-              <h2 className="w-1/12 flex items-center font-semibold">STT</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Chất liệu</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Màu sắc</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Kích thước</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Số lượng Tồn</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Trạng thái</h2>
-              <h2 className="w-1/12 flex items-center font-semibold">Hành động</h2>
-            </div>
-            <div className="space-y-5">
-            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
-              ? dataSPCT.map((spctLocal, i) => (
-                  <CellSPCTBrowser
-                    spct={spctLocal}
-                    lstKichThuoc={lstKichThuoc}
-                    lstMauSac={lstMauSac}
-                    indx={i}
-                  />
-                ))
-              : "Không có dữ liệu"}
-            </div>
-          </div>
-        </div>
+        </div>) 
+        : (<Skeleton count={5} />)}
         <div className="mt-5">
           <Footerx />
         </div>
       </div>
     );
   }
-}
