@@ -71,6 +71,9 @@ export default function CellSPCTBrowser({ spct,indx,lstMauSac,lstKichThuoc }) {
               <h2 className="w-1/12 flex items-center">{spct.kichThuoc.ten}</h2>
               <h2 className="w-1/12 flex items-center">{spct.soLuongTon}</h2>
               <h2 className="w-1/12 flex items-center">{spct.trangThai}</h2>
+              <h2 className="w-1/12 flex items-center">Hình ảnh 1</h2>
+              <h2 className="w-1/12 flex items-center">Hình ảnh 2</h2>
+              <h2 className="w-1/12 flex items-center">Hình ảnh 3</h2>
               <Button className="" onClick={()=>setOpenModalEdit(true)}>Sửa</Button>
             </div>
           </div>

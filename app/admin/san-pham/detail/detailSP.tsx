@@ -1,10 +1,12 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   Button,
   Dropdown,
   Label,
   Modal,
+  Pagination,
   TextInput,
   ToggleSwitch,
 } from "flowbite-react";
@@ -12,7 +14,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import CellSPCTBrowser from "./spct/cellSPCTBowser";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 export default function DetailSP({ id }) {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -23,9 +26,10 @@ export default function DetailSP({ id }) {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const onPageChange = (page: number) => setCurrentPage(page);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const [idSP, setIdSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
@@ -43,7 +47,6 @@ export default function DetailSP({ id }) {
   const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
   const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
   const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
-  const onPageChange = (page: number) => setCurrentPage(page);
   let validateOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
@@ -142,7 +145,7 @@ export default function DetailSP({ id }) {
     fillUpCBO();
   }, []);
     return (
-      <div className="ms-2">
+      <div className="ms-2 bg-white">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
         {!isLoading 
@@ -162,16 +165,19 @@ export default function DetailSP({ id }) {
             </Button>
           </div>
           <div className="">
-            <div className="flex flex-cols">
+            <div className="flex flex-cols mt-5">
               <h2 className="w-1/12 flex items-center font-semibold">STT</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Chất liệu</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Màu sắc</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Kích thước</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Số lượng Tồn</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Trạng thái</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Hình ảnh 1</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Hình ảnh 2</h2>
+              <h2 className="w-1/12 flex items-center font-semibold">Hình ảnh 3</h2>
               <h2 className="w-1/12 flex items-center font-semibold">Hành động</h2>
             </div>
-            <div className="space-y-5">
+            <div className="space-y-5 mt-5">
             {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
               ? dataSPCT.map((spctLocal, i) => (
                   <CellSPCTBrowser
@@ -405,8 +411,17 @@ export default function DetailSP({ id }) {
             </Modal.Body>
           </Modal>
           {/* modal add end */}
+          <div className="flex overflow-x-auto sm:justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={100}
+              onPageChange={onPageChange}
+            />
+          </div>
         </div>) 
-        : (<Skeleton count={5} />)}
+        : (
+            <Skeleton count={20} />
+          )}
         <div className="mt-5">
           <Footerx />
         </div>

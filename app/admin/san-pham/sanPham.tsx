@@ -1,11 +1,15 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
-import { Button, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
+import { Button, Label, Modal, Pagination, TextInput, ToggleSwitch } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import CellSanPhamBrowser from "./cellSanPhamBrowser";
+import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton from "react-loading-skeleton";
 export default function SanPham() {
   const [data, setData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const onPageChange = (page: number) => setCurrentPage(page);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [ma, setMa] = useState("");
@@ -34,6 +38,7 @@ export default function SanPham() {
   function onCloseModal() {
     setOpenModal(false);
   }
+  
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
       validateOK = false;
@@ -43,6 +48,7 @@ export default function SanPham() {
       return true;
     }
   }
+
   function saveProduct() {
     if (validateOK) {
       fetch(
@@ -67,9 +73,9 @@ export default function SanPham() {
       console.log("not do post");
     }
   }
-  if (!isLoading) {
+
     return (
-      <div className="ms-2">
+      <div className="ms-2 bg-white">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
         <div className="me-[115px] flex flex-row-reverse">
@@ -78,10 +84,14 @@ export default function SanPham() {
             Thêm sản phẩm
           </Button>
         </div>
-        <div className="z-0 w-full bg-white">
-          <div className="flex-cols flex gap-[50px] md-[20px]">
+        {!isLoading
+        ?(        <div className="z-0 w-full mt-5">
+          <div className="flex-cols md-[20px] flex gap-[50px]">
             <h5 className="w-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
               STT
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              Hình ảnh
             </h5>
             <h5 className="trackfing-tight w-1/12 text-xl font-semibold text-gray-900 dark:text-white">
               Mã
@@ -109,8 +119,14 @@ export default function SanPham() {
               <hr />
             </div>
           ))}
-        </div>
-        <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
+          <div className="flex overflow-x-auto sm:justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={100}
+              onPageChange={onPageChange}
+            />
+          </div>
+          <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
           <Modal.Header />
           <Modal.Body className="overflow-auto">
             <div className="space-y-2">
@@ -196,10 +212,11 @@ export default function SanPham() {
             </div>
           </Modal.Body>
         </Modal>
+        </div>)
+        :(<Skeleton count={20} />)}
         <div className="mt-5">
           <Footerx />
         </div>
       </div>
     );
   }
-}

@@ -66,6 +66,9 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
         {i + 1}{" "}
       </h5>
       <h5 className="trackfing-tight text-xl text-gray-900 dark:text-white w-1/12">
+        Hình ảnh
+      </h5>
+      <h5 className="trackfing-tight text-xl text-gray-900 dark:text-white w-1/12">
         {cellSanPham.ma}{" "}
       </h5>
       <h5 className="text-xl tracking-tight text-gray-900 dark:text-white w-2/12">

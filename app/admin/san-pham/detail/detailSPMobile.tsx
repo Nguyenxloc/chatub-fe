@@ -1,31 +1,35 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   Button,
   Dropdown,
   Label,
   Modal,
+  Pagination,
   TextInput,
   ToggleSwitch,
 } from "flowbite-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { HiCheckCircle } from "react-icons/hi";
-import CellSPCT from "./spct/cellSPCT";
+import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
+import CellSPCTBrowser from "./spct/cellSPCTBowser";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import CellSPCT from "./spct/cellSPCTMobile";
 export default function DetailSPMobile({ id }) {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
   var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   var yyyy = today.getFullYear();
   var todayNow = mm + "/" + dd + "/" + yyyy;
-  var todayPost = yyyy+"-"+mm+"-"+dd;
-  const [openModal, setOpenModal] = useState(false);
+  var todayPost = yyyy + "-" + mm + "-" + dd;
+  const [openModalAdd, setOpenModalAdd] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isReloadSPCT, setIsReloadSPCT] = useState(false);
+  const onPageChange = (page: number) => setCurrentPage(page);
   const [idSP, setIdSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
@@ -43,10 +47,9 @@ export default function DetailSPMobile({ id }) {
   const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
   const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
   const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
-  const onPageChange = (page: number) => setCurrentPage(page);
   let validateOK = false;
-  function onCloseModal() {
-    setOpenModal(false);
+  function onCloseModalAdd() {
+    setOpenModalAdd(false);
   }
   const params = useParams<{ id: string }>();
   function validatorNull(textValidate: String) {
@@ -83,7 +86,6 @@ export default function DetailSPMobile({ id }) {
           }),
         },
       ).then((res) => console.log("test response: ", res));
-      setIsReloadSPCT(false);
     } else {
       console.log("not do post");
     }
@@ -119,6 +121,7 @@ export default function DetailSPMobile({ id }) {
     //     console.log("data chat lieu:", data);
     //   });
   }
+
   useEffect(() => {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
@@ -130,42 +133,62 @@ export default function DetailSPMobile({ id }) {
         setIsLoading(false);
         console.log("data sp:", data);
       });
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
-          console.log("data spct:", data);
-        });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setDataSPCT(data);
+        setIsLoadingSPCT(false);
+        console.log("data spct:", data);
+      });
     fillUpCBO();
   }, []);
-  if (!isLoading) {
     return (
-      <div className="ms-2">
+      <div className="ms-2 bg-white">
         <h2>this is the admin san pham page</h2>
         <Navbarx />
-        <div className="z-0 w-full bg-white">
+        {!isLoading 
+        ? ( <div className="z-0 w-full bg-white">
           <div>
             <h2>
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
             </h2>
           </div>
-          <div>
-            <h2>Danh sách sản phẩm chi tiết</h2>
-            <div className="flex flex-row-reverse">
-              <Button onClick={() => setOpenModal(true)}>Thêm</Button>
-            </div>
-            {
-            !isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
-            ?(dataSPCT.map((spctLocal,i) => (
-                  <CellSPCT spct={spctLocal} lstMauSac={lstMauSac} lstKichThuoc={lstKichThuoc} indx={i} />
-            )))
-            :("Không có dữ liệu")
-            }
+          <div className="flex flex-row-reverse">
+            <Button
+              gradientMonochrome="info"
+              onClick={() => setOpenModalAdd(true)}
+            >
+              <HiFolderAdd size={20} />
+              Thêm sản phẩm
+            </Button>
           </div>
-          <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
+          <div className="">
+            <div className="flex flex-cols mt-5">
+              <h2 className="w-1/12 flex items-center font-semibold text-xs">STT</h2>
+              <h2 className="w-2/12 flex items-center font-semibold text-xs">Chất liệu</h2>
+              <h2 className="w-2/12 flex items-center font-semibold text-xs">Màu sắc</h2>
+              <h2 className="w-2/12 flex items-center font-semibold text-xs">Kích thước</h2>
+              <h2 className="w-1/12 flex items-center font-semibold text-xs">SL</h2>
+              <h2 className="w-2/12 flex items-center font-semibold text-xs">Trạng thái</h2>
+              <h2 className="w-2/12 flex items-center font-semibold text-xs">Hành động</h2>
+            </div>
+            <div className="space-y-5 mt-5">
+            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+              ? dataSPCT.map((spctLocal, i) => (
+                  <CellSPCT
+                    spct={spctLocal}
+                    lstKichThuoc={lstKichThuoc}
+                    lstMauSac={lstMauSac}
+                    indx={i}
+                  />
+                ))
+              : "Không có dữ liệu"}
+            </div>
+          </div>
+                      {/* modal add start */}
+                      <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
@@ -193,12 +216,16 @@ export default function DetailSPMobile({ id }) {
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
                   <Dropdown
-                    label={mauSac ? mauSac.ten : 'Chọn màu sắc'}
+                    label={mauSac ? mauSac.ten : "Chọn màu sắc"}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstMS ? (
                       lstMauSac.map((ms) => (
-                        <Dropdown.Item key={ms.id} value={ms} onClick={() => setMauSac(ms)}>
+                        <Dropdown.Item
+                          key={ms.id}
+                          value={ms}
+                          onClick={() => setMauSac(ms)}
+                        >
                           {ms.ten}
                         </Dropdown.Item>
                       ))
@@ -213,12 +240,18 @@ export default function DetailSPMobile({ id }) {
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
                   <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : 'Chọn kích thước'}
+                    label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
                     dismissOnClick={false}
                   >
                     {!isLoadingLstKT ? (
                       lstKichThuoc.map((kt) => (
-                        <Dropdown.Item key={kt.id} value={kt} onClick={() => setKichThuoc(kt)}>{kt.ten}</Dropdown.Item>
+                        <Dropdown.Item
+                          key={kt.id}
+                          value={kt}
+                          onClick={() => setKichThuoc(kt)}
+                        >
+                          {kt.ten}
+                        </Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
@@ -374,11 +407,21 @@ export default function DetailSPMobile({ id }) {
               </div>
             </Modal.Body>
           </Modal>
-        </div>
+          {/* modal add end */}
+          <div className="flex overflow-x-auto sm:justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={100}
+              onPageChange={onPageChange}
+            />
+          </div>
+        </div>) 
+        : (
+            <Skeleton count={20} />
+          )}
         <div className="mt-5">
           <Footerx />
         </div>
       </div>
     );
   }
-}
