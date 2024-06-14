@@ -1,7 +1,7 @@
 import { Button, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-export default function CellSanPhamBrowser({ cellSanPham, i }) {
+export default function CellSanPhamBrowser({ cellSanPham, i, setRefParam }) {
   const router = useRouter();
   const [openModal, setOpenModal] = useState(false);
   const [ma, setMa] = useState(cellSanPham.ma);
@@ -34,6 +34,7 @@ export default function CellSanPhamBrowser({ cellSanPham, i }) {
   }
   function updateProduct() {
     if (validateOK) {
+      setRefParam(1);
       fetch(
         "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
         {

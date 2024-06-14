@@ -12,7 +12,6 @@ export default function SanPham() {
   const onPageChange = (page: number) => setCurrentPage(page);
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const [ma, setMa] = useState("");
   const [ten, setTen] = useState("");
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -23,6 +22,7 @@ export default function SanPham() {
   const [hinhAnh, setHinhAnh] = useState("");
   const [giaBan, setGiaBan] = useState("");
   const [trangThai, setTrangThai] = useState(false);
+  const [refkey, setRefkey] = useState(0);
   let validateOK = false;
   useEffect(() => {
     fetch(
@@ -34,9 +34,10 @@ export default function SanPham() {
         setIsLoading(false);
         console.log("data:", data);
       });
-  }, []);
+  }, [refkey]);
   function onCloseModal() {
     setOpenModal(false);
+    console.log("test ref: ", refkey);
   }
   
   function validatorNull(textValidate: String) {
@@ -60,9 +61,8 @@ export default function SanPham() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ma: ma,
             ten: ten,
-            trangThai: "0",
+            trangThai: "1",
             ngayTao: ngayTao,
             hinhAnh: hinhAnh,
             giaBan: giaBan,
@@ -83,6 +83,7 @@ export default function SanPham() {
             <HiFolderAdd size={20} />
             Thêm sản phẩm
           </Button>
+          <Button onClick={()=>setRefkey(1)}>refresh</Button>
         </div>
         {!isLoading
         ?(        <div className="z-0 w-full mt-5">
@@ -115,7 +116,7 @@ export default function SanPham() {
           </div>
           {data.map((sp, i) => (
             <div>
-              <CellSanPhamBrowser cellSanPham={sp} i={i} />
+              <CellSanPhamBrowser cellSanPham={sp} i={i} setRefParam={setRefkey()} />
               <hr />
             </div>
           ))}
