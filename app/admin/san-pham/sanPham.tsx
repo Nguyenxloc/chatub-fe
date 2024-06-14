@@ -9,7 +9,7 @@ import {
   ToggleSwitch,
 } from "flowbite-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -17,8 +17,9 @@ import CellSanPhamBrowser from "./cellSanPhamBrowser";
 export default function SanPham() {
   const router = useRouter();
   const [data, setData] = useState();
+  const [pageParam, setPageParam] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const onPageChange = (page: number) => (setCurrentPage(page));
   const [isLoading, setIsLoading] = useState(true);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -39,15 +40,30 @@ export default function SanPham() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index",
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+pageParam,
     )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
         setIsLoading(false);
+        setRefkey(0);
         console.log("data:", data);
       });
   }, [refkey]);
+
+  // useCallback(() => {
+  //   fetch(
+  //     "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+pageParam,
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setIsLoading(false);
+  //       setRefkey(0);
+  //       console.log("data:", data);
+  //     });
+  // }, [refkey]);
+
   function onCloseModalAdd() {
     setOpenModalAdd(false);
     console.log("test ref: ", refkey);
@@ -89,7 +105,11 @@ export default function SanPham() {
       return true;
     }
   }
-
+  function reloadPageChange(){
+    setRefkey(1);
+    setPageParam(currentPage -1);
+    console.log("test ref");
+  }
   function routePage(idSPCT: String) {
     router.push("/admin/san-pham/detail/" + idSPCT);
     console.log("route to show all detail product: ", idSPCT);
@@ -114,6 +134,7 @@ export default function SanPham() {
           }),
         },
       ).then((res) => console.log("test response: ", res.ok));
+      setRefkey(1);
     } else {
       console.log("not do post");
     }
@@ -153,48 +174,45 @@ export default function SanPham() {
         <Button onClick={() => setRefkey(1)}>refresh</Button>
       </div>
       {!isLoading ? (
-        <div className="z-0 mt-5 w-full">
-          <div className="flex flex-cols md-[20px]">
-            <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white border">
+        <div className="z-0 mt-5 ms-5 w-full">
+          <div className="flex flex-cols md-[20px] w-screen">
+            <h5 className="w-[50px] text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               STT
             </h5>
-            <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white border">
+            <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               Hình ảnh
             </h5>
-            <h5 className="w-1/12 trackfing-tight text-xl font-semibold text-gray-900 dark:text-white border">
+            <h5 className="w-1/12 trackfing-tight text-xl font-semibold text-gray-900 dark:text-white ">
               Mã
             </h5>
-            <h5 className="w-2/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white border">
+            <h5 className="w-2/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               Tên sản phẩm
             </h5>
-            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white border">
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
               Ngày tạo
             </h5>
-            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white border">
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
               Trạng thái
             </h5>
-            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white border">
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
               Giá bán
-            </h5>
-            <h5 className="w-2/12 text-xl font-semibold text-gray-900 dark:text-white border">
-              Hành động
             </h5>
             <hr />
           </div>
           {data.map((sp, i) => (
             <div>
-              <div className="flex-cols flex">
+              <div className="flex-cols flex w-screen">
                 <CellSanPhamBrowser cellSanPham={sp} i={i} />
-                <div className="flex-cols flex w-2/12 gap-1">
+                <div className="flex-cols flex w-2/12 gap-1 items-center">
                   <Button
-                    className="w-4/12"
+                    className="w-4/12 h-[50px]"
                     onClick={() => {
                       setOpenModalEdit(true), onOpenModalEdit(sp);
                     }}
                   >
                     Sửa
                   </Button>
-                  <Button className="w-4/12" onClick={() => routePage(sp.id)}>
+                  <Button className="w-4/12 h-[50px]" onClick={() => routePage(sp.id)}>
                     Quản lý
                   </Button>
                 </div>
@@ -323,6 +341,7 @@ export default function SanPham() {
               currentPage={currentPage}
               totalPages={100}
               onPageChange={onPageChange}
+              onClick={()=>reloadPageChange()}
             />
           </div>
           <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
