@@ -17,9 +17,8 @@ import CellSanPhamBrowser from "./cellSanPhamBrowser";
 export default function SanPham() {
   const router = useRouter();
   const [data, setData] = useState();
-  const [pageParam, setPageParam] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const onPageChange = (page: number) => (setCurrentPage(page));
+  const onPageChange = (page: number) => {setCurrentPage(page)};
   const [isLoading, setIsLoading] = useState(true);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -40,7 +39,7 @@ export default function SanPham() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+pageParam,
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -49,7 +48,8 @@ export default function SanPham() {
         setRefkey(0);
         console.log("data:", data);
       });
-  }, [refkey]);
+      console.log("test current page: ", currentPage);
+  }, [refkey,currentPage]);
 
   // useCallback(() => {
   //   fetch(
@@ -104,11 +104,6 @@ export default function SanPham() {
       validateOK = true;
       return true;
     }
-  }
-  function reloadPageChange(){
-    setRefkey(1);
-    setPageParam(currentPage -1);
-    console.log("test ref");
   }
   function routePage(idSPCT: String) {
     router.push("/admin/san-pham/detail/" + idSPCT);
@@ -171,7 +166,6 @@ export default function SanPham() {
           <HiFolderAdd size={20} />
           Thêm sản phẩm
         </Button>
-        <Button onClick={() => setRefkey(1)}>refresh</Button>
       </div>
       {!isLoading ? (
         <div className="z-0 mt-5 ms-5 w-full">
@@ -205,14 +199,14 @@ export default function SanPham() {
                 <CellSanPhamBrowser cellSanPham={sp} i={i} />
                 <div className="flex-cols flex w-2/12 gap-1 items-center">
                   <Button
-                    className="w-4/12 h-[50px]"
+                    className="w-[100px] h-[50px] flex items-center"
                     onClick={() => {
                       setOpenModalEdit(true), onOpenModalEdit(sp);
                     }}
                   >
                     Sửa
                   </Button>
-                  <Button className="w-4/12 h-[50px]" onClick={() => routePage(sp.id)}>
+                  <Button className="w-[100px] h-[50px] flex items-center" onClick={() => routePage(sp.id)}>
                     Quản lý
                   </Button>
                 </div>
@@ -341,7 +335,6 @@ export default function SanPham() {
               currentPage={currentPage}
               totalPages={100}
               onPageChange={onPageChange}
-              onClick={()=>reloadPageChange()}
             />
           </div>
           <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
