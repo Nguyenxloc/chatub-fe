@@ -9,7 +9,7 @@ import {
   ToggleSwitch,
 } from "flowbite-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -18,7 +18,9 @@ export default function SanPham() {
   const router = useRouter();
   const [data, setData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const onPageChange = (page: number) => {setCurrentPage(page)};
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   const [isLoading, setIsLoading] = useState(true);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -39,7 +41,8 @@ export default function SanPham() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+currentPage,
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page=" +
+        currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -48,8 +51,8 @@ export default function SanPham() {
         setRefkey(0);
         console.log("data:", data);
       });
-      console.log("test current page: ", currentPage);
-  }, [refkey,currentPage]);
+    console.log("test current page: ", currentPage);
+  }, [refkey, currentPage]);
 
   // useCallback(() => {
   //   fetch(
@@ -82,7 +85,7 @@ export default function SanPham() {
     resetState();
     console.log("test ref: ", refkey);
   }
-  function resetState(){
+  function resetState() {
     setId("");
     setMa("");
     setTen("");
@@ -168,15 +171,15 @@ export default function SanPham() {
         </Button>
       </div>
       {!isLoading ? (
-        <div className="z-0 mt-5 ms-5 w-full">
-          <div className="flex flex-cols md-[20px] w-screen">
+        <div className="z-0 ms-5 mt-5 w-full">
+          <div className="flex-cols md-[20px] flex w-screen">
             <h5 className="w-[50px] text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               STT
             </h5>
             <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               Hình ảnh
             </h5>
-            <h5 className="w-1/12 trackfing-tight text-xl font-semibold text-gray-900 dark:text-white ">
+            <h5 className="trackfing-tight w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
               Mã
             </h5>
             <h5 className="w-2/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
@@ -197,16 +200,19 @@ export default function SanPham() {
             <div>
               <div className="flex-cols flex w-screen">
                 <CellSanPhamBrowser cellSanPham={sp} i={i} />
-                <div className="flex-cols flex w-2/12 gap-1 items-center">
+                <div className="flex-cols flex w-2/12 items-center gap-1">
                   <Button
-                    className="w-[100px] h-[50px] flex items-center"
+                    className="flex h-[50px] w-[100px] items-center"
                     onClick={() => {
                       setOpenModalEdit(true), onOpenModalEdit(sp);
                     }}
                   >
                     Sửa
                   </Button>
-                  <Button className="w-[100px] h-[50px] flex items-center" onClick={() => routePage(sp.id)}>
+                  <Button
+                    className="flex h-[50px] w-[100px] items-center"
+                    onClick={() => routePage(sp.id)}
+                  >
                     Quản lý
                   </Button>
                 </div>
@@ -321,7 +327,6 @@ export default function SanPham() {
                   <Button
                     onClick={() => {
                       updateProduct();
-                      
                     }}
                   >
                     Lưu sản phẩm
@@ -330,13 +335,6 @@ export default function SanPham() {
               </div>
             </Modal.Body>
           </Modal>
-          <div className="flex overflow-x-auto sm:justify-center">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={100}
-              onPageChange={onPageChange}
-            />
-          </div>
           <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
@@ -427,6 +425,13 @@ export default function SanPham() {
       ) : (
         <Skeleton count={20} />
       )}
+      <div className="flex overflow-x-auto sm:justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={100}
+          onPageChange={onPageChange}
+        />
+      </div>
       <div className="mt-5">
         <Footerx />
       </div>
