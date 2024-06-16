@@ -21,6 +21,7 @@ export default function SanPham() {
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const [lastPage, setLastPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -51,21 +52,16 @@ export default function SanPham() {
         setRefkey(0);
         console.log("data:", data);
       });
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/count")
+        .then((res) => res.json())
+        .then((data) => {
+          setLastPage(Math.ceil(data/20));
+          console.log("data:", Math.ceil(data/20));
+        });
     console.log("test current page: ", currentPage);
   }, [refkey, currentPage]);
 
-  // useCallback(() => {
-  //   fetch(
-  //     "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page="+pageParam,
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setData(data);
-  //       setIsLoading(false);
-  //       setRefkey(0);
-  //       console.log("data:", data);
-  //     });
-  // }, [refkey]);
 
   function onCloseModalAdd() {
     setOpenModalAdd(false);
@@ -133,6 +129,7 @@ export default function SanPham() {
         },
       ).then((res) => console.log("test response: ", res.ok));
       setRefkey(1);
+      setCurrentPage(lastPage);
     } else {
       console.log("not do post");
     }
