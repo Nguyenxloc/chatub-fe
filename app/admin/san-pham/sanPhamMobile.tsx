@@ -62,7 +62,6 @@ export default function SanPham() {
     console.log("test current page: ", currentPage);
   }, [refkey, currentPage]);
 
-
   function onCloseModalAdd() {
     setOpenModalAdd(false);
     console.log("test ref: ", refkey);
@@ -158,10 +157,10 @@ export default function SanPham() {
     }
   }
   return (
-    <div className="ms-2 bg-white">
+    <div className="ms-2 bg-white w-screen">
       <h2>this is the admin san pham page mobile</h2>
       <Navbarx />
-      <div className="me-[115px] flex flex-row-reverse">
+      <div className="flex flex-row-reverse me-5">
         <Button gradientMonochrome="info" onClick={() => setOpenModalAdd(true)}>
           <HiFolderAdd size={20} />
           Thêm sản phẩm
@@ -173,7 +172,7 @@ export default function SanPham() {
             <div>
               <div className="">
                 <CellSanPhamMobile   cellSanPham={sp} i={i} />
-                <div className="flex-cols flex items-center gap-1 ms-[210px]">
+                <div className="flex-cols flex items-center gap-1 ms-[160px]">
                   <Button
                     className="flex h-[40px] w-[90px] items-center"
                     onClick={() => {
@@ -195,9 +194,9 @@ export default function SanPham() {
           ))}
           <Modal
             show={openModalEdit}
-            size="xl"
             onClose={onCloseModalEdit}
             popup
+            className="w-11/12"
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
@@ -308,7 +307,7 @@ export default function SanPham() {
               </div>
             </Modal.Body>
           </Modal>
-          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+          <Modal show={openModalAdd} className="w-11/12"  onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">

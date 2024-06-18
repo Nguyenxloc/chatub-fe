@@ -13,9 +13,8 @@ import {
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
-import CellSPCTBrowser from "./spct/cellSPCTBowser";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import CellSPCT from "./spct/cellSPCTMobile";
+import CellSPCTMobile from "./spct/cellSPCTMobile";
 export default function DetailSPMobile({ id }) {
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, "0");
@@ -177,7 +176,7 @@ export default function DetailSPMobile({ id }) {
             <div className="space-y-5 mt-5">
             {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
               ? dataSPCT.map((spctLocal, i) => (
-                  <CellSPCT
+                  <CellSPCTMobile
                     spct={spctLocal}
                     lstKichThuoc={lstKichThuoc}
                     lstMauSac={lstMauSac}

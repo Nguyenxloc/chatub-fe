@@ -6,7 +6,7 @@ export default function CellSanPhamMobile({ cellSanPham, i }) {
       className="mt-5 w-[450px] h-[150px]"
     >
       <div className="flex-cols flex gap-5">
-        <img className="h-[190px] w-[200px]" src={cellSanPham.hinhAnh} alt="" />
+        <img className="h-[150px] w-[150px]" src={cellSanPham.hinhAnh} alt="" />
         <div  className="">
           <h5 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
             STT: {i + 1}{" "}

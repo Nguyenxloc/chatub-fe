@@ -31,8 +31,8 @@ export default function DetailSP({ id }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [idSP, setIdSP] = useState("");
-  const [mauSac, setMauSac] = useState("");
-  const [kichThuoc, setKichThuoc] = useState("");
+  const [mauSac, setMauSac] = useState(null);
+  const [kichThuoc, setKichThuoc] = useState(null);
   const [idChatLieu, setIdChatLieu] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
@@ -47,6 +47,8 @@ export default function DetailSP({ id }) {
   const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
   const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
   const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
+  const [refKey,setRefkey] = useState(0);
+  const [lastPage, setLastPage] = useState(1);
   let validateOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
@@ -81,11 +83,18 @@ export default function DetailSP({ id }) {
             soLuongTon: soLuongTon,
             giaNhap: giaNhap,
             giaBan: giaBan,
-            ngayTao: todayPost,
-            trangThai: "0",
+            trangThai: "1",
+            hinhAnh1: "hinh anh 1",
+            hinhAnh2: "hinh anh 2",
+            hinhAnh3: "hinh anh 3 "
           }),
         },
       ).then((res) => console.log("test response: ", res));
+      console.log("idsp", params.id);
+      console.log("idmausac", mauSac.id);
+      console.log("idkichthuoc", kichThuoc.id);
+      setRefkey(1);
+      setCurrentPage(lastPage);
     } else {
       console.log("not do post");
     }
@@ -134,16 +143,24 @@ export default function DetailSP({ id }) {
         console.log("data sp:", data);
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index?page="+ currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
         setDataSPCT(data);
         setIsLoadingSPCT(false);
+        setRefkey(0);
         console.log("data spct:", data);
       });
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count")
+        .then((res) => res.json())
+        .then((data) => {
+          setLastPage(Math.ceil(data/20));
+          console.log("data:", Math.ceil(data/20));
+        });
     fillUpCBO();
-  }, []);
+  }, [refKey,currentPage]);
     return (
       <div className="ms-2 bg-white">
         <h2>this is the admin san pham page</h2>
