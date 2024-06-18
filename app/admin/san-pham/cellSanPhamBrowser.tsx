@@ -2,18 +2,6 @@ import { Button, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 export default function CellSanPhamBrowser({ cellSanPham, i}) {
-  const [openModal, setOpenModal] = useState(false);
-  const [ma, setMa] = useState(cellSanPham.ma);
-  const [ten, setTen] = useState(cellSanPham.ten);
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var todayNow = mm + "/" + dd + "/" + yyyy;
-  var ngayTao = yyyy + "-" + mm + "-" + dd;
-  const [hinhAnh, setHinhAnh] = useState(cellSanPham.hinhAnh);
-  const [giaBan, setGiaBan] = useState(cellSanPham.giaBan);
-  const [trangThai, setTrangThai] = useState(false);
   return (
     <div
       // onClick={() => router.push("/products/detail/" + cellSanPham.id)}
