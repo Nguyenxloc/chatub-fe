@@ -1,3 +1,4 @@
+"use client";
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
@@ -157,8 +158,7 @@ export default function SanPham() {
     }
   }
   return (
-    <div className="ms-2 bg-white w-screen">
-      <h2>this is the admin san pham page mobile</h2>
+    <div id="spmobile" className="ms-2 bg-white w-screen">
       <Navbarx />
       <div className="flex flex-row-reverse me-5">
         <Button gradientMonochrome="info" onClick={() => setOpenModalAdd(true)}>

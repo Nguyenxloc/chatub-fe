@@ -1,3 +1,4 @@
+
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
@@ -61,54 +62,6 @@ export default function SanPham() {
         });
     console.log("test current page: ", currentPage);
   }, [refkey, currentPage]);
-
-
-  function onCloseModalAdd() {
-    setOpenModalAdd(false);
-    console.log("test ref: ", refkey);
-  }
-  function onOpenModalEdit(spParam: object) {
-    setId(spParam.id);
-    setMa(spParam.ma);
-    setTen(spParam.ten);
-    setTrangThai(spParam.trangThai);
-    setNgayTao(spParam.ngayTao);
-    setHinhAnh(spParam.hinhAnh);
-    setGiaBan(spParam.giaBan);
-  }
-  function onCloseModalEdit() {
-    setOpenModalEdit(false);
-    resetState();
-    console.log("test ref: ", refkey);
-  }
-  function resetState() {
-    setId("");
-    setMa("");
-    setTen("");
-    setTrangThai(false);
-    setNgayTao("");
-    setHinhAnh("");
-    setGiaBan("");
-  }
-
-  function doSetRefKey() {
-    setRefkey(1);
-    console.log("test ref: ", refkey);
-  }
-  function validatorNull(textValidate: String) {
-    if (textValidate == "") {
-      validateOK = false;
-      return false;
-    } else {
-      validateOK = true;
-      return true;
-    }
-  }
-  function routePage(idSPCT: String) {
-    router.push("/admin/san-pham/detail/" + idSPCT);
-    console.log("route to show all detail product: ", idSPCT);
-  }
-
   function saveProduct() {
     if (validateOK) {
       fetch(
@@ -157,8 +110,56 @@ export default function SanPham() {
       console.log("not do post");
     }
   }
+
+  function onCloseModalAdd() {
+    setOpenModalAdd(false);
+    console.log("test ref: ", refkey);
+  }
+  function onOpenModalEdit(spParam: object) {
+    setId(spParam.id);
+    setMa(spParam.ma);
+    setTen(spParam.ten);
+    setTrangThai(spParam.trangThai);
+    setNgayTao(spParam.ngayTao);
+    setHinhAnh(spParam.hinhAnh);
+    setGiaBan(spParam.giaBan);
+  }
+  function onCloseModalEdit() {
+    setOpenModalEdit(false);
+    resetState();
+    console.log("test ref: ", refkey);
+  }
+  function resetState() {
+    setId("");
+    setMa("");
+    setTen("");
+    setTrangThai(false);
+    setNgayTao("");
+    setHinhAnh("");
+    setGiaBan("");
+  }
+
+  function doSetRefKey() {
+    setRefkey(1);
+    console.log("test ref: ", refkey);
+  }
+  function validatorNull(textValidate: String) {
+    if (textValidate == "") {
+      validateOK = false;
+      return false;
+    } else {
+      validateOK = true;
+      return true;
+    }
+  }
+  function routePage(idSPCT: String) {
+    router.push("/admin/san-pham/detail/" + idSPCT);
+    console.log("route to show all detail product: ", idSPCT);
+  }
+
+ 
   return (
-    <div className="ms-2 bg-white">
+    <div id="sanPhamBrowser" className="ms-2 bg-white">
       <h2>this is the admin san pham page</h2>
       <Navbarx />
       <div className="me-[115px] flex flex-row-reverse">
@@ -168,7 +169,7 @@ export default function SanPham() {
         </Button>
       </div>
       {!isLoading ? (
-        <div className="z-0 ms-5 mt-5 w-full">
+        <div id="formAdd" className="z-0 ms-5 mt-5 w-full">
           <div className="flex-cols md-[20px] flex w-screen">
             <h5 className="w-[50px] text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
               STT
@@ -194,7 +195,7 @@ export default function SanPham() {
             <hr />
           </div>
           {data.map((sp, i) => (
-            <div>
+            <div id={sp.id}>
               <div className="flex-cols flex w-screen">
                 <CellSanPhamBrowser cellSanPham={sp} i={i} />
                 <div className="flex-cols flex w-2/12 items-center gap-1">
