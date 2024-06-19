@@ -143,7 +143,7 @@ export default function DetailSP({ id }) {
         console.log("data sp:", data);
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index?page="+ currentPage,
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/"+params.id+"?page="+ currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
