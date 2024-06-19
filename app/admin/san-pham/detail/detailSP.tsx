@@ -17,12 +17,6 @@ import CellSPCTBrowser from "./spct/cellSPCTBowser";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 export default function DetailSP({ id }) {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var todayNow = mm + "/" + dd + "/" + yyyy;
-  var todayPost = yyyy + "-" + mm + "-" + dd;
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
@@ -390,13 +384,6 @@ export default function DetailSP({ id }) {
                   ) : (
                     <HiCheckCircle className="text-green-600 " />
                   )}
-                </div>
-
-                <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="ngayTao" value="Ngày tạo" />
-                  </div>
-                  <TextInput id="ngayTao" value={todayNow} required readOnly />
                 </div>
                 <div>
                   <div className="mb-2 block">

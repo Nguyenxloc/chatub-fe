@@ -1,6 +1,5 @@
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
-import 'react-loading-skeleton/dist/skeleton.css'
 import {
   Button,
   Dropdown,
@@ -13,26 +12,22 @@ import {
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import CellSPCTMobile from "./spct/cellSPCTMobile";
 export default function DetailSPMobile({ id }) {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var todayNow = mm + "/" + dd + "/" + yyyy;
-  var todayPost = yyyy + "-" + mm + "-" + dd;
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page: number) => setCurrentPage(page);
-  const [idSP, setIdSP] = useState("");
+  const [sp, setSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
-  const [idChatLieu, setIdChatLieu] = useState("");
+  const [ChatLieu, setChatLieu] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -40,16 +35,42 @@ export default function DetailSPMobile({ id }) {
   const [giaBan, setGiaBan] = useState("");
   const [ngayTao, setNgayTao] = useState("");
   const [trangThai, setTrangThai] = useState(false);
+  const [hinhAnh1, setHinhAnh1] = useState();
+  const [hinhAnh2, setHinhAnh2] = useState();
+  const [hinhAnh3, setHinhAnh3] = useState();
   const [lstMauSac, setLstMauSac] = useState();
   const [lstKichThuoc, setLstKichThuoc] = useState();
   const [lstChatLieu, setLstChatLieu] = useState();
   const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
   const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
   const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
+  const [refKey, setRefkey] = useState(0);
+  const [lastPage, setLastPage] = useState(1);
+  const [idspctHold, setIdspctHold] = useState("");
   let validateOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
   }
+  function onCloseModalEdit() {
+    setOpenModalEdit(false);
+  }
+  function setSPCT(spct: object) {
+    setSP(spct.sp);
+    setMauSac(spct.mauSac);
+    setKichThuoc(spct.kichThuoc);
+    setChatLieu(scpt.chatLieu);
+    setNamBH(spct.namBH);
+    setMoTa(spct.moTa);
+    setSoLuongTon(spct.soLuongTon);
+    setGiaBan(spct.giaBan);
+    setGiaNhap(spct.giaNhap);
+    setNgayTao(spct.ngayTao);
+    setTrangThai(spct.trangThai);
+    setHinhAnh1(spct.hinhAnh1);
+    setHinhAnh2(spct.hinhAnh2);
+    setHinhAnh3(spct.hinhAnh3);
+  }
+
   const params = useParams<{ id: string }>();
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
@@ -80,8 +101,45 @@ export default function DetailSPMobile({ id }) {
             soLuongTon: soLuongTon,
             giaNhap: giaNhap,
             giaBan: giaBan,
-            ngayTao: todayPost,
-            trangThai: "0",
+            trangThai: "1",
+            hinhAnh1: "hinh anh 1",
+            hinhAnh2: "hinh anh 2",
+            hinhAnh3: "hinh anh 3 ",
+          }),
+        },
+      ).then((res) => console.log("test response: ", res));
+      console.log("idsp", params.id);
+      console.log("idmausac", mauSac.id);
+      console.log("idkichthuoc", kichThuoc.id);
+      setRefkey(1);
+      setCurrentPage(lastPage);
+    } else {
+      console.log("not do post");
+    }
+  }
+  function updateSPCT(idparam: string) {
+    if (validateOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/update/" +
+          idparam,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
+            namBH: namBH,
+            moTa: moTa,
+            soLuongTon: soLuongTon,
+            giaNhap: giaNhap,
+            giaBan: giaBan,
+            trangThai: "1",
+            hinhAnh1: "hinh anh 1",
+            hinhAnh2: "hinh anh 2",
+            hinhAnh3: "hinh anh 3 ",
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -89,6 +147,7 @@ export default function DetailSPMobile({ id }) {
       console.log("not do post");
     }
   }
+
   function fillUpCBO() {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
@@ -110,15 +169,15 @@ export default function DetailSPMobile({ id }) {
         console.log("data kich thuoc:", data);
       });
 
-    // fetch(
-    //   "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setLstChatLieu(data);
-    //     setIsLoadingLstCL(true);
-    //     console.log("data chat lieu:", data);
-    //   });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLstChatLieu(data);
+        setIsLoadingLstCL(true);
+        console.log("data chat lieu:", data);
+      });
   }
 
   useEffect(() => {
@@ -133,22 +192,34 @@ export default function DetailSPMobile({ id }) {
         console.log("data sp:", data);
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/index",
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
+        params.id +
+        "?page=" +
+        currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
         setDataSPCT(data);
         setIsLoadingSPCT(false);
+        setRefkey(0);
         console.log("data spct:", data);
       });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLastPage(Math.ceil(data / 20));
+        console.log("data:", Math.ceil(data / 20));
+      });
     fillUpCBO();
-  }, []);
-    return (
-      <div className="ms-2 bg-white">
-        <h2>this is the admin san pham page</h2>
-        <Navbarx />
-        {!isLoading 
-        ? ( <div className="z-0 w-full bg-white">
+  }, [refKey, currentPage]);
+  return (
+    <div className="ms-2 bg-white">
+      <h2>this is the admin san pham page</h2>
+      <Navbarx />
+      {!isLoading ? (
+        <div className="z-0 w-full bg-white">
           <div>
             <h2>
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
@@ -164,30 +235,48 @@ export default function DetailSPMobile({ id }) {
             </Button>
           </div>
           <div className="">
-            <div className="flex flex-cols mt-5">
-              <h2 className="w-1/12 flex items-center font-semibold text-xs">STT</h2>
-              <h2 className="w-2/12 flex items-center font-semibold text-xs">Chất liệu</h2>
-              <h2 className="w-2/12 flex items-center font-semibold text-xs">Màu sắc</h2>
-              <h2 className="w-2/12 flex items-center font-semibold text-xs">Kích thước</h2>
-              <h2 className="w-1/12 flex items-center font-semibold text-xs">SL</h2>
-              <h2 className="w-2/12 flex items-center font-semibold text-xs">Trạng thái</h2>
-              <h2 className="w-2/12 flex items-center font-semibold text-xs">Hành động</h2>
+            <div className="flex-cols mt-5 flex">
+              <h2 className="flex w-1/12 items-center text-xs font-semibold">
+                STT
+              </h2>
+              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+                Chất liệu
+              </h2>
+              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+                Màu sắc
+              </h2>
+              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+                Kích thước
+              </h2>
+              <h2 className="flex w-1/12 items-center text-xs font-semibold">
+                SL
+              </h2>
+              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+                Trạng thái
+              </h2>
+              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+                Hành động
+              </h2>
             </div>
-            <div className="space-y-5 mt-5">
-            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
-              ? dataSPCT.map((spctLocal, i) => (
-                  <CellSPCTMobile
-                    spct={spctLocal}
-                    lstKichThuoc={lstKichThuoc}
-                    lstMauSac={lstMauSac}
-                    indx={i}
-                  />
-                ))
-              : "Không có dữ liệu"}
+            <div className="mt-5 space-y-5">
+              {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+                ? dataSPCT.map((spctLocal, i) => (
+                    <div className="flex-cols flex">
+                      <CellSPCTMobile
+                        key={i}
+                        spct={spctLocal}
+                        lstKichThuoc={lstKichThuoc}
+                        lstMauSac={lstMauSac}
+                        indx={i}
+                      />
+                      <Button onClick={(spctLocal)=>{setSPCT(spctLocal)}}>Sửa</Button>
+                    </div>
+                  ))
+                : "Không có dữ liệu"}
             </div>
           </div>
-                      {/* modal add start */}
-                      <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+          {/* modal add start */}
+          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
@@ -206,7 +295,224 @@ export default function DetailSPMobile({ id }) {
                     placeholder=""
                     value={dataSanPham.ten + " " + dataSanPham.ma}
                     readOnly
+                  />
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="mauSac" value="Màu sắc" />
+                  </div>
+                  <Dropdown
+                    label={mauSac ? mauSac.ten : "Chọn màu sắc"}
+                    dismissOnClick={false}
+                  >
+                    {!isLoadingLstMS ? (
+                      lstMauSac.map((ms) => (
+                        <Dropdown.Item
+                          key={ms.id}
+                          value={ms}
+                          onClick={() => setMauSac(ms)}
+                        >
+                          {ms.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="kichThuoc" value="Kích thước" />
+                  </div>
+                  <Dropdown
+                    label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
+                    dismissOnClick={false}
+                  >
+                    {!isLoadingLstKT ? (
+                      lstKichThuoc.map((kt) => (
+                        <Dropdown.Item
+                          key={kt.id}
+                          value={kt}
+                          onClick={() => setKichThuoc(kt)}
+                        >
+                          {kt.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div>
+                {/* <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="idKichThuoc" value="Kích thước" />
+                  </div>
+                  <Dropdown
+                    label="Dropdown button"
+                    value={idChatLieu}
+                    onChange={() => setIdChatLieu(event.target.value)}
+                    dismissOnClick={false}
+                  >
+                    {!isLoadingLstMS ? (
+                      lstChatLieu.map((cl) => (
+                        <Dropdown.Item>{cl.ten}</Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div> */}
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="namBH" value="Năm bảo hành" />
+                  </div>
+                  <TextInput
+                    id="namBH"
+                    value={namBH}
+                    onChange={() => setNamBH(event.target.value)}
                     required
+                  />
+                  {!validatorNull(namBH) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="moTa" value="Mô tả" />
+                  </div>
+                  <TextInput
+                    id="moTa"
+                    value={moTa}
+                    onChange={() => setMoTa(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(moTa) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="soLuongTon" value="Số lượng tồn" />
+                  </div>
+                  <TextInput
+                    id="soLuongTon"
+                    value={soLuongTon}
+                    onChange={() => setSoLuongTon(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(soLuongTon) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="giaNhap" value="Giá nhập" />
+                  </div>
+                  <TextInput
+                    id="giaNhap"
+                    value={giaNhap}
+                    onChange={() => setGiaNhap(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(giaNhap) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="giaBan" value="Giá bán" />
+                  </div>
+                  <TextInput
+                    id="giaBan"
+                    value={giaBan}
+                    onChange={() => setGiaBan(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(giaBan) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                  </div>
+                  <TextInput id="hinhAnh" value={"pending...."} required />
+                  {!validatorNull("pending.....") ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="trangThai" value="Trạng thái" />
+                  </div>
+                  <ToggleSwitch
+                    checked={trangThai}
+                    label="Toggle me"
+                    onChange={setTrangThai}
+                  />
+                </div>
+                <div className="w-full">
+                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+          {/* modal add end */}
+          {/* modal edit start */}
+          <Modal
+            show={openModalEdit}
+            size="xl"
+            onClose={onCloseModalEdit}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body className="overflow-auto">
+              <div className="space-y-2">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                  Chỉnh sửa sản phẩm chi tiết
+                </h3>
+                <div>
+                  <div className="mb-2 block">
+                    <Label
+                      htmlFor="ma"
+                      value="Mã sản phẩm(fix server tự tăng)"
+                    />
+                  </div>
+                  <TextInput
+                    id="sp"
+                    placeholder=""
+                    value={sp.ten + " " +sp.ma}
+                    readOnly
                   />
                 </div>
 
@@ -375,7 +681,7 @@ export default function DetailSPMobile({ id }) {
                   <div className="mb-2 block">
                     <Label htmlFor="ngayTao" value="Ngày tạo" />
                   </div>
-                  <TextInput id="ngayTao" value={todayNow} required readOnly />
+                  <TextInput id="ngayTao" value={ngayTao} readOnly />
                 </div>
                 <div>
                   <div className="mb-2 block">
@@ -401,26 +707,28 @@ export default function DetailSPMobile({ id }) {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => updateSPCT(idspctHold)}>
+                    Lưu sản phẩm
+                  </Button>
                 </div>
               </div>
             </Modal.Body>
           </Modal>
-          {/* modal add end */}
+          {/* end modal spct */}
           <div className="flex overflow-x-auto sm:justify-center">
             <Pagination
               currentPage={currentPage}
-              totalPages={100}
+              totalPages={lastPage}
               onPageChange={onPageChange}
             />
           </div>
-        </div>) 
-        : (
-            <Skeleton count={20} />
-          )}
-        <div className="mt-5">
-          <Footerx />
         </div>
+      ) : (
+        <Skeleton count={20} />
+      )}
+      <div className="mt-5">
+        <Footerx />
       </div>
-    );
-  }
+    </div>
+  );
+}
