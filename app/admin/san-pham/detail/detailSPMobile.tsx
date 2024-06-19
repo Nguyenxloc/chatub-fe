@@ -24,6 +24,7 @@ export default function DetailSPMobile({ id }) {
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page: number) => setCurrentPage(page);
+  const [idSPCT, setIdSPCT] = useState("");
   const [sp, setSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
@@ -35,9 +36,9 @@ export default function DetailSPMobile({ id }) {
   const [giaBan, setGiaBan] = useState("");
   const [ngayTao, setNgayTao] = useState("");
   const [trangThai, setTrangThai] = useState(false);
-  const [hinhAnh1, setHinhAnh1] = useState();
-  const [hinhAnh2, setHinhAnh2] = useState();
-  const [hinhAnh3, setHinhAnh3] = useState();
+  const [hinhAnh1, setHinhAnh1] = useState("");
+  const [hinhAnh2, setHinhAnh2] = useState("");
+  const [hinhAnh3, setHinhAnh3] = useState("");
   const [lstMauSac, setLstMauSac] = useState();
   const [lstKichThuoc, setLstKichThuoc] = useState();
   const [lstChatLieu, setLstChatLieu] = useState();
@@ -54,11 +55,11 @@ export default function DetailSPMobile({ id }) {
   function onCloseModalEdit() {
     setOpenModalEdit(false);
   }
-  function setSPCT(spct: object) {
+  function onOpenModalEdit(spct: object) {
+    setIdSPCT(spct.id);
     setSP(spct.sp);
     setMauSac(spct.mauSac);
     setKichThuoc(spct.kichThuoc);
-    setChatLieu(scpt.chatLieu);
     setNamBH(spct.namBH);
     setMoTa(spct.moTa);
     setSoLuongTon(spct.soLuongTon);
@@ -69,6 +70,23 @@ export default function DetailSPMobile({ id }) {
     setHinhAnh1(spct.hinhAnh1);
     setHinhAnh2(spct.hinhAnh2);
     setHinhAnh3(spct.hinhAnh3);
+  }
+  
+  function resetState() {
+    setIdSPCT("");
+    setSP("");
+    setMauSac("");
+    setKichThuoc("");
+    setNamBH("");
+    setMoTa("");
+    setSoLuongTon("");
+    setGiaBan("");
+    setGiaNhap("");
+    setNgayTao("");
+    setTrangThai(false);
+    setHinhAnh1("");
+    setHinhAnh2("");
+    setHinhAnh3("");
   }
 
   const params = useParams<{ id: string }>();
@@ -141,8 +159,9 @@ export default function DetailSPMobile({ id }) {
             hinhAnh2: "hinh anh 2",
             hinhAnh3: "hinh anh 3 ",
           }),
+          
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => {console.log("test response: ", res);resetState();setRefkey(1)});
     } else {
       console.log("not do post");
     }
@@ -269,7 +288,7 @@ export default function DetailSPMobile({ id }) {
                         lstMauSac={lstMauSac}
                         indx={i}
                       />
-                      <Button onClick={(spctLocal)=>{setSPCT(spctLocal)}}>Sửa</Button>
+                      <Button onClick={()=>{setOpenModalEdit(true),onOpenModalEdit(spctLocal)}}>Sửa</Button>
                     </div>
                   ))
                 : "Không có dữ liệu"}
@@ -707,7 +726,7 @@ export default function DetailSPMobile({ id }) {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => updateSPCT(idspctHold)}>
+                  <Button onClick={() => {updateSPCT(idSPCT), onCloseModalEdit()}}>
                     Lưu sản phẩm
                   </Button>
                 </div>
