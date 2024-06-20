@@ -29,6 +29,10 @@ export default function DetailSPMobile() {
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
+  //need to add logical to it
+  const [mauSactxt, setMauSactxt] = useState("");
+  const [kichThuoctxt, setKichThuoctxt] = useState("");
+  const [chatLieutxt, setChatLieutxt] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -54,6 +58,7 @@ export default function DetailSPMobile() {
   }
   function onCloseModalEdit() {
     setOpenModalEdit(false);
+    resetState();
   }
   function onOpenModalEdit(spct: object) {
     setIdSPCT(spct.id);
@@ -339,7 +344,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label={mauSac ? mauSac.ten : "Chọn màu sắc"}
+                    label={mauSac ? mauSac.ten : "Màu sắc"}
                     dismissOnClick={false}
                     style={{width:'180px'}}
                   >
@@ -357,7 +362,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="msinput"
+                    value={mauSactxt}
+                    placeholder="Nhập tay màu sắc mới"
+                    onChange={() => setMauSactxt(event.target.value)}
+                    required
+                  />
                   </div>
                 </div>
                 <div>
@@ -366,7 +377,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
+                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
                     dismissOnClick={false}
                     style={{width:'180px'}}
                   >
@@ -384,7 +395,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="ktinput"
+                    value={kichThuoctxt}
+                    placeholder="Nhập tay kích thước mới"
+                    onChange={() => setKichThuoctxt(event.target.value)}
+                    required
+                  />
                   </div>
                 </div>
                 <div>
@@ -393,7 +410,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Chọn kích thước"}
+                    label={chatLieu ? chatLieu.ten : "Kích thước"}
                     dismissOnClick={false}
                     style={{width:'180px'}}
                   >
@@ -411,7 +428,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="clinput"
+                    value={chatLieutxt}
+                    placeholder="Nhập tay chất liệu mới"
+                    onChange={() => setChatLieutxt(event.target.value)}
+                    required
+                  />
                   </div>
                 </div>
                 <div>
@@ -510,7 +533,7 @@ export default function DetailSPMobile() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
+                    <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
                   </div>
                   <TextInput id="hinhAnh1add" value={hinhAnh1} required />
                   {!validatorNull(hinhAnh1) ? (
@@ -598,7 +621,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5"> 
                   <Dropdown
-                    label={mauSac ? mauSac.ten : "Chọn màu sắc"}
+                    label={mauSac ? mauSac.ten : "Màu sắc"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -616,7 +639,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="msinputedit"
+                    value={mauSactxt}
+                    placeholder="Nhập tay màu sắc mới"
+                    onChange={() => setMauSactxt(event.target.value)}
+                    required
+                  />
                   </div>
                 </div>
 
@@ -626,7 +655,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
+                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -644,7 +673,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="ktinputedit"
+                    value={kichThuoctxt}
+                    placeholder="Nhập tay kích thước mới"
+                    onChange={() => setKichThuoctxt(event.target.value)}
+                    required
+                  />
                   </div>
                 </div>
                 <div>
@@ -653,7 +688,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Chọn chất liệu"}
+                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -671,7 +706,13 @@ export default function DetailSPMobile() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                  <Button>Thêm</Button>
+                  <TextInput
+                    id="clinputedit"
+                    value={chatLieutxt}
+                    placeholder="Nhập tay chất liệu mới"
+                    onChange={() => setChatLieutxt(event.target.value)}
+                    required
+                  /><Button>Thêm</Button>
                   </div>
                 </div>
                 <div>
