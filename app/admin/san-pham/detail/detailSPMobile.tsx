@@ -224,7 +224,7 @@ export default function DetailSPMobile({ id }) {
         console.log("data spct:", data);
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count",
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/"+params.id,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -254,7 +254,7 @@ export default function DetailSPMobile({ id }) {
             </Button>
           </div>
           <div className="">
-            <div className="flex-cols mt-5 flex">
+            <div className="flex-cols mt-5 flex w-screen">
               <h2 className="flex w-1/12 items-center text-xs font-semibold">
                 STT
               </h2>
@@ -273,22 +273,23 @@ export default function DetailSPMobile({ id }) {
               <h2 className="flex w-2/12 items-center text-xs font-semibold">
                 Trạng thái
               </h2>
-              <h2 className="flex w-2/12 items-center text-xs font-semibold">
-                Hành động
-              </h2>
             </div>
             <div className="mt-5 space-y-5">
               {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
                 ? dataSPCT.map((spctLocal, i) => (
                     <div className="flex-cols flex">
+                      <div className="w-10/12 border-b-2 flex items-center">
                       <CellSPCTMobile
                         key={i}
                         spct={spctLocal}
                         lstKichThuoc={lstKichThuoc}
                         lstMauSac={lstMauSac}
                         indx={i}
-                      />
-                      <Button onClick={()=>{setOpenModalEdit(true),onOpenModalEdit(spctLocal)}}>Sửa</Button>
+                      />                        
+                      </div>
+                      <div className="flex items-center">
+                      <Button  className="h-[30px] flex items-center" onClick={()=>{setOpenModalEdit(true),onOpenModalEdit(spctLocal)}}>Sửa</Button>  
+                      </div>
                     </div>
                   ))
                 : "Không có dữ liệu"}

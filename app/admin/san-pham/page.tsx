@@ -1,4 +1,4 @@
-"use client";
+
 import { BrowserView, MobileView } from "react-device-detect";
 import SanPham from "./sanPham";
 import SanPhamMobile from "./sanPhamMobile";
