@@ -139,9 +139,9 @@ export default function Page() {
   return (
     <div>
       <BrowserView>
-        <DetailSP idPara={params.id}/>
+        <DetailSP/>
       </BrowserView>
       <MobileView>
-        <DetailSPMobile id={params.id}/>
+        <DetailSPMobile/>
       </MobileView>
      </div>)}

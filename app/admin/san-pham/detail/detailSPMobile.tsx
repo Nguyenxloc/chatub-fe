@@ -15,7 +15,7 @@ import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import CellSPCTMobile from "./spct/cellSPCTMobile";
-export default function DetailSPMobile({ id }) {
+export default function DetailSPMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
@@ -28,7 +28,7 @@ export default function DetailSPMobile({ id }) {
   const [sp, setSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
-  const [ChatLieu, setChatLieu] = useState("");
+  const [chatLieu, setChatLieu] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -42,9 +42,9 @@ export default function DetailSPMobile({ id }) {
   const [lstMauSac, setLstMauSac] = useState();
   const [lstKichThuoc, setLstKichThuoc] = useState();
   const [lstChatLieu, setLstChatLieu] = useState();
-  const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
-  const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
-  const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
+  const [isLoadingLstMauSac, setIsLoadingLstMauSac] = useState(true);
+  const [isLoadingLstKichThuoc, setIsLoadingLstKichThuoc] = useState(true);
+  const [isLoadingLstChatLieu, setIsLoadingLstChatLieu] = useState(true);
   const [refKey, setRefkey] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [idspctHold, setIdspctHold] = useState("");
@@ -71,7 +71,7 @@ export default function DetailSPMobile({ id }) {
     setHinhAnh2(spct.hinhAnh2);
     setHinhAnh3(spct.hinhAnh3);
   }
-  
+
   function resetState() {
     setIdSPCT("");
     setSP("");
@@ -120,9 +120,9 @@ export default function DetailSPMobile({ id }) {
             giaNhap: giaNhap,
             giaBan: giaBan,
             trangThai: "1",
-            hinhAnh1: "hinh anh 1",
-            hinhAnh2: "hinh anh 2",
-            hinhAnh3: "hinh anh 3 ",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -155,13 +155,16 @@ export default function DetailSPMobile({ id }) {
             giaNhap: giaNhap,
             giaBan: giaBan,
             trangThai: "1",
-            hinhAnh1: "hinh anh 1",
-            hinhAnh2: "hinh anh 2",
-            hinhAnh3: "hinh anh 3 ",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
           }),
-          
         },
-      ).then((res) => {console.log("test response: ", res);resetState();setRefkey(1)});
+      ).then((res) => {
+        console.log("test response: ", res);
+        resetState();
+        setRefkey(1);
+      });
     } else {
       console.log("not do post");
     }
@@ -174,7 +177,7 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setLstMauSac(data);
-        setIsLoadingLstMS(false);
+        setIsLoadingLstMauSac(false);
         console.log("data lst mau sac :", data);
       });
 
@@ -184,7 +187,7 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setLstKichThuoc(data);
-        setIsLoadingLstKT(false);
+        setIsLoadingLstKichThuoc(false);
         console.log("data kich thuoc:", data);
       });
 
@@ -194,7 +197,7 @@ export default function DetailSPMobile({ id }) {
       .then((res) => res.json())
       .then((data) => {
         setLstChatLieu(data);
-        setIsLoadingLstCL(true);
+        setIsLoadingLstChatLieu(false);
         console.log("data chat lieu:", data);
       });
   }
@@ -224,7 +227,8 @@ export default function DetailSPMobile({ id }) {
         console.log("data spct:", data);
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/"+params.id,
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+        params.id,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -239,56 +243,62 @@ export default function DetailSPMobile({ id }) {
       <Navbarx />
       {!isLoading ? (
         <div className="z-0 w-full bg-white">
-          <div>
-            <h2>
-              Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
-            </h2>
-          </div>
           <div className="flex flex-row-reverse">
             <Button
+              className="me-5"
               gradientMonochrome="info"
               onClick={() => setOpenModalAdd(true)}
             >
               <HiFolderAdd size={20} />
-              Thêm sản phẩm
+              Thêm
             </Button>
           </div>
-          <div className="">
+          <div className="ms-5">
+            <h2 className="font-semibold">
+              Sản phẩm: {dataSanPham.ten}-{dataSanPham.ma}
+            </h2>
             <div className="flex-cols mt-5 flex w-screen">
               <h2 className="flex w-1/12 items-center text-xs font-semibold">
                 STT
               </h2>
-              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+              <h2 className="flex w-1/12 items-center text-xs font-semibold">
                 Chất liệu
               </h2>
-              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
                 Màu sắc
               </h2>
-              <h2 className="flex w-2/12 items-center text-xs font-semibold">
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
                 Kích thước
               </h2>
-              <h2 className="flex w-1/12 items-center text-xs font-semibold">
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
                 SL
               </h2>
-              <h2 className="flex w-2/12 items-center text-xs font-semibold">
-                Trạng thái
+              <h2 className="flex w-1/12  items-center text-xs font-semibold">
+                Status
               </h2>
             </div>
             <div className="mt-5 space-y-5">
-              {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+              {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
                 ? dataSPCT.map((spctLocal, i) => (
                     <div className="flex-cols flex">
-                      <div className="w-10/12 border-b-2 flex items-center">
-                      <CellSPCTMobile
-                        key={i}
-                        spct={spctLocal}
-                        lstKichThuoc={lstKichThuoc}
-                        lstMauSac={lstMauSac}
-                        indx={i}
-                      />                        
+                      <div className="flex w-8/12 items-center border-b-2">
+                        <CellSPCTMobile
+                          key={i}
+                          spct={spctLocal}
+                          lstKichThuoc={lstKichThuoc}
+                          lstMauSac={lstMauSac}
+                          indx={i}
+                        />
                       </div>
-                      <div className="flex items-center">
-                      <Button  className="h-[30px] flex items-center" onClick={()=>{setOpenModalEdit(true),onOpenModalEdit(spctLocal)}}>Sửa</Button>  
+                      <div className="flex items-center border-b-2">
+                        <Button
+                          className="ms-3 flex h-[30px] items-center"
+                          onClick={() => {
+                            setOpenModalEdit(true), onOpenModalEdit(spctLocal);
+                          }}
+                        >
+                          Sửa
+                        </Button>
                       </div>
                     </div>
                   ))
@@ -296,7 +306,12 @@ export default function DetailSPMobile({ id }) {
             </div>
           </div>
           {/* modal add start */}
-          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
+          <Modal
+            className="w-screen"
+            show={openModalAdd}
+            onClose={onCloseModalAdd}
+            popup
+          >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
               <div className="space-y-2">
@@ -307,7 +322,7 @@ export default function DetailSPMobile({ id }) {
                   <div className="mb-2 block">
                     <Label
                       htmlFor="ma"
-                      value="Mã sản phẩm(fix server tự tăng)"
+                      value="Tên sản phẩm"
                     />
                   </div>
                   <TextInput
@@ -322,11 +337,13 @@ export default function DetailSPMobile({ id }) {
                   <div className="mb-2 block">
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
+                  <div className="flex flex-cols gap-5">
                   <Dropdown
                     label={mauSac ? mauSac.ten : "Chọn màu sắc"}
                     dismissOnClick={false}
+                    style={{width:'180px'}}
                   >
-                    {!isLoadingLstMS ? (
+                    {!isLoadingLstMauSac ? (
                       lstMauSac.map((ms) => (
                         <Dropdown.Item
                           key={ms.id}
@@ -340,17 +357,20 @@ export default function DetailSPMobile({ id }) {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
+                  <Button>Thêm</Button>
+                  </div>
                 </div>
-
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
+                  <div className="flex flex-cols gap-5">
                   <Dropdown
                     label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
                     dismissOnClick={false}
+                    style={{width:'180px'}}
                   >
-                    {!isLoadingLstKT ? (
+                    {!isLoadingLstKichThuoc ? (
                       lstKichThuoc.map((kt) => (
                         <Dropdown.Item
                           key={kt.id}
@@ -364,26 +384,36 @@ export default function DetailSPMobile({ id }) {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                </div>
-                {/* <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
+                  <Button>Thêm</Button>
                   </div>
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="idKichThuoc" value="Chất liệu" />
+                  </div>
+                  <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label="Dropdown button"
-                    value={idChatLieu}
-                    onChange={() => setIdChatLieu(event.target.value)}
+                    label={chatLieu ? chatLieu.ten : "Chọn kích thước"}
                     dismissOnClick={false}
+                    style={{width:'180px'}}
                   >
-                    {!isLoadingLstMS ? (
+                    {!isLoadingLstChatLieu ? (
                       lstChatLieu.map((cl) => (
-                        <Dropdown.Item>{cl.ten}</Dropdown.Item>
+                        <Dropdown.Item
+                          key={cl.id}
+                          value={cl}
+                          onClick={() => setChatLieu(cl)}
+                        >
+                          {cl.ten}
+                        </Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                </div> */}
+                  <Button>Thêm</Button>
+                  </div>
+                </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="namBH" value="Năm bảo hành" />
@@ -480,10 +510,36 @@ export default function DetailSPMobile({ id }) {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                    <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput id="hinhAnh" value={"pending...."} required />
-                  {!validatorNull("pending.....") ? (
+                  <TextInput id="hinhAnh1add" value={hinhAnh1} required />
+                  {!validatorNull(hinhAnh1) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh2add" value="Link hình ảnh 2" />
+                  </div>
+                  <TextInput id="hinhAnh2add" value={hinhAnh2} required />
+                  {!validatorNull(hinhAnh2) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh3add" value="Link hình ảnh 3" />
+                  </div>
+                  <TextInput id="hinhAnh3add" value={hinhAnh3} required />
+                  {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -511,7 +567,7 @@ export default function DetailSPMobile({ id }) {
           {/* modal edit start */}
           <Modal
             show={openModalEdit}
-            size="xl"
+            className="w-screen"
             onClose={onCloseModalEdit}
             popup
           >
@@ -531,7 +587,7 @@ export default function DetailSPMobile({ id }) {
                   <TextInput
                     id="sp"
                     placeholder=""
-                    value={sp.ten + " " +sp.ma}
+                    value={sp.ten + " " + sp.ma}
                     readOnly
                   />
                 </div>
@@ -540,11 +596,13 @@ export default function DetailSPMobile({ id }) {
                   <div className="mb-2 block">
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
+                  <div className="flex flex-cols gap-5"> 
                   <Dropdown
                     label={mauSac ? mauSac.ten : "Chọn màu sắc"}
                     dismissOnClick={false}
+                    style={{ width: "180px" }}
                   >
-                    {!isLoadingLstMS ? (
+                    {!isLoadingLstMauSac ? (
                       lstMauSac.map((ms) => (
                         <Dropdown.Item
                           key={ms.id}
@@ -558,17 +616,21 @@ export default function DetailSPMobile({ id }) {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
+                  <Button>Thêm</Button>
+                  </div>
                 </div>
 
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
+                  <div className="flex flex-cols gap-5">
                   <Dropdown
                     label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
                     dismissOnClick={false}
+                    style={{ width: "180px" }}
                   >
-                    {!isLoadingLstKT ? (
+                    {!isLoadingLstKichThuoc ? (
                       lstKichThuoc.map((kt) => (
                         <Dropdown.Item
                           key={kt.id}
@@ -582,26 +644,36 @@ export default function DetailSPMobile({ id }) {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                </div>
-                {/* <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
+                  <Button>Thêm</Button>
                   </div>
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="idChatLieu" value="Chất liệu" />
+                  </div>
+                  <div className="flex flex-cols gap-5">
                   <Dropdown
-                    label="Dropdown button"
-                    value={idChatLieu}
-                    onChange={() => setIdChatLieu(event.target.value)}
+                    label={chatLieu ? chatLieu.ten : "Chọn chất liệu"}
                     dismissOnClick={false}
+                    style={{ width: "180px" }}
                   >
-                    {!isLoadingLstMS ? (
+                    {!isLoadingLstChatLieu ? (
                       lstChatLieu.map((cl) => (
-                        <Dropdown.Item>{cl.ten}</Dropdown.Item>
+                        <Dropdown.Item
+                          key={cl.id}
+                          value={cl}
+                          onClick={() => setChatLieu(cl)}
+                        >
+                          {cl.ten}
+                        </Dropdown.Item>
                       ))
                     ) : (
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
-                </div> */}
+                  <Button>Thêm</Button>
+                  </div>
+                </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="namBH" value="Năm bảo hành" />
@@ -620,7 +692,6 @@ export default function DetailSPMobile({ id }) {
                     <HiCheckCircle className="text-green-600 " />
                   )}
                 </div>
-
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="moTa" value="Mô tả" />
@@ -705,10 +776,36 @@ export default function DetailSPMobile({ id }) {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                    <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput id="hinhAnh" value={"pending...."} required />
-                  {!validatorNull("pending.....") ? (
+                  <TextInput id="hinhAnh1" value={hinhAnh1} required />
+                  {!validatorNull(hinhAnh1) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh2" value="Link hình ảnh 2" />
+                  </div>
+                  <TextInput id="hinhAnh2" value={hinhAnh2} required />
+                  {!validatorNull(hinhAnh2) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnh3" value="Link hình ảnh 3" />
+                  </div>
+                  <TextInput id="hinhAnh3" value={hinhAnh3} required />
+                  {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -727,7 +824,11 @@ export default function DetailSPMobile({ id }) {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => {updateSPCT(idSPCT), onCloseModalEdit()}}>
+                  <Button
+                    onClick={() => {
+                      updateSPCT(idSPCT), onCloseModalEdit();
+                    }}
+                  >
                     Lưu sản phẩm
                   </Button>
                 </div>
@@ -735,7 +836,7 @@ export default function DetailSPMobile({ id }) {
             </Modal.Body>
           </Modal>
           {/* end modal spct */}
-          <div className="flex overflow-x-auto sm:justify-center">
+          <div className="ms-4 mt-5 flex overflow-x-auto sm:justify-center">
             <Pagination
               currentPage={currentPage}
               totalPages={lastPage}

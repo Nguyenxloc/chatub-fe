@@ -16,7 +16,7 @@ import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import CellSPCTBrowser from "./spct/cellSPCTBowser";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
-export default function DetailSP({ id }) {
+export default function DetailSP() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
