@@ -2,6 +2,7 @@ import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
   Button,
+  Checkbox,
   Dropdown,
   Label,
   Modal,
@@ -18,6 +19,7 @@ import CellSPCTMobile from "./spct/cellSPCTMobile";
 export default function DetailSPMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openModalAddCbo, setOpenModalAddCbo] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,10 +31,6 @@ export default function DetailSPMobile() {
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
-  //need to add logical to it
-  const [mauSactxt, setMauSactxt] = useState("");
-  const [kichThuoctxt, setKichThuoctxt] = useState("");
-  const [chatLieutxt, setChatLieutxt] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -60,11 +58,12 @@ export default function DetailSPMobile() {
     setOpenModalEdit(false);
     resetState();
   }
+  function onCloseModalAddCbo(){
+    setOpenModalAddCbo(false); 
+  }
   function onOpenModalEdit(spct: object) {
     setIdSPCT(spct.id);
     setSP(spct.sp);
-    setMauSac(spct.mauSac);
-    setKichThuoc(spct.kichThuoc);
     setNamBH(spct.namBH);
     setMoTa(spct.moTa);
     setSoLuongTon(spct.soLuongTon);
@@ -75,6 +74,9 @@ export default function DetailSPMobile() {
     setHinhAnh1(spct.hinhAnh1);
     setHinhAnh2(spct.hinhAnh2);
     setHinhAnh3(spct.hinhAnh3);
+    setMauSac(spct.mauSac);
+    setKichThuoc(spct.kichThuoc);
+    setChatLieu(spct.chatLieu);
   }
 
   function resetState() {
@@ -258,6 +260,7 @@ export default function DetailSPMobile() {
               Thêm
             </Button>
           </div>
+
           <div className="ms-5">
             <h2 className="font-semibold">
               Sản phẩm: {dataSanPham.ten}-{dataSanPham.ma}
@@ -325,10 +328,7 @@ export default function DetailSPMobile() {
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label
-                      htmlFor="ma"
-                      value="Tên sản phẩm"
-                    />
+                    <Label htmlFor="ma" value="Tên sản phẩm" />
                   </div>
                   <TextInput
                     id="idSP"
@@ -342,99 +342,81 @@ export default function DetailSPMobile() {
                   <div className="mb-2 block">
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
-                  <div className="flex flex-cols gap-5">
-                  <Dropdown
-                    label={mauSac ? mauSac.ten : "Màu sắc"}
-                    dismissOnClick={false}
-                    style={{width:'180px'}}
-                  >
-                    {!isLoadingLstMauSac ? (
-                      lstMauSac.map((ms) => (
-                        <Dropdown.Item
-                          key={ms.id}
-                          value={ms}
-                          onClick={() => setMauSac(ms)}
-                        >
-                          {ms.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="msinput"
-                    value={mauSactxt}
-                    placeholder="Nhập tay màu sắc mới"
-                    onChange={() => setMauSactxt(event.target.value)}
-                    required
-                  />
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={mauSac ? mauSac.ten : "Màu sắc"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstMauSac ? (
+                        lstMauSac.map((ms) => (
+                          <Dropdown.Item
+                            key={ms.id}
+                            value={ms}
+                            onClick={() => setMauSac(ms)}
+                          >
+                            {ms.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
-                  <div className="flex flex-cols gap-5">
-                  <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
-                    dismissOnClick={false}
-                    style={{width:'180px'}}
-                  >
-                    {!isLoadingLstKichThuoc ? (
-                      lstKichThuoc.map((kt) => (
-                        <Dropdown.Item
-                          key={kt.id}
-                          value={kt}
-                          onClick={() => setKichThuoc(kt)}
-                        >
-                          {kt.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="ktinput"
-                    value={kichThuoctxt}
-                    placeholder="Nhập tay kích thước mới"
-                    onChange={() => setKichThuoctxt(event.target.value)}
-                    required
-                  />
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={kichThuoc ? kichThuoc.ten : "Kích thước"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstKichThuoc ? (
+                        lstKichThuoc.map((kt) => (
+                          <Dropdown.Item
+                            key={kt.id}
+                            value={kt}
+                            onClick={() => setKichThuoc(kt)}
+                          >
+                            {kt.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button>Thêm</Button>
                   </div>
                 </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="idKichThuoc" value="Chất liệu" />
                   </div>
-                  <div className="flex flex-cols gap-5">
-                  <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Kích thước"}
-                    dismissOnClick={false}
-                    style={{width:'180px'}}
-                  >
-                    {!isLoadingLstChatLieu ? (
-                      lstChatLieu.map((cl) => (
-                        <Dropdown.Item
-                          key={cl.id}
-                          value={cl}
-                          onClick={() => setChatLieu(cl)}
-                        >
-                          {cl.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="clinput"
-                    value={chatLieutxt}
-                    placeholder="Nhập tay chất liệu mới"
-                    onChange={() => setChatLieutxt(event.target.value)}
-                    required
-                  />
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={chatLieu ? chatLieu.ten : "Kích thước"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstChatLieu ? (
+                        lstChatLieu.map((cl) => (
+                          <Dropdown.Item
+                            key={cl.id}
+                            value={cl}
+                            onClick={() => setChatLieu(cl)}
+                          >
+                            {cl.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -619,33 +601,27 @@ export default function DetailSPMobile() {
                   <div className="mb-2 block">
                     <Label htmlFor="mauSac" value="Màu sắc" />
                   </div>
-                  <div className="flex flex-cols gap-5"> 
-                  <Dropdown
-                    label={mauSac ? mauSac.ten : "Màu sắc"}
-                    dismissOnClick={false}
-                    style={{ width: "180px" }}
-                  >
-                    {!isLoadingLstMauSac ? (
-                      lstMauSac.map((ms) => (
-                        <Dropdown.Item
-                          key={ms.id}
-                          value={ms}
-                          onClick={() => setMauSac(ms)}
-                        >
-                          {ms.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="msinputedit"
-                    value={mauSactxt}
-                    placeholder="Nhập tay màu sắc mới"
-                    onChange={() => setMauSactxt(event.target.value)}
-                    required
-                  />
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={mauSac ? mauSac.ten : "Màu sắc"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstMauSac ? (
+                        lstMauSac.map((ms) => (
+                          <Dropdown.Item
+                            key={ms.id}
+                            value={ms}
+                            onClick={() => setMauSac(ms)}
+                          >
+                            {ms.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button>Thêm</Button>
                   </div>
                 </div>
 
@@ -653,66 +629,54 @@ export default function DetailSPMobile() {
                   <div className="mb-2 block">
                     <Label htmlFor="kichThuoc" value="Kích thước" />
                   </div>
-                  <div className="flex flex-cols gap-5">
-                  <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
-                    dismissOnClick={false}
-                    style={{ width: "180px" }}
-                  >
-                    {!isLoadingLstKichThuoc ? (
-                      lstKichThuoc.map((kt) => (
-                        <Dropdown.Item
-                          key={kt.id}
-                          value={kt}
-                          onClick={() => setKichThuoc(kt)}
-                        >
-                          {kt.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="ktinputedit"
-                    value={kichThuoctxt}
-                    placeholder="Nhập tay kích thước mới"
-                    onChange={() => setKichThuoctxt(event.target.value)}
-                    required
-                  />
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={kichThuoc ? kichThuoc.ten : "Kích thước"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstKichThuoc ? (
+                        lstKichThuoc.map((kt) => (
+                          <Dropdown.Item
+                            key={kt.id}
+                            value={kt}
+                            onClick={() => setKichThuoc(kt)}
+                          >
+                            {kt.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button>Thêm</Button>
                   </div>
                 </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="idChatLieu" value="Chất liệu" />
                   </div>
-                  <div className="flex flex-cols gap-5">
-                  <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
-                    dismissOnClick={false}
-                    style={{ width: "180px" }}
-                  >
-                    {!isLoadingLstChatLieu ? (
-                      lstChatLieu.map((cl) => (
-                        <Dropdown.Item
-                          key={cl.id}
-                          value={cl}
-                          onClick={() => setChatLieu(cl)}
-                        >
-                          {cl.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                  <TextInput
-                    id="clinputedit"
-                    value={chatLieutxt}
-                    placeholder="Nhập tay chất liệu mới"
-                    onChange={() => setChatLieutxt(event.target.value)}
-                    required
-                  /><Button>Thêm</Button>
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={chatLieu ? chatLieu.ten : "Chất liệu"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstChatLieu ? (
+                        lstChatLieu.map((cl) => (
+                          <Dropdown.Item
+                            key={cl.id}
+                            value={cl}
+                            onClick={() => setChatLieu(cl)}
+                          >
+                            {cl.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -877,6 +841,66 @@ export default function DetailSPMobile() {
             </Modal.Body>
           </Modal>
           {/* end modal spct */}
+          {/*start modal add cbo */}
+          <Modal
+            
+            show={openModalAddCbo}
+            className="w-screen"
+            onClose={onCloseModalAddCbo}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                  Sign in to our platform
+                </h3>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="email" value="Your email" />
+                  </div>
+                  <TextInput
+                    id="email"
+                    placeholder="name@company.com"
+                    // value={email}
+                    // onChange={(event) => setEmail(event.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="password" value="Your password" />
+                  </div>
+                  <TextInput id="password" type="password" required />
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-2">
+                    <Checkbox id="remember" />
+                    <Label htmlFor="remember">Remember me</Label>
+                  </div>
+                  <a
+                    href="#"
+                    className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
+                  >
+                    Lost Password?
+                  </a>
+                </div>
+                <div className="w-full">
+                  <Button>Log in to your account</Button>
+                </div>
+                <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
+                  Not registered?&nbsp;
+                  <a
+                    href="#"
+                    className="text-cyan-700 hover:underline dark:text-cyan-500"
+                  >
+                    Create account
+                  </a>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+          {/* end modal add cbo */}
           <div className="ms-4 mt-5 flex overflow-x-auto sm:justify-center">
             <Pagination
               currentPage={currentPage}
