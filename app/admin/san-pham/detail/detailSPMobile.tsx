@@ -55,6 +55,7 @@ export default function DetailSPMobile() {
   const [refMauSac, setRefMauSac] = useState(0);
   const [refKichThuoc, setRefKichThuoc] = useState(0);
   const [refChatLieu, setRefChatLieu] = useState(0);
+  const [refSP, setRefSP] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   let validateOK = false;
@@ -350,17 +351,27 @@ export default function DetailSPMobile() {
       });
   }
 
-  useEffect(() => {
+  useEffect(()=>{
+    let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
         params.id,
     )
       .then((res) => res.json())
       .then((data) => {
-        setDataSanPham(data);
-        setIsLoading(false);
-        console.log("data sp:", data);
+        if(isMounted){
+          setDataSanPham(data);
+          setIsLoading(false);
+          console.log("data sp:", data);          
+        }
       });
+      return ()=>{
+        isMounted = false;
+      };
+  },[refSP]);
+
+  useEffect(() => {
+    let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
         params.id +
@@ -369,10 +380,12 @@ export default function DetailSPMobile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setDataSPCT(data);
-        setIsLoadingSPCT(false);
-        setRefkey(0);
-        console.log("data spct:", data);
+        if(isMounted){
+          setDataSPCT(data);
+          setIsLoadingSPCT(false);
+          setRefkey(0);
+          console.log("data spct:", data);          
+        }
       });
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
@@ -380,11 +393,69 @@ export default function DetailSPMobile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setLastPage(Math.ceil(data / 20));
-        console.log("data:", Math.ceil(data / 20));
+        if(isMounted){
+          setLastPage(Math.ceil(data / 20));
+          console.log("data:", Math.ceil(data / 20));          
+        }
       });
-    fillUpCBO();
+      return ()=>{
+        isMounted = false;
+      }
   }, [refKey, currentPage]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch("http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLstMauSac(data);
+          setIsLoadingLstMauSac(false);
+          console.log("data lst mau sac :", data);
+        }
+      });
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [refMauSac]);
+
+  useEffect(()=>{
+    let isMounted = true
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/kich-thuoc/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if(isMounted){
+          setLstKichThuoc(data);
+          setIsLoadingLstKichThuoc(false);
+          console.log("data kich thuoc:", data);
+        }
+      });
+      return ()=>{
+        isMounted = false;
+      };
+  },[refKichThuoc]);
+
+  useEffect(()=>{
+    let isMounted = true;
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if(isMounted){
+          setLstChatLieu(data);
+          setIsLoadingLstChatLieu(false);
+          console.log("data chat lieu:", data); 
+        }
+      });
+      return () =>{
+        isMounted = false;
+      }
+  },[refChatLieu]);
+
   return (
     <div className="ms-2 bg-white">
       <h2>this is the admin san pham page</h2>
