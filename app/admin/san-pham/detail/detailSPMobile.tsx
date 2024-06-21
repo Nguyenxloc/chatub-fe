@@ -19,7 +19,9 @@ import CellSPCTMobile from "./spct/cellSPCTMobile";
 export default function DetailSPMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
-  const [openModalAddCbo, setOpenModalAddCbo] = useState(false);
+  const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
+  const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] = useState(false);
+  const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,8 +60,14 @@ export default function DetailSPMobile() {
     setOpenModalEdit(false);
     resetState();
   }
-  function onCloseModalAddCbo(){
-    setOpenModalAddCbo(false); 
+  function onCloseModalAddCboMauSac(){
+    setOpenModalAddCboMauSac(false); 
+  }
+  function onCloseModalAddCboKichThuoc(){
+    setOpenModalAddCboKichThuoc(false); 
+  }
+  function onCloseModalAddCboChatLieu(){
+    setOpenModalAddCboChatLieu(false); 
   }
   function onOpenModalEdit(spct: object) {
     setIdSPCT(spct.id);
@@ -315,7 +323,7 @@ export default function DetailSPMobile() {
           </div>
           {/* modal add start */}
           <Modal
-            className="w-screen"
+            className="w-screen "
             show={openModalAdd}
             onClose={onCloseModalAdd}
             popup
@@ -389,7 +397,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -416,7 +424,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -621,7 +629,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
 
@@ -649,7 +657,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -676,7 +684,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -841,11 +849,10 @@ export default function DetailSPMobile() {
             </Modal.Body>
           </Modal>
           {/* end modal spct */}
-          {/*start modal add cbo */}
+          {/*start modal add cbo mau sac */}
           <Modal
-            
-            show={openModalAddCbo}
             className="w-screen"
+            show={openModalAddCbo}
             onClose={onCloseModalAddCbo}
             popup
           >
@@ -853,49 +860,83 @@ export default function DetailSPMobile() {
             <Modal.Body>
               <div className="space-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Sign in to our platform
+                  Thêm mới
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="email" value="Your email" />
+                    <Label htmlFor="email" value="Tên" />
                   </div>
                   <TextInput
-                    id="email"
-                    placeholder="name@company.com"
+                    id="ten"
                     // value={email}
                     // onChange={(event) => setEmail(event.target.value)}
                     required
                   />
                 </div>
+                <div className="w-full">
+                  <Button>Lưu</Button>
+                </div>
+              </div>
+            </Modal.Body>
+          </Modal>
+          {/* end modal add cbo */}
+           {/*start modal add cbo kich thuoc*/}
+           <Modal
+            className="w-screen"
+            show={openModalAddCbo}
+            onClose={onCloseModalAddCbo}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                  Thêm mới
+                </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="password" value="Your password" />
+                    <Label htmlFor="email" value="Tên" />
                   </div>
-                  <TextInput id="password" type="password" required />
-                </div>
-                <div className="flex justify-between">
-                  <div className="flex items-center gap-2">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember">Remember me</Label>
-                  </div>
-                  <a
-                    href="#"
-                    className="text-sm text-cyan-700 hover:underline dark:text-cyan-500"
-                  >
-                    Lost Password?
-                  </a>
+                  <TextInput
+                    id="ten"
+                    // value={email}
+                    // onChange={(event) => setEmail(event.target.value)}
+                    required
+                  />
                 </div>
                 <div className="w-full">
-                  <Button>Log in to your account</Button>
+                  <Button>Lưu</Button>
                 </div>
-                <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-                  Not registered?&nbsp;
-                  <a
-                    href="#"
-                    className="text-cyan-700 hover:underline dark:text-cyan-500"
-                  >
-                    Create account
-                  </a>
+              </div>
+            </Modal.Body>
+          </Modal>
+          {/* end modal add cbo */}
+           {/*start modal add cbo chat lieu */}
+           <Modal
+            className="w-screen"
+            show={openModalAddCbo}
+            onClose={onCloseModalAddCbo}
+            popup
+          >
+            <Modal.Header />
+            <Modal.Body>
+              <div className="space-y-6">
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                  Thêm mới
+                </h3>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="email" value="Tên" />
+                  </div>
+                  <TextInput
+                    id="ten"
+                    // value={email}
+                    // onChange={(event) => setEmail(event.target.value)}
+                    required
+                  />
+                </div>
+                <div className="w-full">
+                  <Button>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
