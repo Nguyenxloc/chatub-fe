@@ -26,13 +26,15 @@ export default function DetailSPMobile() {
   const [dataSPCT, setDataSPCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page: number) => setCurrentPage(page);
   const [idSPCT, setIdSPCT] = useState("");
   const [sp, setSP] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
+  const [mauSacTxt, setMauSacTxt] = useState("");
+  const [kichThuocTxt, setKichThuocTxt] = useState("");
+  const [chatLieuTxt, setChatLieuTxt] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -50,9 +52,15 @@ export default function DetailSPMobile() {
   const [isLoadingLstKichThuoc, setIsLoadingLstKichThuoc] = useState(true);
   const [isLoadingLstChatLieu, setIsLoadingLstChatLieu] = useState(true);
   const [refKey, setRefkey] = useState(0);
+  const [refMauSac, setRefMauSac] = useState(0);
+  const [refKichThuoc, setRefKichThuoc] = useState(0);
+  const [refChatLieu, setRefChatLieu] = useState(0);
   const [lastPage, setLastPage] = useState(1);
-  const [idspctHold, setIdspctHold] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   let validateOK = false;
+  let validateMauSacOK = false;
+  let validateKichThuocOK = false;
+  let validateChatLieuOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
   }
@@ -114,6 +122,38 @@ export default function DetailSPMobile() {
       return true;
     }
   }
+  function validateMauSac(text: string){
+     if(text == ""){
+      validateMauSacOK = false;
+      return false;
+     }
+     else{
+      validateMauSacOK = true;
+      return true;
+     }
+  }
+
+  function validateKichThuoc(text: string){
+    if(text == ""){
+     validateKichThuocOK = false;
+     return false;
+    }
+    else{
+     validateKichThuocOK = true;
+     return true;
+    }
+ }
+
+ function validateChatLieu(text: string){
+  if(text == ""){
+   validateChatLieuOK = false;
+   return false;
+  }
+  else{
+   validateChatLieuOK = true;
+   return true;
+  }
+}
 
   function addSPCT() {
     if (validateOK) {
@@ -141,11 +181,104 @@ export default function DetailSPMobile() {
           }),
         },
       ).then((res) => console.log("test response: ", res));
-      console.log("idsp", params.id);
-      console.log("idmausac", mauSac.id);
-      console.log("idkichthuoc", kichThuoc.id);
       setRefkey(1);
       setCurrentPage(lastPage);
+    } else {
+      console.log("not do post");
+    }
+  }
+
+  function addMauSac() {
+    if (validateMauSacOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idSp: params.id,
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
+            namBH: namBH,
+            moTa: moTa,
+            soLuongTon: soLuongTon,
+            giaNhap: giaNhap,
+            giaBan: giaBan,
+            trangThai: "1",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
+          }),
+        },
+      ).then((res) => console.log("test response: ", res));
+      setRefMauSac(1);
+    } else {
+      console.log("not do post");
+    }
+  }
+
+  function addKichThuoc() {
+    if (validateKichThuocOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idSp: params.id,
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
+            namBH: namBH,
+            moTa: moTa,
+            soLuongTon: soLuongTon,
+            giaNhap: giaNhap,
+            giaBan: giaBan,
+            trangThai: "1",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
+          }),
+        },
+      ).then((res) => console.log("test response: ", res));
+      setRefKichThuoc(1);
+    } else {
+      console.log("not do post");
+    }
+  }
+
+  function addChatLieu() {
+    if (validateChatLieuOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            idSp: params.id,
+            idMauSac: mauSac.id,
+            idKichThuoc: kichThuoc.id,
+            namBH: namBH,
+            moTa: moTa,
+            soLuongTon: soLuongTon,
+            giaNhap: giaNhap,
+            giaBan: giaBan,
+            trangThai: "1",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
+          }),
+        },
+      ).then((res) => console.log("test response: ", res));
+      setRefChatLieu(1);
     } else {
       console.log("not do post");
     }
@@ -370,7 +503,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboMauSac(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -397,7 +530,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboKichThuoc(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -406,7 +539,7 @@ export default function DetailSPMobile() {
                   </div>
                   <div className="flex-cols flex gap-5">
                     <Dropdown
-                      label={chatLieu ? chatLieu.ten : "Kích thước"}
+                      label={chatLieu ? chatLieu.ten : "Chất liệu"}
                       dismissOnClick={false}
                       style={{ width: "180px" }}
                     >
@@ -424,7 +557,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboChatLieu(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -629,7 +762,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboMauSac(true)}}>Thêm</Button>
                   </div>
                 </div>
 
@@ -657,7 +790,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboKichThuoc(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -684,7 +817,7 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCbo(true)}}>Thêm</Button>
+                    <Button onClick={()=>{setOpenModalAddCboChatLieu(true)}}>Thêm</Button>
                   </div>
                 </div>
                 <div>
@@ -852,8 +985,8 @@ export default function DetailSPMobile() {
           {/*start modal add cbo mau sac */}
           <Modal
             className="w-screen"
-            show={openModalAddCbo}
-            onClose={onCloseModalAddCbo}
+            show={openModalAddCboMauSac}
+            onClose={onCloseModalAddCboMauSac}
             popup
           >
             <Modal.Header />
@@ -864,14 +997,21 @@ export default function DetailSPMobile() {
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="email" value="Tên" />
+                    <Label htmlFor="mauSacTxt" value="Tên" />
                   </div>
                   <TextInput
-                    id="ten"
-                    // value={email}
-                    // onChange={(event) => setEmail(event.target.value)}
+                    id="mauSacTxt"
+                    value={mauSacTxt}
+                    onChange={(event) => setMauSacTxt(event.target.value)}
                     required
                   />
+                  {!validateMauSac(mauSacTxt) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
                 </div>
                 <div className="w-full">
                   <Button>Lưu</Button>
@@ -883,8 +1023,8 @@ export default function DetailSPMobile() {
            {/*start modal add cbo kich thuoc*/}
            <Modal
             className="w-screen"
-            show={openModalAddCbo}
-            onClose={onCloseModalAddCbo}
+            show={openModalAddCboKichThuoc}
+            onClose={onCloseModalAddCboKichThuoc}
             popup
           >
             <Modal.Header />
@@ -895,14 +1035,21 @@ export default function DetailSPMobile() {
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="email" value="Tên" />
+                    <Label htmlFor="kichThuocTxt" value="Tên" />
                   </div>
                   <TextInput
-                    id="ten"
-                    // value={email}
-                    // onChange={(event) => setEmail(event.target.value)}
+                    id="kichThuocTxt"
+                    value={kichThuocTxt}
+                    onChange={(event) => setKichThuocTxt(event.target.value)}
                     required
                   />
+                  {!validateKichThuoc(kichThuocTxt) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
                 </div>
                 <div className="w-full">
                   <Button>Lưu</Button>
@@ -914,8 +1061,8 @@ export default function DetailSPMobile() {
            {/*start modal add cbo chat lieu */}
            <Modal
             className="w-screen"
-            show={openModalAddCbo}
-            onClose={onCloseModalAddCbo}
+            show={openModalAddCboChatLieu}
+            onClose={onCloseModalAddCboChatLieu}
             popup
           >
             <Modal.Header />
@@ -926,14 +1073,21 @@ export default function DetailSPMobile() {
                 </h3>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="email" value="Tên" />
+                    <Label htmlFor="chatLieuTxt" value="Tên" />
                   </div>
                   <TextInput
-                    id="ten"
-                    // value={email}
-                    // onChange={(event) => setEmail(event.target.value)}
+                    id="chatLieuTxt"
+                    value={chatLieuTxt}
+                    onChange={(event) => setChatLieuTxt(event.target.value)}
                     required
                   />
+                  {!validateChatLieu(chatLieuTxt) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    <HiCheckCircle className="text-green-600 " />
+                  )}
                 </div>
                 <div className="w-full">
                   <Button>Lưu</Button>
