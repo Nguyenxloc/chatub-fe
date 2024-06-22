@@ -18,16 +18,24 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css';
 export default function DetailSP() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
+  const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] =
+    useState(false);
+  const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page: number) => setCurrentPage(page);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [idSP, setIdSP] = useState("");
-  const [mauSac, setMauSac] = useState(null);
-  const [kichThuoc, setKichThuoc] = useState(null);
-  const [idChatLieu, setIdChatLieu] = useState("");
+  const [idSPCT, setIdSPCT] = useState("");
+  const [sp, setSP] = useState("");
+  const [mauSac, setMauSac] = useState("");
+  const [kichThuoc, setKichThuoc] = useState("");
+  const [chatLieu, setChatLieu] = useState("");
+  const [mauSacTxt, setMauSacTxt] = useState("");
+  const [kichThuocTxt, setKichThuocTxt] = useState("");
+  const [chatLieuTxt, setChatLieuTxt] = useState("");
   const [namBH, setNamBH] = useState("");
   const [moTa, setMoTa] = useState("");
   const [soLuongTon, setSoLuongTon] = useState("");
@@ -35,17 +43,32 @@ export default function DetailSP() {
   const [giaBan, setGiaBan] = useState("");
   const [ngayTao, setNgayTao] = useState("");
   const [trangThai, setTrangThai] = useState(false);
+  const [hinhAnh1, setHinhAnh1] = useState("");
+  const [hinhAnh2, setHinhAnh2] = useState("");
+  const [hinhAnh3, setHinhAnh3] = useState("");
   const [lstMauSac, setLstMauSac] = useState();
   const [lstKichThuoc, setLstKichThuoc] = useState();
   const [lstChatLieu, setLstChatLieu] = useState();
-  const [isLoadingLstMS, setIsLoadingLstMS] = useState(true);
-  const [isLoadingLstKT, setIsLoadingLstKT] = useState(true);
-  const [isLoadingLstCL, setIsLoadingLstCL] = useState(true);
+  const [isLoadingLstMauSac, setIsLoadingLstMauSac] = useState(true);
+  const [isLoadingLstKichThuoc, setIsLoadingLstKichThuoc] = useState(true);
+  const [isLoadingLstChatLieu, setIsLoadingLstChatLieu] = useState(true);
   const [refKey,setRefkey] = useState(0);
+  const [refSP, setRefSP] = useState(0);
+  const [refMauSac, setRefMauSac] = useState(0);
+  const [refKichThuoc, setRefKichThuoc] = useState(0);
+  const [refChatLieu, setRefChatLieu] = useState(0);
   const [lastPage, setLastPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   let validateOK = false;
+  let validateMauSacOK = false;
+  let validateKichThuocOK = false;
+  let validateChatLieuOK = false;
   function onCloseModalAdd() {
     setOpenModalAdd(false);
+  }
+  function onCloseModalEdit() {
+    setOpenModalEdit(false);
+    resetState();
   }
   const params = useParams<{ id: string }>();
   function validatorNull(textValidate: String) {
@@ -58,6 +81,40 @@ export default function DetailSP() {
     }
   }
 
+  function onOpenModalEdit(spct: object) {
+    setIdSPCT(spct.id);
+    setSP(spct.sp);
+    setNamBH(spct.namBH);
+    setMoTa(spct.moTa);
+    setSoLuongTon(spct.soLuongTon);
+    setGiaBan(spct.giaBan);
+    setGiaNhap(spct.giaNhap);
+    setNgayTao(spct.ngayTao);
+    setTrangThai(spct.trangThai);
+    setHinhAnh1(spct.hinhAnh1);
+    setHinhAnh2(spct.hinhAnh2);
+    setHinhAnh3(spct.hinhAnh3);
+    setMauSac(spct.mauSac);
+    setKichThuoc(spct.kichThuoc);
+    setChatLieu(spct.chatLieu);
+  }
+
+  function resetState() {
+    setIdSPCT("");
+    setSP("");
+    setMauSac("");
+    setKichThuoc("");
+    setNamBH("");
+    setMoTa("");
+    setSoLuongTon("");
+    setGiaBan("");
+    setGiaNhap("");
+    setNgayTao("");
+    setTrangThai(false);
+    setHinhAnh1("");
+    setHinhAnh2("");
+    setHinhAnh3("");
+  }
   function addSPCT() {
     if (validateOK) {
       fetch(
@@ -100,7 +157,7 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         setLstMauSac(data);
-        setIsLoadingLstMS(false);
+        setIsLoadingLstMauSac(false);
         console.log("data lst mau sac :", data);
       });
 
@@ -110,7 +167,7 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         setLstKichThuoc(data);
-        setIsLoadingLstKT(false);
+        setIsLoadingLstKichThuoc(false);
         console.log("data kich thuoc:", data);
       });
 
@@ -126,35 +183,114 @@ export default function DetailSP() {
   }
 
   useEffect(() => {
+    let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
         params.id,
     )
       .then((res) => res.json())
       .then((data) => {
-        setDataSanPham(data);
-        setIsLoading(false);
-        console.log("data sp:", data);
+        if (isMounted) {
+          setDataSanPham(data);
+          setIsLoading(false);
+          console.log("data sp:", data);
+        }
       });
+    return () => {
+      isMounted = false;
+    };
+  }, [refSP]);
+  useEffect(() => {
+    let isMounted = true;
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/"+params.id+"?page="+ currentPage,
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
+        params.id +
+        "?page=" +
+        currentPage,
     )
       .then((res) => res.json())
       .then((data) => {
-        setDataSPCT(data);
-        setIsLoadingSPCT(false);
-        setRefkey(0);
-        console.log("data spct:", data);
+        if (isMounted) {
+          setDataSPCT(data);
+          setIsLoadingSPCT(false);
+          setRefkey(0);
+          console.log("data spct:", data);
+        }
       });
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count")
-        .then((res) => res.json())
-        .then((data) => {
-          setLastPage(Math.ceil(data/20));
-          console.log("data:", Math.ceil(data/20));
-        });
-    fillUpCBO();
-  }, [refKey,currentPage]);
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+        params.id,
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLastPage(Math.ceil(data / 20));
+          console.log("data:", Math.ceil(data / 20));
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [refKey, currentPage]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLstMauSac(data);
+          setIsLoadingLstMauSac(false);
+          setRefMauSac(0);
+          console.log("data lst mau sac :", data);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [refMauSac]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/kich-thuoc/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLstKichThuoc(data);
+          setIsLoadingLstKichThuoc(false);
+          setRefKichThuoc(0);
+          console.log("data kich thuoc:", data);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [refKichThuoc]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLstChatLieu(data);
+          setIsLoadingLstChatLieu(false);
+          setRefChatLieu(0);
+          console.log("data chat lieu:", data);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [refChatLieu]);
+
     return (
       <div className="ms-2 bg-white">
         <h2>this is the admin san pham page</h2>
@@ -189,7 +325,7 @@ export default function DetailSP() {
               <h2 className="w-1/12 flex items-center font-semibold">Hành động</h2>
             </div>
             <div className="space-y-5 mt-5">
-            {!isLoadingSPCT && !isLoadingLstKT && !isLoadingLstMS
+            {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
               ? dataSPCT.map((spctLocal, i) => (
                   <CellSPCTBrowser
                     spct={spctLocal}
@@ -247,6 +383,13 @@ export default function DetailSP() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
+                  <Button
+                      onClick={() => {
+                        setOpenModalAddCboMauSac(true);
+                      }}
+                    >
+                      Thêm
+                  </Button>
                 </div>
 
                 <div>
@@ -257,7 +400,7 @@ export default function DetailSP() {
                     label={kichThuoc ? kichThuoc.ten : "Chọn kích thước"}
                     dismissOnClick={false}
                   >
-                    {!isLoadingLstKT ? (
+                    {!isLoadingLstKichThuoc ? (
                       lstKichThuoc.map((kt) => (
                         <Dropdown.Item
                           key={kt.id}
@@ -271,26 +414,46 @@ export default function DetailSP() {
                       <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                     )}
                   </Dropdown>
+                  <Button
+                      onClick={() => {
+                        setOpenModalAddCboKichThuoc(true);
+                      }}
+                    >
+                      Thêm
+                  </Button>
                 </div>
-                {/* <div>
+                <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="idKichThuoc" value="Kích thước" />
+                    <Label htmlFor="idKichThuoc" value="Chất liệu" />
                   </div>
-                  <Dropdown
-                    label="Dropdown button"
-                    value={idChatLieu}
-                    onChange={() => setIdChatLieu(event.target.value)}
-                    dismissOnClick={false}
-                  >
-                    {!isLoadingLstMS ? (
-                      lstChatLieu.map((cl) => (
-                        <Dropdown.Item>{cl.ten}</Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-                </div> */}
+                  <div className="flex-cols flex gap-5">
+                    <Dropdown
+                      label={chatLieu ? chatLieu.ten : "Chất liệu"}
+                      dismissOnClick={false}
+                      style={{ width: "180px" }}
+                    >
+                      {!isLoadingLstChatLieu ? (
+                        lstChatLieu.map((cl) => (
+                          <Dropdown.Item
+                            key={cl.id}
+                            value={cl}
+                            onClick={() => setChatLieu(cl)}
+                          >
+                            {cl.ten}
+                          </Dropdown.Item>
+                        ))
+                      ) : (
+                        <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                      )}
+                    </Dropdown>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboChatLieu(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
+                  </div>
                 <div>
                   <div className="mb-2 block">
                     <Label htmlFor="namBH" value="Năm bảo hành" />

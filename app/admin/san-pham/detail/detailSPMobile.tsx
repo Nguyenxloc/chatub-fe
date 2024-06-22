@@ -2,7 +2,6 @@ import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
   Button,
-  Checkbox,
   Dropdown,
   Label,
   Modal,
@@ -20,7 +19,8 @@ export default function DetailSPMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
-  const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] = useState(false);
+  const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] =
+    useState(false);
   const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
   const [dataSanPham, setDataSanPham] = useState(null);
   const [dataSPCT, setDataSPCT] = useState(null);
@@ -69,14 +69,17 @@ export default function DetailSPMobile() {
     setOpenModalEdit(false);
     resetState();
   }
-  function onCloseModalAddCboMauSac(){
-    setOpenModalAddCboMauSac(false); 
+  function onCloseModalAddCboMauSac() {
+    setOpenModalAddCboMauSac(false);
+    setMauSacTxt("");
   }
-  function onCloseModalAddCboKichThuoc(){
-    setOpenModalAddCboKichThuoc(false); 
+  function onCloseModalAddCboKichThuoc() {
+    setOpenModalAddCboKichThuoc(false);
+    setKichThuocTxt("");
   }
-  function onCloseModalAddCboChatLieu(){
-    setOpenModalAddCboChatLieu(false); 
+  function onCloseModalAddCboChatLieu() {
+    setOpenModalAddCboChatLieu(false);
+    setChatLieuTxt("");
   }
   function onOpenModalEdit(spct: object) {
     setIdSPCT(spct.id);
@@ -123,38 +126,35 @@ export default function DetailSPMobile() {
       return true;
     }
   }
-  function validateMauSac(text: string){
-     if(text == ""){
+  function validateMauSac(text: string) {
+    if (text == "") {
       validateMauSacOK = false;
       return false;
-     }
-     else{
+    } else {
       validateMauSacOK = true;
       return true;
-     }
+    }
   }
 
-  function validateKichThuoc(text: string){
-    if(text == ""){
-     validateKichThuocOK = false;
-     return false;
+  function validateKichThuoc(text: string) {
+    if (text == "") {
+      validateKichThuocOK = false;
+      return false;
+    } else {
+      validateKichThuocOK = true;
+      return true;
     }
-    else{
-     validateKichThuocOK = true;
-     return true;
-    }
- }
+  }
 
- function validateChatLieu(text: string){
-  if(text == ""){
-   validateChatLieuOK = false;
-   return false;
+  function validateChatLieu(text: string) {
+    if (text == "") {
+      validateChatLieuOK = false;
+      return false;
+    } else {
+      validateChatLieuOK = true;
+      return true;
+    }
   }
-  else{
-   validateChatLieuOK = true;
-   return true;
-  }
-}
 
   function addSPCT() {
     if (validateOK) {
@@ -192,7 +192,7 @@ export default function DetailSPMobile() {
   function addMauSac() {
     if (validateMauSacOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/save",
         {
           method: "POST",
           headers: {
@@ -200,18 +200,8 @@ export default function DetailSPMobile() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: params.id,
-            idMauSac: mauSac.id,
-            idKichThuoc: kichThuoc.id,
-            namBH: namBH,
-            moTa: moTa,
-            soLuongTon: soLuongTon,
-            giaNhap: giaNhap,
-            giaBan: giaBan,
-            trangThai: "1",
-            hinhAnh1: hinhAnh1,
-            hinhAnh2: hinhAnh2,
-            hinhAnh3: hinhAnh3,
+            ten: mauSacTxt,
+            trangThai: "0",
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -224,7 +214,7 @@ export default function DetailSPMobile() {
   function addKichThuoc() {
     if (validateKichThuocOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/kich-thuoc/save",
         {
           method: "POST",
           headers: {
@@ -232,18 +222,8 @@ export default function DetailSPMobile() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: params.id,
-            idMauSac: mauSac.id,
-            idKichThuoc: kichThuoc.id,
-            namBH: namBH,
-            moTa: moTa,
-            soLuongTon: soLuongTon,
-            giaNhap: giaNhap,
-            giaBan: giaBan,
-            trangThai: "1",
-            hinhAnh1: hinhAnh1,
-            hinhAnh2: hinhAnh2,
-            hinhAnh3: hinhAnh3,
+            ten: kichThuocTxt,
+            trangThai: "0",
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -256,7 +236,7 @@ export default function DetailSPMobile() {
   function addChatLieu() {
     if (validateChatLieuOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/save",
         {
           method: "POST",
           headers: {
@@ -264,18 +244,8 @@ export default function DetailSPMobile() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: params.id,
-            idMauSac: mauSac.id,
-            idKichThuoc: kichThuoc.id,
-            namBH: namBH,
-            moTa: moTa,
-            soLuongTon: soLuongTon,
-            giaNhap: giaNhap,
-            giaBan: giaBan,
-            trangThai: "1",
-            hinhAnh1: hinhAnh1,
-            hinhAnh2: hinhAnh2,
-            hinhAnh3: hinhAnh3,
+            ten: chatLieuTxt,
+            trangThai: "0",
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -351,7 +321,7 @@ export default function DetailSPMobile() {
       });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/detail/" +
@@ -359,16 +329,16 @@ export default function DetailSPMobile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        if(isMounted){
+        if (isMounted) {
           setDataSanPham(data);
           setIsLoading(false);
-          console.log("data sp:", data);          
+          console.log("data sp:", data);
         }
       });
-      return ()=>{
-        isMounted = false;
-      };
-  },[refSP]);
+    return () => {
+      isMounted = false;
+    };
+  }, [refSP]);
 
   useEffect(() => {
     let isMounted = true;
@@ -380,11 +350,11 @@ export default function DetailSPMobile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        if(isMounted){
+        if (isMounted) {
           setDataSPCT(data);
           setIsLoadingSPCT(false);
           setRefkey(0);
-          console.log("data spct:", data);          
+          console.log("data spct:", data);
         }
       });
     fetch(
@@ -393,68 +363,73 @@ export default function DetailSPMobile() {
     )
       .then((res) => res.json())
       .then((data) => {
-        if(isMounted){
+        if (isMounted) {
           setLastPage(Math.ceil(data / 20));
-          console.log("data:", Math.ceil(data / 20));          
+          console.log("data:", Math.ceil(data / 20));
         }
       });
-      return ()=>{
-        isMounted = false;
-      }
+    return () => {
+      isMounted = false;
+    };
   }, [refKey, currentPage]);
 
   useEffect(() => {
     let isMounted = true;
-    fetch("http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index")
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
+    )
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
           setLstMauSac(data);
           setIsLoadingLstMauSac(false);
+          setRefMauSac(0);
           console.log("data lst mau sac :", data);
         }
       });
-    
+
     return () => {
       isMounted = false;
     };
   }, [refMauSac]);
 
-  useEffect(()=>{
-    let isMounted = true
+  useEffect(() => {
+    let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/kich-thuoc/index",
     )
       .then((res) => res.json())
       .then((data) => {
-        if(isMounted){
+        if (isMounted) {
           setLstKichThuoc(data);
           setIsLoadingLstKichThuoc(false);
+          setRefKichThuoc(0);
           console.log("data kich thuoc:", data);
         }
       });
-      return ()=>{
-        isMounted = false;
-      };
-  },[refKichThuoc]);
+    return () => {
+      isMounted = false;
+    };
+  }, [refKichThuoc]);
 
-  useEffect(()=>{
+  useEffect(() => {
     let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
     )
       .then((res) => res.json())
       .then((data) => {
-        if(isMounted){
+        if (isMounted) {
           setLstChatLieu(data);
           setIsLoadingLstChatLieu(false);
-          console.log("data chat lieu:", data); 
+          setRefChatLieu(0);
+          console.log("data chat lieu:", data);
         }
       });
-      return () =>{
-        isMounted = false;
-      }
-  },[refChatLieu]);
+    return () => {
+      isMounted = false;
+    };
+  }, [refChatLieu]);
 
   return (
     <div className="ms-2 bg-white">
@@ -574,7 +549,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboMauSac(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboMauSac(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -601,7 +582,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboKichThuoc(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboKichThuoc(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -628,7 +615,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboChatLieu(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboChatLieu(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -833,7 +826,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboMauSac(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboMauSac(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
 
@@ -861,7 +860,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboKichThuoc(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboKichThuoc(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -888,7 +893,13 @@ export default function DetailSPMobile() {
                         <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
                       )}
                     </Dropdown>
-                    <Button onClick={()=>{setOpenModalAddCboChatLieu(true)}}>Thêm</Button>
+                    <Button
+                      onClick={() => {
+                        setOpenModalAddCboChatLieu(true);
+                      }}
+                    >
+                      Thêm
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -1085,14 +1096,14 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button>Lưu</Button>
+                  <Button onClick={()=>addMauSac()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
           </Modal>
           {/* end modal add cbo */}
-           {/*start modal add cbo kich thuoc*/}
-           <Modal
+          {/*start modal add cbo kich thuoc*/}
+          <Modal
             className="w-screen"
             show={openModalAddCboKichThuoc}
             onClose={onCloseModalAddCboKichThuoc}
@@ -1123,14 +1134,14 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button>Lưu</Button>
+                  <Button onClick={()=>addKichThuoc()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
           </Modal>
           {/* end modal add cbo */}
-           {/*start modal add cbo chat lieu */}
-           <Modal
+          {/*start modal add cbo chat lieu */}
+          <Modal
             className="w-screen"
             show={openModalAddCboChatLieu}
             onClose={onCloseModalAddCboChatLieu}
@@ -1161,7 +1172,7 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button>Lưu</Button>
+                  <Button onClick={()=>addChatLieu()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
