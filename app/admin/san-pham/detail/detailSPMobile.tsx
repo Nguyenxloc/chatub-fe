@@ -104,6 +104,7 @@ export default function DetailSPMobile() {
     setSP("");
     setMauSac("");
     setKichThuoc("");
+    setChatLieu("");
     setNamBH("");
     setMoTa("");
     setSoLuongTon("");
@@ -1063,7 +1064,7 @@ export default function DetailSPMobile() {
               </div>
             </Modal.Body>
           </Modal>
-          {/* end modal spct */}
+          {/* end modal edit spct */}
           {/*start modal add cbo mau sac */}
           <Modal
             className="w-screen"

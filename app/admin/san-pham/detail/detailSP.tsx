@@ -123,6 +123,7 @@ export default function DetailSP() {
   }
 
   function onOpenModalEdit(spct: object) {
+    console.log("test spct: ", spct);
     setIdSPCT(spct.id);
     setSP(spct.sp);
     setNamBH(spct.namBH);
@@ -145,6 +146,7 @@ export default function DetailSP() {
     setSP("");
     setMauSac("");
     setKichThuoc("");
+    setChatLieu("");
     setNamBH("");
     setMoTa("");
     setSoLuongTon("");
@@ -156,6 +158,7 @@ export default function DetailSP() {
     setHinhAnh2("");
     setHinhAnh3("");
   }
+
   function addSPCT() {
     if (validateOK) {
       fetch(
@@ -170,15 +173,16 @@ export default function DetailSP() {
             idSp: params.id,
             idMauSac: mauSac.id,
             idKichThuoc: kichThuoc.id,
+            idChatLieu: chatLieu.id,
             namBH: namBH,
             moTa: moTa,
             soLuongTon: soLuongTon,
             giaNhap: giaNhap,
             giaBan: giaBan,
             trangThai: "1",
-            hinhAnh1: "hinh anh 1",
-            hinhAnh2: "hinh anh 2",
-            hinhAnh3: "hinh anh 3 ",
+            hinhAnh1: hinhAnh1,
+            hinhAnh2: hinhAnh2,
+            hinhAnh3: hinhAnh3,
           }),
         },
       ).then((res) => console.log("test response: ", res));
@@ -285,6 +289,7 @@ export default function DetailSP() {
         },
       ).then((res) => {
         console.log("test response: ", res);
+        console.log("test chat lieu: ", chatLieu.id);
         resetState();
         setRefkey(1);
       });
@@ -444,7 +449,7 @@ export default function DetailSP() {
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
             </h2>
           </div>
-          <div className="flex flex-row-reverse me-5">
+          <div className="me-5 flex flex-row-reverse">
             <Button
               gradientMonochrome="info"
               onClick={() => setOpenModalAdd(true)}
@@ -485,15 +490,15 @@ export default function DetailSP() {
               {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
                 ? dataSPCT.map((spctLocal, i) => (
                     <div className="flex-cols flex">
-                    <div className="flex w-10/12 items-center border-b-2">
-                    <CellSPCTBrowser
-                      spct={spctLocal}
-                      lstKichThuoc={lstKichThuoc}
-                      lstMauSac={lstMauSac}
-                      indx={i}
-                    />
-                    </div>
-                    <div className="flex items-center border-b-2">
+                      <div className="flex w-10/12 items-center border-b-2">
+                        <CellSPCTBrowser
+                          spct={spctLocal}
+                          lstKichThuoc={lstKichThuoc}
+                          lstMauSac={lstMauSac}
+                          indx={i}
+                        />
+                      </div>
+                      <div className="flex items-center border-b-2">
                         <Button
                           className="ms-3 flex h-[30px] items-center"
                           onClick={() => {
@@ -730,7 +735,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput id="hinhAnh1add" value={hinhAnh1} required />
+                  <TextInput
+                    id="hinhAnh1add"
+                    value={hinhAnh1}
+                    onChange={() => setHinhAnh1(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -743,7 +753,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh2add" value="Link hình ảnh 2" />
                   </div>
-                  <TextInput id="hinhAnh2add" value={hinhAnh2} required />
+                  <TextInput
+                    id="hinhAnh2add"
+                    value={hinhAnh2}
+                    onChange={() => setHinhAnh2(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -756,7 +771,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh3add" value="Link hình ảnh 3" />
                   </div>
-                  <TextInput id="hinhAnh3add" value={hinhAnh3} required />
+                  <TextInput
+                    id="hinhAnh3add"
+                    value={hinhAnh3}
+                    onChange={() => setHinhAnh3(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1014,7 +1034,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput id="hinhAnh1" value={hinhAnh1} required />
+                  <TextInput
+                    id="hinhAnh1"
+                    value={hinhAnh1}
+                    onChange={() => setHinhAnh1(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1027,7 +1052,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh2" value="Link hình ảnh 2" />
                   </div>
-                  <TextInput id="hinhAnh2" value={hinhAnh2} required />
+                  <TextInput
+                    id="hinhAnh2"
+                    value={hinhAnh2}
+                    onChange={() => setHinhAnh2(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1040,7 +1070,12 @@ export default function DetailSP() {
                   <div className="mb-2 block">
                     <Label htmlFor="hinhAnh3" value="Link hình ảnh 3" />
                   </div>
-                  <TextInput id="hinhAnh3" value={hinhAnh3} required />
+                  <TextInput
+                    id="hinhAnh3"
+                    value={hinhAnh3}
+                    onChange={() => setHinhAnh3(event.target.value)}
+                    required
+                  />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
