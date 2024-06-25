@@ -43,7 +43,7 @@ export default function NhanVien() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page=" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/index?page=" +
         currentPage,
     )
       .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function NhanVien() {
         console.log("data:", data);
       });
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/count")
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/count")
         .then((res) => res.json())
         .then((data) => {
           setLastPage(Math.ceil(data/20));
@@ -65,7 +65,7 @@ export default function NhanVien() {
   function saveProduct() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/save",
         {
           method: "POST",
           headers: {
@@ -90,7 +90,7 @@ export default function NhanVien() {
   function updateProduct() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/save",
         {
           method: "POST",
           headers: {
