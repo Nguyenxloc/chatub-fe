@@ -14,21 +14,21 @@ import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import CellSPCTBrowser from "./spct/cellSPCTBowser";
-export default function DetailSP() {
+import CellNVCTMobile from "./nvct/cellNVCTMobile";
+export default function DetailNVMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
   const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] =
     useState(false);
   const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState(null);
-  const [dataSPCT, setDataSPCT] = useState(null);
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const [dataNhanVien, setDataNhanVien] = useState(null);
+  const [dataNVCT, setDataNVCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [idSPCT, setIdSPCT] = useState("");
-  const [sp, setSP] = useState("");
+  const [isLoadingNVCT, setIsLoadingNVCT] = useState(true);
+  const onPageChange = (page: number) => setCurrentPage(page);
+  const [idNVCT, setIdNVCT] = useState("");
+  const [nv, setNV] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
@@ -52,10 +52,10 @@ export default function DetailSP() {
   const [isLoadingLstKichThuoc, setIsLoadingLstKichThuoc] = useState(true);
   const [isLoadingLstChatLieu, setIsLoadingLstChatLieu] = useState(true);
   const [refKey, setRefkey] = useState(0);
-  const [refSP, setRefSP] = useState(0);
   const [refMauSac, setRefMauSac] = useState(0);
   const [refKichThuoc, setRefKichThuoc] = useState(0);
   const [refChatLieu, setRefChatLieu] = useState(0);
+  const [refNV, setRefNV] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   let validateOK = false;
@@ -81,6 +81,42 @@ export default function DetailSP() {
     setOpenModalAddCboChatLieu(false);
     setChatLieuTxt("");
   }
+  function onOpenModalEdit(nvct: object) {
+    setIdNVCT(nvct.id);
+    setNV(nvct.nv);
+    setNamBH(nvct.namBH);
+    setMoTa(nvct.moTa);
+    setSoLuongTon(nvct.soLuongTon);
+    setGiaBan(nvct.giaBan);
+    setGiaNhap(nvct.giaNhap);
+    setNgayTao(nvct.ngayTao);
+    setTrangThai(nvct.trangThai);
+    setHinhAnh1(nvct.hinhAnh1);
+    setHinhAnh2(nvct.hinhAnh2);
+    setHinhAnh3(nvct.hinhAnh3);
+    setMauSac(nvct.mauSac);
+    setKichThuoc(nvct.kichThuoc);
+    setChatLieu(nvct.chatLieu);
+  }
+
+  function resetState() {
+    setIdNVCT("");
+    setNV("");
+    setMauSac("");
+    setKichThuoc("");
+    setChatLieu("");
+    setNamBH("");
+    setMoTa("");
+    setSoLuongTon("");
+    setGiaBan("");
+    setGiaNhap("");
+    setNgayTao("");
+    setTrangThai(false);
+    setHinhAnh1("");
+    setHinhAnh2("");
+    setHinhAnh3("");
+  }
+
   const params = useParams<{ id: string }>();
   function validatorNull(textValidate: String) {
     if (textValidate == "") {
@@ -91,7 +127,6 @@ export default function DetailSP() {
       return true;
     }
   }
-
   function validateMauSac(text: string) {
     if (text == "") {
       validateMauSacOK = false;
@@ -122,47 +157,10 @@ export default function DetailSP() {
     }
   }
 
-  function onOpenModalEdit(spct: object) {
-    console.log("test spct: ", spct);
-    setIdSPCT(spct.id);
-    setSP(spct.sp);
-    setNamBH(spct.namBH);
-    setMoTa(spct.moTa);
-    setSoLuongTon(spct.soLuongTon);
-    setGiaBan(spct.giaBan);
-    setGiaNhap(spct.giaNhap);
-    setNgayTao(spct.ngayTao);
-    setTrangThai(spct.trangThai);
-    setHinhAnh1(spct.hinhAnh1);
-    setHinhAnh2(spct.hinhAnh2);
-    setHinhAnh3(spct.hinhAnh3);
-    setMauSac(spct.mauSac);
-    setKichThuoc(spct.kichThuoc);
-    setChatLieu(spct.chatLieu);
-  }
-
-  function resetState() {
-    setIdSPCT("");
-    setSP("");
-    setMauSac("");
-    setKichThuoc("");
-    setChatLieu("");
-    setNamBH("");
-    setMoTa("");
-    setSoLuongTon("");
-    setGiaBan("");
-    setGiaNhap("");
-    setNgayTao("");
-    setTrangThai(false);
-    setHinhAnh1("");
-    setHinhAnh2("");
-    setHinhAnh3("");
-  }
-
-  function addSPCT() {
+  function addNVCT() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-nv/save",
         {
           method: "POST",
           headers: {
@@ -185,10 +183,7 @@ export default function DetailSP() {
             hinhAnh3: hinhAnh3,
           }),
         },
-      ).then((res) => console.log("test response: ", res));
-      console.log("idsp", params.id);
-      console.log("idmausac", mauSac.id);
-      console.log("idkichthuoc", kichThuoc.id);
+      ).then((res) => console.log("test renvonse: ", res));
       setRefkey(1);
       setCurrentPage(lastPage);
       setOpenModalAdd(false);
@@ -196,6 +191,7 @@ export default function DetailSP() {
       console.log("not do post");
     }
   }
+
   function addMauSac() {
     if (validateMauSacOK) {
       fetch(
@@ -211,7 +207,7 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test renvonse: ", res));
       setRefMauSac(1);
     } else {
       console.log("not do post");
@@ -233,7 +229,7 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test renvonse: ", res));
       setRefKichThuoc(1);
     } else {
       console.log("not do post");
@@ -255,17 +251,16 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test renvonse: ", res));
       setRefChatLieu(1);
     } else {
       console.log("not do post");
     }
   }
-
-  function updateSPCT(idparam: string) {
+  function updateNVCT(idparam: string) {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/update/" +
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-nv/update/" +
           idparam,
         {
           method: "POST",
@@ -276,7 +271,6 @@ export default function DetailSP() {
           body: JSON.stringify({
             idMauSac: mauSac.id,
             idKichThuoc: kichThuoc.id,
-            idChatLieu: chatLieu.id,
             namBH: namBH,
             moTa: moTa,
             soLuongTon: soLuongTon,
@@ -289,8 +283,7 @@ export default function DetailSP() {
           }),
         },
       ).then((res) => {
-        console.log("test response: ", res);
-        console.log("test chat lieu: ", chatLieu.id);
+        console.log("test renvonse: ", res);
         resetState();
         setRefkey(1);
         onCloseModalEdit();
@@ -300,6 +293,7 @@ export default function DetailSP() {
       console.log("not do post");
     }
   }
+
   function fillUpCBO() {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
@@ -321,15 +315,15 @@ export default function DetailSP() {
         console.log("data kich thuoc:", data);
       });
 
-    // fetch(
-    //   "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setLstChatLieu(data);
-    //     setIsLoadingLstCL(true);
-    //     console.log("data chat lieu:", data);
-    //   });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLstChatLieu(data);
+        setIsLoadingLstChatLieu(false);
+        console.log("data chat lieu:", data);
+      });
   }
 
   useEffect(() => {
@@ -341,19 +335,20 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSanPham(data);
+          setDataNhanVien(data);
           setIsLoading(false);
-          console.log("data sp:", data);
+          console.log("data nv:", data);
         }
       });
     return () => {
       isMounted = false;
     };
-  }, [refSP]);
+  }, [refNV]);
+
   useEffect(() => {
     let isMounted = true;
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-nv/detail-byidnv/" +
         params.id +
         "?page=" +
         currentPage,
@@ -361,14 +356,14 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
+          setDataNVCT(data);
+          setIsLoadingNVCT(false);
           setRefkey(0);
-          console.log("data spct:", data);
+          console.log("data nvct:", data);
         }
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-nv/count-byidnv/" +
         params.id,
     )
       .then((res) => res.json())
@@ -447,13 +442,9 @@ export default function DetailSP() {
       <Navbarx />
       {!isLoading ? (
         <div className="z-0 w-full bg-white">
-          <div>
-            <h2>
-              Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
-            </h2>
-          </div>
-          <div className="me-5 flex flex-row-reverse">
+          <div className="flex flex-row-reverse">
             <Button
+              className="me-5"
               gradientMonochrome="info"
               onClick={() => setOpenModalAdd(true)}
             >
@@ -461,41 +452,39 @@ export default function DetailSP() {
               Thêm
             </Button>
           </div>
-          <div className="">
+
+          <div className="ms-5">
+            <h2 className="font-semibold">
+              Sản phẩm: {dataNhanVien.ten}-{dataNhanVien.ma}
+            </h2>
             <div className="flex-cols mt-5 flex w-screen">
-              <h2 className="flex w-1/12 items-center font-semibold">STT</h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
+              <h2 className="flex w-1/12 items-center text-xs font-semibold">
+                STT
+              </h2>
+              <h2 className="flex w-1/12 items-center text-xs font-semibold">
                 Chất liệu
               </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
                 Màu sắc
               </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
                 Kích thước
               </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
-                Số lượng Tồn
+              <h2 className="ms-[20px] flex w-1/12 items-center text-xs font-semibold">
+                SL
               </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
-                Trạng thái
-              </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
-                Hình ảnh 1
-              </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
-                Hình ảnh 2
-              </h2>
-              <h2 className="flex w-1/12 items-center font-semibold">
-                Hình ảnh 3
+              <h2 className="flex w-1/12  items-center text-xs font-semibold">
+                Status
               </h2>
             </div>
-            <div className="mt-5 space-y-5">
-              {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
-                ? dataSPCT.map((spctLocal, i) => (
+            <div className="mt-5 nvace-y-5">
+              {!isLoadingNVCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
+                ? dataNVCT.map((nvctLocal, i) => (
                     <div className="flex-cols flex">
-                      <div className="flex w-10/12 items-center border-b-2">
-                        <CellSPCTBrowser
-                          spct={spctLocal}
+                      <div className="flex w-8/12 items-center border-b-2">
+                        <CellNVCTMobile
+                          key={i}
+                          nvct={nvctLocal}
                           lstKichThuoc={lstKichThuoc}
                           lstMauSac={lstMauSac}
                           indx={i}
@@ -505,7 +494,7 @@ export default function DetailSP() {
                         <Button
                           className="ms-3 flex h-[30px] items-center"
                           onClick={() => {
-                            setOpenModalEdit(true), onOpenModalEdit(spctLocal);
+                            setOpenModalEdit(true), onOpenModalEdit(nvctLocal);
                           }}
                         >
                           Sửa
@@ -525,7 +514,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="nvace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Nhập sản phẩm chi tiết
                 </h3>
@@ -534,9 +523,9 @@ export default function DetailSP() {
                     <Label htmlFor="ma" value="Tên sản phẩm" />
                   </div>
                   <TextInput
-                    id="idSP"
+                    id="idNV"
                     placeholder=""
-                    value={dataSanPham.ten + " " + dataSanPham.ma}
+                    value={dataNhanVien.ten + " " + dataNhanVien.ma}
                     readOnly
                   />
                 </div>
@@ -735,15 +724,13 @@ export default function DetailSP() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh1} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput
-                    id="hinhAnh1add"
-                    value={hinhAnh1}
-                    onChange={() => setHinhAnh1(event.target.value)}
-                    required
-                  />
+                  <TextInput id="hinhAnh1add" value={hinhAnh1} onChange={()=>{setHinhAnh1(event?.target.value)}} required />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -753,15 +740,13 @@ export default function DetailSP() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh2} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh2add" value="Link hình ảnh 2" />
                   </div>
-                  <TextInput
-                    id="hinhAnh2add"
-                    value={hinhAnh2}
-                    onChange={() => setHinhAnh2(event.target.value)}
-                    required
-                  />
+                  <TextInput id="hinhAnh2add" value={hinhAnh2} onChange={()=>{setHinhAnh2(event?.target.value)}} required />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -771,15 +756,13 @@ export default function DetailSP() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh3} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh3add" value="Link hình ảnh 3" />
                   </div>
-                  <TextInput
-                    id="hinhAnh3add"
-                    value={hinhAnh3}
-                    onChange={() => setHinhAnh3(event.target.value)}
-                    required
-                  />
+                  <TextInput id="hinhAnh3add" value={hinhAnh3} onChange={()=>{setHinhAnh3(event?.target.value)}} required />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -799,7 +782,7 @@ export default function DetailSP() {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => addNVCT()}>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>
@@ -814,7 +797,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="nvace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Chỉnh sửa sản phẩm chi tiết
                 </h3>
@@ -826,9 +809,9 @@ export default function DetailSP() {
                     />
                   </div>
                   <TextInput
-                    id="sp"
+                    id="nv"
                     placeholder=""
-                    value={sp.ten + " " + sp.ma}
+                    value={nv.ten + " " + nv.ma}
                     readOnly
                   />
                 </div>
@@ -1034,15 +1017,13 @@ export default function DetailSP() {
                   <TextInput id="ngayTao" value={ngayTao} readOnly />
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh1} alt="" />
                   </div>
-                  <TextInput
-                    id="hinhAnh1"
-                    value={hinhAnh1}
-                    onChange={() => setHinhAnh1(event.target.value)}
-                    required
-                  />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
+                  </div>
+                  <TextInput id="hinhAnh1add" value={hinhAnh1} required />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1052,15 +1033,13 @@ export default function DetailSP() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh2" value="Link hình ảnh 2" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh2} alt="" />
                   </div>
-                  <TextInput
-                    id="hinhAnh2"
-                    value={hinhAnh2}
-                    onChange={() => setHinhAnh2(event.target.value)}
-                    required
-                  />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh2edit" value="Link hình ảnh 2" />
+                  </div>
+                  <TextInput id="hinhAnh2edit" value={hinhAnh2} required />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1070,15 +1049,13 @@ export default function DetailSP() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh3" value="Link hình ảnh 3" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh3} alt="" />
                   </div>
-                  <TextInput
-                    id="hinhAnh3"
-                    value={hinhAnh3}
-                    onChange={() => setHinhAnh3(event.target.value)}
-                    required
-                  />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh3edit" value="Link hình ảnh 3" />
+                  </div>
+                  <TextInput id="hinhAnh3edit" value={hinhAnh3} required />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1100,7 +1077,7 @@ export default function DetailSP() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT)
+                      updateNVCT(idNVCT);
                     }}
                   >
                     Lưu sản phẩm
@@ -1109,7 +1086,7 @@ export default function DetailSP() {
               </div>
             </Modal.Body>
           </Modal>
-          {/* end modal edit spct */}
+          {/* end modal edit nvct */}
           {/*start modal add cbo mau sac */}
           <Modal
             className="w-screen"
@@ -1119,7 +1096,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="nvace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1157,7 +1134,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="nvace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1195,7 +1172,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="nvace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1224,10 +1201,10 @@ export default function DetailSP() {
             </Modal.Body>
           </Modal>
           {/* end modal add cbo */}
-          <div className="flex overflow-x-auto sm:justify-center">
+          <div className="ms-4 mt-5 flex overflow-x-auto sm:justify-center">
             <Pagination
               currentPage={currentPage}
-              totalPages={100}
+              totalPages={lastPage}
               onPageChange={onPageChange}
             />
           </div>

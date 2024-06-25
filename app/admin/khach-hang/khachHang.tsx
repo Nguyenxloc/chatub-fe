@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import CellSanPhamBrowser from "./cellSanPhamBrowser";
-export default function SanPham() {
+import CellKhachHangBrowser from "./cellKhachHangBrowser";
+export default function KhachHang() {
   const router = useRouter();
   const [data, setData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,7 +43,7 @@ export default function SanPham() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page=" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/khach-hang/index?page=" +
         currentPage,
     )
       .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function SanPham() {
         console.log("data:", data);
       });
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/count")
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/khach-hang/count")
         .then((res) => res.json())
         .then((data) => {
           setLastPage(Math.ceil(data/20));
@@ -65,7 +65,7 @@ export default function SanPham() {
   function saveProduct() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/khach-hang/save",
         {
           method: "POST",
           headers: {
@@ -80,7 +80,7 @@ export default function SanPham() {
             giaBan: giaBan,
           }),
         },
-      ).then((res) => console.log("test response: ", res.ok));
+      ).then((res) => console.log("test rekhonse: ", res.ok));
       setRefkey(1);
       setCurrentPage(lastPage);
     } else {
@@ -90,7 +90,7 @@ export default function SanPham() {
   function updateProduct() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/khach-hang/save",
         {
           method: "POST",
           headers: {
@@ -105,7 +105,7 @@ export default function SanPham() {
             giaBan: giaBan,
           }),
         },
-      ).then((res) => console.log("test response: ", res.ok));
+      ).then((res) => console.log("test rekhonse: ", res.ok));
     } else {
       console.log("not do post");
     }
@@ -115,14 +115,14 @@ export default function SanPham() {
     setOpenModalAdd(false);
     console.log("test ref: ", refkey);
   }
-  function onOpenModalEdit(spParam: object) {
-    setId(spParam.id);
-    setMa(spParam.ma);
-    setTen(spParam.ten);
-    setTrangThai(spParam.trangThai);
-    setNgayTao(spParam.ngayTao);
-    setHinhAnh(spParam.hinhAnh);
-    setGiaBan(spParam.giaBan);
+  function onOpenModalEdit(khParam: object) {
+    setId(khParam.id);
+    setMa(khParam.ma);
+    setTen(khParam.ten);
+    setTrangThai(khParam.trangThai);
+    setNgayTao(khParam.ngayTao);
+    setHinhAnh(khParam.hinhAnh);
+    setGiaBan(khParam.giaBan);
   }
   function onCloseModalEdit() {
     setOpenModalEdit(false);
@@ -152,14 +152,14 @@ export default function SanPham() {
       return true;
     }
   }
-  function routePage(idSPCT: String) {
-    router.push("/admin/san-pham/detail/" + idSPCT);
-    console.log("route to show all detail product: ", idSPCT);
+  function routePage(idKHCT: String) {
+    router.push("/admin/san-pham/detail/" + idKHCT);
+    console.log("route to show all detail product: ", idKHCT);
   }
 
  
   return (
-    <div id="sanPhamBrowser" className="ms-2 bg-white">
+    <div id="khachHangBrowser" className="ms-2 bg-white">
       <h2>this is the admin san pham page</h2>
       <Navbarx />
       <div className="me-[115px] flex flex-row-reverse">
@@ -194,22 +194,22 @@ export default function SanPham() {
             </h5>
             <hr />
           </div>
-          {data.map((sp, i) => (
-            <div id={sp.id}>
+          {data.map((kh, i) => (
+            <div id={kh.id}>
               <div className="flex-cols flex w-screen">
-                <CellSanPhamBrowser cellSanPham={sp} i={i} />
+                <CellKhachHangBrowser cellKhachHang={kh} i={i} />
                 <div className="flex-cols flex w-2/12 items-center gap-1">
                   <Button
                     className="flex h-[50px] w-[100px] items-center"
                     onClick={() => {
-                      setOpenModalEdit(true), onOpenModalEdit(sp);
+                      setOpenModalEdit(true), onOpenModalEdit(kh);
                     }}
                   >
                     Sửa
                   </Button>
                   <Button
                     className="flex h-[50px] w-[100px] items-center"
-                    onClick={() => routePage(sp.id)}
+                    onClick={() => routePage(kh.id)}
                   >
                     Quản lý
                   </Button>
@@ -226,7 +226,7 @@ export default function SanPham() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="khace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Sửa sản phẩm
                 </h3>
@@ -336,7 +336,7 @@ export default function SanPham() {
           <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="khace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm sản phẩm
                 </h3>

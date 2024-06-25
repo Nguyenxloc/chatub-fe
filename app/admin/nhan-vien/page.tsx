@@ -1,15 +1,15 @@
 "use client"
 import { BrowserView, MobileView } from "react-device-detect";
-import SanPham from "./sanPham";
-import SanPhamMobile from "./sanPhamMobile";
+import NhanVien from "./nhanVien";
+import NhanVienMobile from "./nhanVienMobile";
 export default function Page() {
   return (
     <div>
       <BrowserView>
-        <SanPham/>
+        <NhanVien/>
       </BrowserView>
       <MobileView>
-        <SanPhamMobile/>
+        <NhanVienMobile/>
       </MobileView>
     </div>
   );
