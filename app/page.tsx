@@ -4,7 +4,7 @@ import { Footerx } from "./(dashboard)/component/footer";
 import Navbarx from "./(dashboard)/component/navbarx";
 import { Sidebarx } from "./(dashboard)/component/sidebarx";
 import { Sliderx } from "./(dashboard)/component/sliderx";
-import Products from "./products/products";
+import Products from "./online-retail/products";
 export default function Page() {
   return (
     <div>

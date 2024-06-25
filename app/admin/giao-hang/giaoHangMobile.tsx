@@ -43,7 +43,7 @@ export default function GiaoHangMobile() {
   let validateOK = false;
   useEffect(() => {
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/index?page=" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/giao-hang/index?page=" +
         currentPage,
     )
       .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function GiaoHangMobile() {
         console.log("data:", data);
       });
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/count")
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/giao-hang/count")
         .then((res) => res.json())
         .then((data) => {
           setLastPage(Math.ceil(data/20));
@@ -109,35 +109,10 @@ export default function GiaoHangMobile() {
     console.log("route to show all detail product: ", idGHCT);
   }
 
-  function saveProduct() {
-    if (validateOK) {
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ten: ten,
-            trangThai: "1",
-            ngayTao: ngayTao,
-            hinhAnh: hinhAnh,
-            giaBan: giaBan,
-          }),
-        },
-      ).then((res) => console.log("test reghonse: ", res.ok));
-      setRefkey(1);
-      setCurrentPage(lastPage);
-    } else {
-      console.log("not do post");
-    }
-  }
   function updateProduct() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/giao-hang/save",
         {
           method: "POST",
           headers: {

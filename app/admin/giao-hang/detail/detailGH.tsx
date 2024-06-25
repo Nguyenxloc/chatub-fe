@@ -159,43 +159,6 @@ export default function Detailgh() {
     setHinhAnh3("");
   }
 
-  function addGHCT() {
-    if (validateOK) {
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-gh/save",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            idgh: params.id,
-            idMauSac: mauSac.id,
-            idKichThuoc: kichThuoc.id,
-            idChatLieu: chatLieu.id,
-            namBH: namBH,
-            moTa: moTa,
-            soLuongTon: soLuongTon,
-            giaNhap: giaNhap,
-            giaBan: giaBan,
-            trangThai: "1",
-            hinhAnh1: hinhAnh1,
-            hinhAnh2: hinhAnh2,
-            hinhAnh3: hinhAnh3,
-          }),
-        },
-      ).then((res) => console.log("test reghonse: ", res));
-      console.log("idgh", params.id);
-      console.log("idmausac", mauSac.id);
-      console.log("idkichthuoc", kichThuoc.id);
-      setRefkey(1);
-      setCurrentPage(lastPage);
-      setOpenModalAdd(false);
-    } else {
-      console.log("not do post");
-    }
-  }
   function addMauSac() {
     if (validateMauSacOK) {
       fetch(

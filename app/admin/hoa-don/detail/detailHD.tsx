@@ -14,21 +14,20 @@ import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import CellSPCTBrowser from "./spct/cellSPCTBowser";
-export default function DetailSP() {
+export default function Detailhd() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
   const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] =
     useState(false);
   const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState(null);
-  const [dataSPCT, setDataSPCT] = useState(null);
+  const [dataHoaDon, setDataHoaDon] = useState(null);
+  const [dataHDCT, setDataHDCT] = useState(null);
   const onPageChange = (page: number) => setCurrentPage(page);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
-  const [idSPCT, setIdSPCT] = useState("");
-  const [sp, setSP] = useState("");
+  const [isLoadingHDCT, setIsLoadingHDCT] = useState(true);
+  const [idHDCT, setIdHDCT] = useState("");
+  const [hd, sethd] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
@@ -52,7 +51,7 @@ export default function DetailSP() {
   const [isLoadingLstKichThuoc, setIsLoadingLstKichThuoc] = useState(true);
   const [isLoadingLstChatLieu, setIsLoadingLstChatLieu] = useState(true);
   const [refKey, setRefkey] = useState(0);
-  const [refSP, setRefSP] = useState(0);
+  const [refhd, setRefhd] = useState(0);
   const [refMauSac, setRefMauSac] = useState(0);
   const [refKichThuoc, setRefKichThuoc] = useState(0);
   const [refChatLieu, setRefChatLieu] = useState(0);
@@ -122,28 +121,28 @@ export default function DetailSP() {
     }
   }
 
-  function onOpenModalEdit(spct: object) {
-    console.log("test spct: ", spct);
-    setIdSPCT(spct.id);
-    setSP(spct.sp);
-    setNamBH(spct.namBH);
-    setMoTa(spct.moTa);
-    setSoLuongTon(spct.soLuongTon);
-    setGiaBan(spct.giaBan);
-    setGiaNhap(spct.giaNhap);
-    setNgayTao(spct.ngayTao);
-    setTrangThai(spct.trangThai);
-    setHinhAnh1(spct.hinhAnh1);
-    setHinhAnh2(spct.hinhAnh2);
-    setHinhAnh3(spct.hinhAnh3);
-    setMauSac(spct.mauSac);
-    setKichThuoc(spct.kichThuoc);
-    setChatLieu(spct.chatLieu);
+  function onOpenModalEdit(HDCT: object) {
+    console.log("test HDCT: ", HDCT);
+    setIdHDCT(HDCT.id);
+    sethd(HDCT.hd);
+    setNamBH(HDCT.namBH);
+    setMoTa(HDCT.moTa);
+    setSoLuongTon(HDCT.soLuongTon);
+    setGiaBan(HDCT.giaBan);
+    setGiaNhap(HDCT.giaNhap);
+    setNgayTao(HDCT.ngayTao);
+    setTrangThai(HDCT.trangThai);
+    setHinhAnh1(HDCT.hinhAnh1);
+    setHinhAnh2(HDCT.hinhAnh2);
+    setHinhAnh3(HDCT.hinhAnh3);
+    setMauSac(HDCT.mauSac);
+    setKichThuoc(HDCT.kichThuoc);
+    setChatLieu(HDCT.chatLieu);
   }
 
   function resetState() {
-    setIdSPCT("");
-    setSP("");
+    setIdHDCT("");
+    sethd("");
     setMauSac("");
     setKichThuoc("");
     setChatLieu("");
@@ -159,10 +158,10 @@ export default function DetailSP() {
     setHinhAnh3("");
   }
 
-  function addSPCT() {
+  function addHDCT() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/save",
         {
           method: "POST",
           headers: {
@@ -170,7 +169,7 @@ export default function DetailSP() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: params.id,
+            idhd: params.id,
             idMauSac: mauSac.id,
             idKichThuoc: kichThuoc.id,
             idChatLieu: chatLieu.id,
@@ -185,8 +184,8 @@ export default function DetailSP() {
             hinhAnh3: hinhAnh3,
           }),
         },
-      ).then((res) => console.log("test response: ", res));
-      console.log("idsp", params.id);
+      ).then((res) => console.log("test rehdonse: ", res));
+      console.log("idhd", params.id);
       console.log("idmausac", mauSac.id);
       console.log("idkichthuoc", kichThuoc.id);
       setRefkey(1);
@@ -211,7 +210,7 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefMauSac(1);
     } else {
       console.log("not do post");
@@ -233,7 +232,7 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefKichThuoc(1);
     } else {
       console.log("not do post");
@@ -255,17 +254,17 @@ export default function DetailSP() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefChatLieu(1);
     } else {
       console.log("not do post");
     }
   }
 
-  function updateSPCT(idparam: string) {
+  function updateHDCT(idparam: string) {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/update/" +
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/update/" +
           idparam,
         {
           method: "POST",
@@ -289,7 +288,7 @@ export default function DetailSP() {
           }),
         },
       ).then((res) => {
-        console.log("test response: ", res);
+        console.log("test rehdonse: ", res);
         console.log("test chat lieu: ", chatLieu.id);
         resetState();
         setRefkey(1);
@@ -341,19 +340,19 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSanPham(data);
+          setDataHoaDon(data);
           setIsLoading(false);
-          console.log("data sp:", data);
+          console.log("data hd:", data);
         }
       });
     return () => {
       isMounted = false;
     };
-  }, [refSP]);
+  }, [refhd]);
   useEffect(() => {
     let isMounted = true;
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/detail-byidhd/" +
         params.id +
         "?page=" +
         currentPage,
@@ -361,14 +360,14 @@ export default function DetailSP() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
+          setDataHDCT(data);
+          setIsLoadingHDCT(false);
           setRefkey(0);
-          console.log("data spct:", data);
+          console.log("data HDCT:", data);
         }
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/count-byidhd/" +
         params.id,
     )
       .then((res) => res.json())
@@ -449,7 +448,7 @@ export default function DetailSP() {
         <div className="z-0 w-full bg-white">
           <div>
             <h2>
-              Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
+              Sản phẩm: {dataHoaDon.ma} {dataHoaDon.ten}
             </h2>
           </div>
           <div className="me-5 flex flex-row-reverse">
@@ -489,13 +488,13 @@ export default function DetailSP() {
                 Hình ảnh 3
               </h2>
             </div>
-            <div className="mt-5 space-y-5">
-              {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
-                ? dataSPCT.map((spctLocal, i) => (
+            <div className="mt-5 hdace-y-5">
+              {!isLoadingHDCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
+                ? dataHDCT.map((HDCTLocal, i) => (
                     <div className="flex-cols flex">
                       <div className="flex w-10/12 items-center border-b-2">
-                        <CellSPCTBrowser
-                          spct={spctLocal}
+                        <CellHDCTBrowser
+                          HDCT={HDCTLocal}
                           lstKichThuoc={lstKichThuoc}
                           lstMauSac={lstMauSac}
                           indx={i}
@@ -505,7 +504,7 @@ export default function DetailSP() {
                         <Button
                           className="ms-3 flex h-[30px] items-center"
                           onClick={() => {
-                            setOpenModalEdit(true), onOpenModalEdit(spctLocal);
+                            setOpenModalEdit(true), onOpenModalEdit(HDCTLocal);
                           }}
                         >
                           Sửa
@@ -525,7 +524,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="hdace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Nhập sản phẩm chi tiết
                 </h3>
@@ -534,9 +533,9 @@ export default function DetailSP() {
                     <Label htmlFor="ma" value="Tên sản phẩm" />
                   </div>
                   <TextInput
-                    id="idSP"
+                    id="idhd"
                     placeholder=""
-                    value={dataSanPham.ten + " " + dataSanPham.ma}
+                    value={dataHoaDon.ten + " " + dataHoaDon.ma}
                     readOnly
                   />
                 </div>
@@ -799,7 +798,7 @@ export default function DetailSP() {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => addHDCT()}>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>
@@ -814,7 +813,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="hdace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Chỉnh sửa sản phẩm chi tiết
                 </h3>
@@ -826,9 +825,9 @@ export default function DetailSP() {
                     />
                   </div>
                   <TextInput
-                    id="sp"
+                    id="hd"
                     placeholder=""
-                    value={sp.ten + " " + sp.ma}
+                    value={hd.ten + " " + hd.ma}
                     readOnly
                   />
                 </div>
@@ -1100,7 +1099,7 @@ export default function DetailSP() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT)
+                      updateHDCT(idHDCT)
                     }}
                   >
                     Lưu sản phẩm
@@ -1109,7 +1108,7 @@ export default function DetailSP() {
               </div>
             </Modal.Body>
           </Modal>
-          {/* end modal edit spct */}
+          {/* end modal edit HDCT */}
           {/*start modal add cbo mau sac */}
           <Modal
             className="w-screen"
@@ -1119,7 +1118,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1157,7 +1156,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1195,7 +1194,7 @@ export default function DetailSP() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>

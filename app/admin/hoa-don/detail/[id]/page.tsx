@@ -1,14 +1,14 @@
 "use client";
 import { BrowserView, MobileView } from "react-device-detect";
-import DetailSP from "../detailSP";
-import DetailSPMobile from "../detailSPMobile";
+import Detailhd from "../detailHD";
+import DetailhdMobile from "../detailHDMobile";
 export default function Page() {
   return (
     <div>
       <BrowserView>
-        <DetailSP/>
+        <Detailhd/>
       </BrowserView>
       <MobileView>
-        <DetailSPMobile/>
+        <DetailhdMobile/>
       </MobileView>
      </div>)}

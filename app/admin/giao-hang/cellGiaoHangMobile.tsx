@@ -2,7 +2,6 @@ import { Button, Label, Modal, TextInput, ToggleSwitch } from "flowbite-react";
 export default function CellGiaoHangMobile({ cellGiaoHang, i }) {
   return (
     <div
-      // onClick={() => router.push("/products/detail/" + cellSanPham.id)}
       className="mt-5 w-[450px] h-[150px]"
     >
       <div className="flex-cols flex gap-5">

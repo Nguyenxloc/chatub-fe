@@ -14,21 +14,20 @@ import { useEffect, useState } from "react";
 import { HiCheckCircle, HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import CellSPCTMobile from "./spct/cellSPCTMobile";
-export default function DetailSPMobile() {
+export default function DetailhdMobile() {
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalAddCboMauSac, setOpenModalAddCboMauSac] = useState(false);
   const [openModalAddCboKichThuoc, setOpenModalAddCboKichThuoc] =
     useState(false);
   const [openModalAddCboChatLieu, setOpenModalAddCboChatLieu] = useState(false);
-  const [dataSanPham, setDataSanPham] = useState(null);
-  const [dataSPCT, setDataSPCT] = useState(null);
+  const [dataHoaDon, setDataHoaDon] = useState(null);
+  const [dataHDCT, setDataHDCT] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingSPCT, setIsLoadingSPCT] = useState(true);
+  const [isLoadingHDCT, setIsLoadingHDCT] = useState(true);
   const onPageChange = (page: number) => setCurrentPage(page);
-  const [idSPCT, setIdSPCT] = useState("");
-  const [sp, setSP] = useState("");
+  const [idHDCT, setIdHDCT] = useState("");
+  const [hd, sethd] = useState("");
   const [mauSac, setMauSac] = useState("");
   const [kichThuoc, setKichThuoc] = useState("");
   const [chatLieu, setChatLieu] = useState("");
@@ -55,7 +54,7 @@ export default function DetailSPMobile() {
   const [refMauSac, setRefMauSac] = useState(0);
   const [refKichThuoc, setRefKichThuoc] = useState(0);
   const [refChatLieu, setRefChatLieu] = useState(0);
-  const [refSP, setRefSP] = useState(0);
+  const [refhd, setRefhd] = useState(0);
   const [lastPage, setLastPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   let validateOK = false;
@@ -81,27 +80,27 @@ export default function DetailSPMobile() {
     setOpenModalAddCboChatLieu(false);
     setChatLieuTxt("");
   }
-  function onOpenModalEdit(spct: object) {
-    setIdSPCT(spct.id);
-    setSP(spct.sp);
-    setNamBH(spct.namBH);
-    setMoTa(spct.moTa);
-    setSoLuongTon(spct.soLuongTon);
-    setGiaBan(spct.giaBan);
-    setGiaNhap(spct.giaNhap);
-    setNgayTao(spct.ngayTao);
-    setTrangThai(spct.trangThai);
-    setHinhAnh1(spct.hinhAnh1);
-    setHinhAnh2(spct.hinhAnh2);
-    setHinhAnh3(spct.hinhAnh3);
-    setMauSac(spct.mauSac);
-    setKichThuoc(spct.kichThuoc);
-    setChatLieu(spct.chatLieu);
+  function onOpenModalEdit(HDCT: object) {
+    setIdHDCT(HDCT.id);
+    sethd(HDCT.hd);
+    setNamBH(HDCT.namBH);
+    setMoTa(HDCT.moTa);
+    setSoLuongTon(HDCT.soLuongTon);
+    setGiaBan(HDCT.giaBan);
+    setGiaNhap(HDCT.giaNhap);
+    setNgayTao(HDCT.ngayTao);
+    setTrangThai(HDCT.trangThai);
+    setHinhAnh1(HDCT.hinhAnh1);
+    setHinhAnh2(HDCT.hinhAnh2);
+    setHinhAnh3(HDCT.hinhAnh3);
+    setMauSac(HDCT.mauSac);
+    setKichThuoc(HDCT.kichThuoc);
+    setChatLieu(HDCT.chatLieu);
   }
 
   function resetState() {
-    setIdSPCT("");
-    setSP("");
+    setIdHDCT("");
+    sethd("");
     setMauSac("");
     setKichThuoc("");
     setChatLieu("");
@@ -157,10 +156,10 @@ export default function DetailSPMobile() {
     }
   }
 
-  function addSPCT() {
+  function addHDCT() {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/save",
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/save",
         {
           method: "POST",
           headers: {
@@ -168,7 +167,7 @@ export default function DetailSPMobile() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            idSp: params.id,
+            idhd: params.id,
             idMauSac: mauSac.id,
             idKichThuoc: kichThuoc.id,
             idChatLieu: chatLieu.id,
@@ -183,7 +182,7 @@ export default function DetailSPMobile() {
             hinhAnh3: hinhAnh3,
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefkey(1);
       setCurrentPage(lastPage);
       setOpenModalAdd(false);
@@ -207,7 +206,7 @@ export default function DetailSPMobile() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefMauSac(1);
     } else {
       console.log("not do post");
@@ -229,7 +228,7 @@ export default function DetailSPMobile() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefKichThuoc(1);
     } else {
       console.log("not do post");
@@ -251,16 +250,16 @@ export default function DetailSPMobile() {
             trangThai: "0",
           }),
         },
-      ).then((res) => console.log("test response: ", res));
+      ).then((res) => console.log("test rehdonse: ", res));
       setRefChatLieu(1);
     } else {
       console.log("not do post");
     }
   }
-  function updateSPCT(idparam: string) {
+  function updateHDCT(idparam: string) {
     if (validateOK) {
       fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/update/" +
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/update/" +
           idparam,
         {
           method: "POST",
@@ -283,7 +282,7 @@ export default function DetailSPMobile() {
           }),
         },
       ).then((res) => {
-        console.log("test response: ", res);
+        console.log("test rehdonse: ", res);
         resetState();
         setRefkey(1);
         onCloseModalEdit();
@@ -335,20 +334,20 @@ export default function DetailSPMobile() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSanPham(data);
+          setDataHoaDon(data);
           setIsLoading(false);
-          console.log("data sp:", data);
+          console.log("data hd:", data);
         }
       });
     return () => {
       isMounted = false;
     };
-  }, [refSP]);
+  }, [refhd]);
 
   useEffect(() => {
     let isMounted = true;
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/detail-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/detail-byidhd/" +
         params.id +
         "?page=" +
         currentPage,
@@ -356,14 +355,14 @@ export default function DetailSPMobile() {
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
-          setDataSPCT(data);
-          setIsLoadingSPCT(false);
+          setDataHDCT(data);
+          setIsLoadingHDCT(false);
           setRefkey(0);
-          console.log("data spct:", data);
+          console.log("data HDCT:", data);
         }
       });
     fetch(
-      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-hd/count-byidhd/" +
         params.id,
     )
       .then((res) => res.json())
@@ -455,7 +454,7 @@ export default function DetailSPMobile() {
 
           <div className="ms-5">
             <h2 className="font-semibold">
-              Sản phẩm: {dataSanPham.ten}-{dataSanPham.ma}
+              Sản phẩm: {dataHoaDon.ten}-{dataHoaDon.ma}
             </h2>
             <div className="flex-cols mt-5 flex w-screen">
               <h2 className="flex w-1/12 items-center text-xs font-semibold">
@@ -477,14 +476,14 @@ export default function DetailSPMobile() {
                 Status
               </h2>
             </div>
-            <div className="mt-5 space-y-5">
-              {!isLoadingSPCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
-                ? dataSPCT.map((spctLocal, i) => (
+            <div className="mt-5 hdace-y-5">
+              {!isLoadingHDCT && !isLoadingLstKichThuoc && !isLoadingLstMauSac
+                ? dataHDCT.map((HDCTLocal, i) => (
                     <div className="flex-cols flex">
                       <div className="flex w-8/12 items-center border-b-2">
-                        <CellSPCTMobile
+                        <CellHDCTMobile
                           key={i}
-                          spct={spctLocal}
+                          HDCT={HDCTLocal}
                           lstKichThuoc={lstKichThuoc}
                           lstMauSac={lstMauSac}
                           indx={i}
@@ -494,7 +493,7 @@ export default function DetailSPMobile() {
                         <Button
                           className="ms-3 flex h-[30px] items-center"
                           onClick={() => {
-                            setOpenModalEdit(true), onOpenModalEdit(spctLocal);
+                            setOpenModalEdit(true), onOpenModalEdit(HDCTLocal);
                           }}
                         >
                           Sửa
@@ -514,7 +513,7 @@ export default function DetailSPMobile() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="hdace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Nhập sản phẩm chi tiết
                 </h3>
@@ -523,9 +522,9 @@ export default function DetailSPMobile() {
                     <Label htmlFor="ma" value="Tên sản phẩm" />
                   </div>
                   <TextInput
-                    id="idSP"
+                    id="idhd"
                     placeholder=""
-                    value={dataSanPham.ten + " " + dataSanPham.ma}
+                    value={dataHoaDon.ten + " " + dataHoaDon.ma}
                     readOnly
                   />
                 </div>
@@ -782,7 +781,7 @@ export default function DetailSPMobile() {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => addSPCT()}>Lưu sản phẩm</Button>
+                  <Button onClick={() => addHDCT()}>Lưu sản phẩm</Button>
                 </div>
               </div>
             </Modal.Body>
@@ -797,7 +796,7 @@ export default function DetailSPMobile() {
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="hdace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Chỉnh sửa sản phẩm chi tiết
                 </h3>
@@ -809,9 +808,9 @@ export default function DetailSPMobile() {
                     />
                   </div>
                   <TextInput
-                    id="sp"
+                    id="hd"
                     placeholder=""
-                    value={sp.ten + " " + sp.ma}
+                    value={hd.ten + " " + hd.ma}
                     readOnly
                   />
                 </div>
@@ -1077,7 +1076,7 @@ export default function DetailSPMobile() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT);
+                      updateHDCT(idHDCT);
                     }}
                   >
                     Lưu sản phẩm
@@ -1086,7 +1085,7 @@ export default function DetailSPMobile() {
               </div>
             </Modal.Body>
           </Modal>
-          {/* end modal edit spct */}
+          {/* end modal edit HDCT */}
           {/*start modal add cbo mau sac */}
           <Modal
             className="w-screen"
@@ -1096,7 +1095,7 @@ export default function DetailSPMobile() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1134,7 +1133,7 @@ export default function DetailSPMobile() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
@@ -1172,7 +1171,7 @@ export default function DetailSPMobile() {
           >
             <Modal.Header />
             <Modal.Body>
-              <div className="space-y-6">
+              <div className="hdace-y-6">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm mới
                 </h3>
