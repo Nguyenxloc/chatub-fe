@@ -8,7 +8,7 @@ export default function Page() {
         <NhanVien/>
       </BrowserView>
       <MobileView>
-        <CellNhanVienMobile/>
+        <NhanVienMobile/>
       </MobileView>
     </div>
   );

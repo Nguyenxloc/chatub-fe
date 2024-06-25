@@ -104,6 +104,7 @@ export default function NhanVien() {
       return true;
     }
   }
+  
   function routePage(idNVCT: String) {
     router.push("/admin/san-pham/detail/" + idNVCT);
     console.log("route to show all detail product: ", idNVCT);
