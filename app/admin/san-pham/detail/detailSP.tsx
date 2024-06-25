@@ -191,6 +191,7 @@ export default function DetailSP() {
       console.log("idkichthuoc", kichThuoc.id);
       setRefkey(1);
       setCurrentPage(lastPage);
+      setOpenModalAdd(false);
     } else {
       console.log("not do post");
     }
@@ -292,6 +293,8 @@ export default function DetailSP() {
         console.log("test chat lieu: ", chatLieu.id);
         resetState();
         setRefkey(1);
+        onCloseModalEdit();
+        setOpenModalEdit(false);
       });
     } else {
       console.log("not do post");
@@ -1097,7 +1100,7 @@ export default function DetailSP() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT), onCloseModalEdit();
+                      updateSPCT(idSPCT)
                     }}
                   >
                     Lưu sản phẩm

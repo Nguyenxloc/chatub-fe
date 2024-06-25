@@ -171,6 +171,7 @@ export default function DetailSPMobile() {
             idSp: params.id,
             idMauSac: mauSac.id,
             idKichThuoc: kichThuoc.id,
+            idChatLieu: chatLieu.id,
             namBH: namBH,
             moTa: moTa,
             soLuongTon: soLuongTon,
@@ -185,6 +186,7 @@ export default function DetailSPMobile() {
       ).then((res) => console.log("test response: ", res));
       setRefkey(1);
       setCurrentPage(lastPage);
+      setOpenModalAdd(false);
     } else {
       console.log("not do post");
     }
@@ -284,6 +286,8 @@ export default function DetailSPMobile() {
         console.log("test response: ", res);
         resetState();
         setRefkey(1);
+        onCloseModalEdit();
+        setOpenModalEdit(false);
       });
     } else {
       console.log("not do post");
@@ -726,7 +730,7 @@ export default function DetailSPMobile() {
                   <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
                   </div>
-                  <TextInput id="hinhAnh1add" value={hinhAnh1} required />
+                  <TextInput id="hinhAnh1add" value={hinhAnh1} onChange={()=>{setHinhAnh1(event?.target.value)}} required />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -742,7 +746,7 @@ export default function DetailSPMobile() {
                   <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh2add" value="Link hình ảnh 2" />
                   </div>
-                  <TextInput id="hinhAnh2add" value={hinhAnh2} required />
+                  <TextInput id="hinhAnh2add" value={hinhAnh2} onChange={()=>{setHinhAnh2(event?.target.value)}} required />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -758,7 +762,7 @@ export default function DetailSPMobile() {
                   <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh3add" value="Link hình ảnh 3" />
                   </div>
-                  <TextInput id="hinhAnh3add" value={hinhAnh3} required />
+                  <TextInput id="hinhAnh3add" value={hinhAnh3} onChange={()=>{setHinhAnh3(event?.target.value)}} required />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1073,7 +1077,7 @@ export default function DetailSPMobile() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT), onCloseModalEdit();
+                      updateSPCT(idSPCT);
                     }}
                   >
                     Lưu sản phẩm
