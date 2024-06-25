@@ -720,7 +720,10 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh1} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
                   </div>
                   <TextInput id="hinhAnh1add" value={hinhAnh1} required />
@@ -733,7 +736,10 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh2} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh2add" value="Link hình ảnh 2" />
                   </div>
                   <TextInput id="hinhAnh2add" value={hinhAnh2} required />
@@ -746,7 +752,10 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh3} alt="" />
+                  </div>
+                  <div className="flex items-center justify-center mb-2">
                     <Label htmlFor="hinhAnh3add" value="Link hình ảnh 3" />
                   </div>
                   <TextInput id="hinhAnh3add" value={hinhAnh3} required />
@@ -1004,10 +1013,13 @@ export default function DetailSPMobile() {
                   <TextInput id="ngayTao" value={ngayTao} readOnly />
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh1" value="Link hình ảnh 1" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh1} alt="" />
                   </div>
-                  <TextInput id="hinhAnh1" value={hinhAnh1} required />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh1add" value="Link hình ảnh 1" />
+                  </div>
+                  <TextInput id="hinhAnh1add" value={hinhAnh1} required />
                   {!validatorNull(hinhAnh1) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1017,10 +1029,13 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh2" value="Link hình ảnh 2" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh2} alt="" />
                   </div>
-                  <TextInput id="hinhAnh2" value={hinhAnh2} required />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh2edit" value="Link hình ảnh 2" />
+                  </div>
+                  <TextInput id="hinhAnh2edit" value={hinhAnh2} required />
                   {!validatorNull(hinhAnh2) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1030,10 +1045,13 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div>
-                  <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh3" value="Link hình ảnh 3" />
+                  <div className="flex items-center justify-center">
+                  <img className="h-[150px] w-[150px]" src={hinhAnh3} alt="" />
                   </div>
-                  <TextInput id="hinhAnh3" value={hinhAnh3} required />
+                  <div className="flex items-center justify-center mb-2">
+                    <Label htmlFor="hinhAnh3edit" value="Link hình ảnh 3" />
+                  </div>
+                  <TextInput id="hinhAnh3edit" value={hinhAnh3} required />
                   {!validatorNull(hinhAnh3) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
@@ -1097,7 +1115,7 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button onClick={()=>addMauSac()}>Lưu</Button>
+                  <Button onClick={() => addMauSac()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
@@ -1135,7 +1153,7 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button onClick={()=>addKichThuoc()}>Lưu</Button>
+                  <Button onClick={() => addKichThuoc()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
@@ -1173,7 +1191,7 @@ export default function DetailSPMobile() {
                   )}
                 </div>
                 <div className="w-full">
-                  <Button onClick={()=>addChatLieu()}>Lưu</Button>
+                  <Button onClick={() => addChatLieu()}>Lưu</Button>
                 </div>
               </div>
             </Modal.Body>
