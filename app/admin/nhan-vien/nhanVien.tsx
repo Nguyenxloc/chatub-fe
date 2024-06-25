@@ -1,8 +1,8 @@
-
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
   Button,
+  Dropdown,
   Label,
   Modal,
   Pagination,
@@ -26,18 +26,14 @@ export default function NhanVien() {
   const [isLoading, setIsLoading] = useState(true);
   const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, "0");
-  var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = today.getFullYear();
-  var todayNow = mm + "/" + dd + "/" + yyyy;
-  var ngayTaoSys = yyyy + "-" + mm + "-" + dd;
   const [id, setId] = useState("");
-  const [ma, setMa] = useState("");
-  const [ten, setTen] = useState("");
-  const [ngayTao, setNgayTao] = useState(ngayTaoSys);
+  const [hoTen, setHoTen] = useState("");
+  const [gioiTinh, setGioiTinh] = useState("");
+  const [ngaySinh, setNgaySinh] = useState("");
+  const [sdt, setSDT] = useState("");
+  const [matKhau, setMatKhau] = useState("");
+  const [idCV, setIDCV] = useState("");
   const [hinhAnh, setHinhAnh] = useState("");
-  const [giaBan, setGiaBan] = useState("");
   const [trangThai, setTrangThai] = useState(false);
   const [refkey, setRefkey] = useState(0);
   let validateOK = false;
@@ -53,13 +49,14 @@ export default function NhanVien() {
         setRefkey(0);
         console.log("data:", data);
       });
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/count")
-        .then((res) => res.json())
-        .then((data) => {
-          setLastPage(Math.ceil(data/20));
-          console.log("data:", Math.ceil(data/20));
-        });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/nhan-vien/count",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLastPage(Math.ceil(data / 20));
+        console.log("data:", Math.ceil(data / 20));
+      });
     console.log("test current page: ", currentPage);
   }, [refkey, currentPage]);
   function saveProduct() {
@@ -98,11 +95,13 @@ export default function NhanVien() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            ten: ten,
-            trangThai: "0",
-            ngayTao: ngayTao,
-            hinhAnh: hinhAnh,
-            giaBan: giaBan,
+            hoTen: hoTen,
+            gioiTinh: gioiTinh,
+            ngaySinh: ngaySinh,
+            sdt: sdt,
+            matKhau: matKhau,
+            idCV: idCV,
+            trangThai: 1,
           }),
         },
       ).then((res) => console.log("test renvonse: ", res.ok));
@@ -117,12 +116,12 @@ export default function NhanVien() {
   }
   function onOpenModalEdit(nvParam: object) {
     setId(nvParam.id);
-    setMa(nvParam.ma);
-    setTen(nvParam.ten);
+    setHoTen(nvParam.hoTen);
+    setNgaySinh(nvParam.ngaySinh);
+    setSDT(nvParam.sdt);
+    setMatKhau(nvParam.matKhau);
+    setIDCV(nvParam.idCV);
     setTrangThai(nvParam.trangThai);
-    setNgayTao(nvParam.ngayTao);
-    setHinhAnh(nvParam.hinhAnh);
-    setGiaBan(nvParam.giaBan);
   }
   function onCloseModalEdit() {
     setOpenModalEdit(false);
@@ -131,12 +130,13 @@ export default function NhanVien() {
   }
   function resetState() {
     setId("");
-    setMa("");
-    setTen("");
+    setHoTen("");
+    setGioiTinh("");
+    setNgaySinh("");
+    setSDT("");
+    setMatKhau("");
+    setIDCV("");
     setTrangThai(false);
-    setNgayTao("");
-    setHinhAnh("");
-    setGiaBan("");
   }
 
   function doSetRefKey() {
@@ -153,11 +153,10 @@ export default function NhanVien() {
     }
   }
   function routePage(idNVCT: String) {
-    router.push("/admin/san-pham/detail/" + idNVCT);
+    router.push("/admin/nhan-vien/detail/" + idNVCT);
     console.log("route to show all detail product: ", idNVCT);
   }
 
- 
   return (
     <div id="nhanVienBrowser" className="ms-2 bg-white">
       <h2>this is the admin san pham page</h2>
@@ -178,19 +177,22 @@ export default function NhanVien() {
               Hình ảnh
             </h5>
             <h5 className="trackfing-tight w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
-              Mã
+              Họ tên
             </h5>
             <h5 className="w-2/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
-              Tên sản phẩm
+              Giới tính
             </h5>
             <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
-              Ngày tạo
+              Ngày sinh
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              SĐT
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              Chức vụ
             </h5>
             <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
               Trạng thái
-            </h5>
-            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
-              Giá bán
             </h5>
             <hr />
           </div>
@@ -228,7 +230,7 @@ export default function NhanVien() {
             <Modal.Body className="overflow-auto">
               <div className="nvace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Sửa sản phẩm
+                  Sửa thông tin
                 </h3>
                 <div className="flex justify-center">
                   <img className="h-[200px]" src={hinhAnh} alt="" />
@@ -238,12 +240,12 @@ export default function NhanVien() {
                     <Label htmlFor="ma" value="Mã sản phẩm" />
                   </div>
                   <TextInput
-                    id="ma"
-                    value={ma}
-                    onChange={() => setMa(event.target.value)}
+                    id="hoTenAdd"
+                    value={hoTen}
+                    onChange={() => setHoTen(event.target.value)}
                     required
                   />
-                  {!validatorNull(ma) ? (
+                  {!validatorNull(hoTen) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -253,15 +255,13 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="ten" value="Tên sản phẩm" />
+                    <Label htmlFor="gioiTinhADD" value="Giới tính" />
                   </div>
-                  <TextInput
-                    id="ten"
-                    value={ten}
-                    onChange={() => setTen(event.target.value)}
-                    required
-                  />
-                  {!validatorNull(ten) ? (
+                  <Dropdown label="Giới tính" dismissOnClick={false}>
+                    <Dropdown.Item value="male" onClick={()=>setGioiTinh(event.target.value)}>Nam</Dropdown.Item>
+                    <Dropdown.Item value="female" onClick={()=>setGioiTinh(event.target.value)}>Nữ</Dropdown.Item>
+                  </Dropdown>
+                  {!validatorNull(gioiTinh) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -271,13 +271,21 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="ngayTao" value="Ngày tạo" />
+                    <Label htmlFor="ngaySinhAdd" value="Ngày sinh" />
                   </div>
-                  <TextInput id="ngayTao" value={todayNow} required readOnly />
+                  {/* need to covert */}
+                  <TextInput id="ngaySinhAdd" type="date" value={ngaySinh} required readOnly />
+                  {!validatorNull(ngaySinh) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                    <Label htmlFor="hinhAnhAdd" value="Link Hình ảnh" />
                   </div>
                   <TextInput
                     id="hinhAnh"
@@ -295,15 +303,49 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="giaBan" value="Giá bán" />
+                    <Label htmlFor="sdtAdd" value="Số điện thoại" />
                   </div>
                   <TextInput
-                    id="giaBan"
-                    value={giaBan}
-                    onChange={() => setGiaBan(event.target.value)}
+                    id="sdtAdd"
+                    value={sdt}
+                    onChange={() => setSDT(event.target.value)}
                     required
                   />
-                  {!validatorNull(giaBan) ? (
+                  {!validatorNull(sdt) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="matKhauAdd" value="Mật khẩu" />
+                  </div>
+                  <TextInput
+                    id="matKhauAdd"
+                    value={matKhau}
+                    onChange={() => setMatKhau(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(matKhau) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="chucVuADD" value="Chức vụ" />
+                  </div>
+                  <Dropdown label="Chức vụ" dismissOnClick={false}>
+                    <Dropdown.Item value="lstchucvu" onClick={()=>setIDCV(event.target.value)}>mng</Dropdown.Item>
+                    <Dropdown.Item value="lstchucvu" onClick={()=>setIDCV(event.target.value)}>staff</Dropdown.Item>
+                  </Dropdown>
+                  {!validatorNull(idCV) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -338,22 +380,22 @@ export default function NhanVien() {
             <Modal.Body className="overflow-auto">
               <div className="nvace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                  Thêm sản phẩm
+                  Sửa thông tin
                 </h3>
+                <div className="flex justify-center">
+                  <img className="h-[200px]" src={hinhAnh} alt="" />
+                </div>
                 <div>
-                  <div className="flex justify-center">
-                    <img className="h-[200px]" alt="" />
-                  </div>
                   <div className="mb-2 block">
-                    <Label htmlFor="ten" value="Tên sản phẩm" />
+                    <Label htmlFor="ma" value="Mã sản phẩm" />
                   </div>
                   <TextInput
-                    id="ten"
-                    value={ten}
-                    onChange={() => setTen(event.target.value)}
+                    id="hoTenEdit"
+                    value={hoTen}
+                    onChange={() => setHoTen(event.target.value)}
                     required
                   />
-                  {!validatorNull(ten) ? (
+                  {!validatorNull(hoTen) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -363,13 +405,37 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="ngayTao" value="Ngày tạo" />
+                    <Label htmlFor="gioiTinhEdit" value="Giới tính" />
                   </div>
-                  <TextInput id="ngayTao" value={todayNow} required readOnly />
+                  <Dropdown label="Giới tính" dismissOnClick={false}>
+                    <Dropdown.Item value="male" onClick={()=>setGioiTinh(event.target.value)}>Nam</Dropdown.Item>
+                    <Dropdown.Item value="female" onClick={()=>setGioiTinh(event.target.value)}>Nữ</Dropdown.Item>
+                  </Dropdown>
+                  {!validatorNull(gioiTinh) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="hinhAnh" value="Link Hình ảnh" />
+                    <Label htmlFor="ngaySinhEdit" value="Ngày sinh" />
+                  </div>
+                  {/* need to covert */}
+                  <TextInput id="ngaySinhEdit" type="date" value={ngaySinh} required readOnly />
+                  {!validatorNull(ngaySinh) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="hinhAnhEdit" value="Link Hình ảnh" />
                   </div>
                   <TextInput
                     id="hinhAnh"
@@ -387,15 +453,15 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="giaBan" value="Giá bán" />
+                    <Label htmlFor="sdtEdit" value="Số điện thoại" />
                   </div>
                   <TextInput
-                    id="giaBan"
-                    value={giaBan}
-                    onChange={() => setGiaBan(event.target.value)}
+                    id="sdtAdd"
+                    value={sdt}
+                    onChange={() => setSDT(event.target.value)}
                     required
                   />
-                  {!validatorNull(giaBan) ? (
+                  {!validatorNull(sdt) ? (
                     <p className="text-red-600">
                       Không để trống trường dữ liệu này
                     </p>
@@ -405,7 +471,41 @@ export default function NhanVien() {
                 </div>
                 <div>
                   <div className="mb-2 block">
-                    <Label htmlFor="trangThai" value="Trạng thái" />
+                    <Label htmlFor="matKhauEdit" value="Mật khẩu" />
+                  </div>
+                  <TextInput
+                    id="matKhauEdit"
+                    value={matKhau}
+                    onChange={() => setMatKhau(event.target.value)}
+                    required
+                  />
+                  {!validatorNull(matKhau) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="chucVuEdit" value="Chức vụ" />
+                  </div>
+                  <Dropdown label="Chức vụ" dismissOnClick={false}>
+                    <Dropdown.Item value="lstchucvu" onClick={()=>setIDCV(event.target.value)}>mng</Dropdown.Item>
+                    <Dropdown.Item value="lstchucvu" onClick={()=>setIDCV(event.target.value)}>staff</Dropdown.Item>
+                  </Dropdown>
+                  {!validatorNull(idCV) ? (
+                    <p className="text-red-600">
+                      Không để trống trường dữ liệu này
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="trangThaiEdit" value="Trạng thái" />
                   </div>
                   <ToggleSwitch
                     checked={trangThai}
@@ -414,7 +514,13 @@ export default function NhanVien() {
                   />
                 </div>
                 <div className="w-full">
-                  <Button onClick={() => saveProduct()}>Lưu sản phẩm</Button>
+                  <Button
+                    onClick={() => {
+                      saveProduct();
+                    }}
+                  >
+                    Lưu sản phẩm
+                  </Button>
                 </div>
               </div>
             </Modal.Body>

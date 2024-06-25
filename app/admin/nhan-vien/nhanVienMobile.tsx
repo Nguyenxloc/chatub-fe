@@ -15,7 +15,7 @@ import { HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import CellNhanVienMobile from "./cellNhanVienMobile";
-export default function NhanVien() {
+export default function NhanVienMobile() {
   const router = useRouter();
   const [data, setData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
