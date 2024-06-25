@@ -1,4 +1,4 @@
-"use client";
+
 import { Footerx } from "@/app/(dashboard)/component/footer";
 import Navbarx from "@/app/(dashboard)/component/navbarx";
 import {
@@ -14,8 +14,8 @@ import { useEffect, useState } from "react";
 import { HiFolderAdd } from "react-icons/hi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import CellSanPhamMobile from "./cellSanPhamMobile";
-export default function SanPham() {
+import CellGiaoHangBrowser from "./cellGiaoHangBrowser";
+export default function GiaoHang() {
   const router = useRouter();
   const [data, setData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,19 +62,67 @@ export default function SanPham() {
         });
     console.log("test current page: ", currentPage);
   }, [refkey, currentPage]);
+  function saveProduct() {
+    if (validateOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ten: ten,
+            trangThai: "1",
+            ngayTao: ngayTao,
+            hinhAnh: hinhAnh,
+            giaBan: giaBan,
+          }),
+        },
+      ).then((res) => console.log("test reghonse: ", res.ok));
+      setRefkey(1);
+      setCurrentPage(lastPage);
+    } else {
+      console.log("not do post");
+    }
+  }
+  function updateProduct() {
+    if (validateOK) {
+      fetch(
+        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ten: ten,
+            trangThai: "0",
+            ngayTao: ngayTao,
+            hinhAnh: hinhAnh,
+            giaBan: giaBan,
+          }),
+        },
+      ).then((res) => console.log("test reghonse: ", res.ok));
+    } else {
+      console.log("not do post");
+    }
+  }
 
   function onCloseModalAdd() {
     setOpenModalAdd(false);
     console.log("test ref: ", refkey);
   }
-  function onOpenModalEdit(spParam: object) {
-    setId(spParam.id);
-    setMa(spParam.ma);
-    setTen(spParam.ten);
-    setTrangThai(spParam.trangThai);
-    setNgayTao(spParam.ngayTao);
-    setHinhAnh(spParam.hinhAnh);
-    setGiaBan(spParam.giaBan);
+  function onOpenModalEdit(ghParam: object) {
+    setId(ghParam.id);
+    setMa(ghParam.ma);
+    setTen(ghParam.ten);
+    setTrangThai(ghParam.trangThai);
+    setNgayTao(ghParam.ngayTao);
+    setHinhAnh(ghParam.hinhAnh);
+    setGiaBan(ghParam.giaBan);
   }
   function onCloseModalEdit() {
     setOpenModalEdit(false);
@@ -104,86 +152,64 @@ export default function SanPham() {
       return true;
     }
   }
-  function routePage(idSPCT: String) {
-    router.push("/admin/san-pham/detail/" + idSPCT);
-    console.log("route to show all detail product: ", idSPCT);
+  function routePage(idGHCT: String) {
+    router.push("/admin/san-pham/detail/" + idGHCT);
+    console.log("route to show all detail product: ", idGHCT);
   }
 
-  function saveProduct() {
-    if (validateOK) {
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ten: ten,
-            trangThai: "1",
-            ngayTao: ngayTao,
-            hinhAnh: hinhAnh,
-            giaBan: giaBan,
-          }),
-        },
-      ).then((res) => console.log("test response: ", res.ok));
-      setRefkey(1);
-      setCurrentPage(lastPage);
-    } else {
-      console.log("not do post");
-    }
-  }
-  function updateProduct() {
-    if (validateOK) {
-      fetch(
-        "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/san-pham/save",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ten: ten,
-            trangThai: "0",
-            ngayTao: ngayTao,
-            hinhAnh: hinhAnh,
-            giaBan: giaBan,
-          }),
-        },
-      ).then((res) => console.log("test response: ", res.ok));
-    } else {
-      console.log("not do post");
-    }
-  }
+ 
   return (
-    <div id="spmobile" className="ms-2 bg-white w-screen">
+    <div id="giaoHangBrowser" className="ms-2 bg-white">
+      <h2>this is the admin san pham page</h2>
       <Navbarx />
-      <div className="flex flex-row-reverse me-5">
+      <div className="me-[115px] flex flex-row-reverse">
         <Button gradientMonochrome="info" onClick={() => setOpenModalAdd(true)}>
           <HiFolderAdd size={20} />
           Thêm sản phẩm
         </Button>
       </div>
       {!isLoading ? (
-        <div className="z-0 ms-5 mt-5 w-full">
-          {data.map((sp, i) => (
-            <div>
-              <div className="">
-                <CellSanPhamMobile   cellSanPham={sp} i={i} />
-                <div className="flex-cols flex items-center gap-1 ms-[160px]">
+        <div id="formAdd" className="z-0 ms-5 mt-5 w-full">
+          <div className="flex-cols md-[20px] flex w-screen">
+            <h5 className="w-[50px] text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
+              STT
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
+              Hình ảnh
+            </h5>
+            <h5 className="trackfing-tight w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              Mã
+            </h5>
+            <h5 className="w-2/12 text-xl font-semibold tracking-tight text-gray-900 dark:text-white ">
+              Tên sản phẩm
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              Ngày tạo
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              Trạng thái
+            </h5>
+            <h5 className="w-1/12 text-xl font-semibold text-gray-900 dark:text-white ">
+              Giá bán
+            </h5>
+            <hr />
+          </div>
+          {data.map((gh, i) => (
+            <div id={gh.id}>
+              <div className="flex-cols flex w-screen">
+                <CellGiaoHangBrowser cellGiaoHang={gh} i={i} />
+                <div className="flex-cols flex w-2/12 items-center gap-1">
                   <Button
-                    className="flex h-[40px] w-[90px] items-center"
+                    className="flex h-[50px] w-[100px] items-center"
                     onClick={() => {
-                      setOpenModalEdit(true), onOpenModalEdit(sp);
+                      setOpenModalEdit(true), onOpenModalEdit(gh);
                     }}
                   >
                     Sửa
                   </Button>
                   <Button
-                    className="flex h-[40px] w-[90px] items-center"
-                    onClick={() => routePage(sp.id)}
+                    className="flex h-[50px] w-[100px] items-center"
+                    onClick={() => routePage(gh.id)}
                   >
                     Quản lý
                   </Button>
@@ -194,13 +220,13 @@ export default function SanPham() {
           ))}
           <Modal
             show={openModalEdit}
+            size="xl"
             onClose={onCloseModalEdit}
             popup
-            className="w-11/12"
           >
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="ghace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Sửa sản phẩm
                 </h3>
@@ -307,10 +333,10 @@ export default function SanPham() {
               </div>
             </Modal.Body>
           </Modal>
-          <Modal show={openModalAdd} className="w-11/12"  onClose={onCloseModalAdd} popup>
+          <Modal show={openModalAdd} size="xl" onClose={onCloseModalAdd} popup>
             <Modal.Header />
             <Modal.Body className="overflow-auto">
-              <div className="space-y-2">
+              <div className="ghace-y-2">
                 <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                   Thêm sản phẩm
                 </h3>
