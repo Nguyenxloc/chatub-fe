@@ -62,6 +62,11 @@ export default function DetailSP() {
   let validateMauSacOK = false;
   let validateKichThuocOK = false;
   let validateChatLieuOK = false;
+  const [mauSacValue,setMauSacValue] = useState();
+  const [kichThuocValue,setKichThuocValue] = useState();
+  const [chatLieucValue,setChatLieuValue] = useState();
+  const [khoangGiaValue,setKhoangGiaValue] = useState();
+  const [searchRefKey,setSearchRefKey]  = useState();
   function onCloseModalAdd() {
     setOpenModalAdd(false);
   }
@@ -320,7 +325,6 @@ export default function DetailSP() {
         setIsLoadingLstKichThuoc(false);
         console.log("data kich thuoc:", data);
       });
-
     // fetch(
     //   "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chat-lieu/index",
     // )
@@ -382,6 +386,40 @@ export default function DetailSP() {
       isMounted = false;
     };
   }, [refKey, currentPage]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/search" +
+        "?field1="+ params.id +
+        "&field2=" + params.id +
+        "&field3=" + params.id +
+        "&field4=" + params.id
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setDataSPCT(data);
+          setIsLoadingSPCT(false);
+          setRefkey(0);
+          console.log("data spct:", data);
+        }
+      });
+    fetch(
+      "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/count-byidsp/" +
+        params.id,
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted) {
+          setLastPage(Math.ceil(data / 20));
+          console.log("data:", Math.ceil(data / 20));
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [searchRefKey, currentPage]);
 
   useEffect(() => {
     let isMounted = true;
@@ -452,14 +490,133 @@ export default function DetailSP() {
               Sản phẩm: {dataSanPham.ma} {dataSanPham.ten}
             </h2>
           </div>
-          <div className="me-5 flex flex-row-reverse">
-            <Button
-              gradientMonochrome="info"
-              onClick={() => setOpenModalAdd(true)}
-            >
-              <HiFolderAdd size={20} />
-              Thêm
-            </Button>
+          <div className="flex flex-col">
+            {/*start drpms */}
+            <div className="flex gap-5">
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="mauSac" value="Màu sắc" />
+                </div>
+                <div className="flex-cols flex gap-5">
+                  <Dropdown
+                    label={mauSac ? mauSac.ten : "Màu sắc"}
+                    dismissOnClick={false}
+                    style={{ width: "180px" }}
+                  >
+                    {!isLoadingLstMauSac ? (
+                      lstMauSac.map((ms) => (
+                        <Dropdown.Item
+                          key={ms.id}
+                          value={ms}
+                          onClick={() => setMauSacSearch(ms)}
+                        >
+                          {ms.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div>
+              </div>
+              {/* end drpms */}
+
+              {/* start drpkt */}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="kichThuoc" value="Kích thước" />
+                </div>
+                <div className="flex-cols flex gap-5">
+                  <Dropdown
+                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
+                    dismissOnClick={false}
+                    style={{ width: "180px" }}
+                  >
+                    {!isLoadingLstKichThuoc ? (
+                      lstKichThuoc.map((kt) => (
+                        <Dropdown.Item
+                          key={kt.id}
+                          value={kt}
+                          onClick={() => setKichThuocSearch(kt)}
+                        >
+                          {kt.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div>
+              </div>
+              {/* end drpkt */}
+              {/* start drpct*/}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="idKichThuoc" value="Chất liệu" />
+                </div>
+                <div className="flex-cols flex gap-5">
+                  <Dropdown
+                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
+                    dismissOnClick={false}
+                    style={{ width: "180px" }}
+                  >
+                    {!isLoadingLstChatLieu ? (
+                      lstChatLieu.map((cl) => (
+                        <Dropdown.Item
+                          key={cl.id}
+                          value={cl}
+                          onClick={() => setChatLieuSearch(cl)}
+                        >
+                          {cl.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+                </div>
+              </div>
+              {/* end drpcl */}
+              {/* start search money*/}
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="idKichThuoc" value="Khoảng giá" />
+                </div>
+                <Dropdown
+                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
+                    dismissOnClick={false}
+                    style={{ width: "180px" }}
+                  >
+                    {!isLoadingLstChatLieu ? (
+                      lstChatLieu.map((cl) => (
+                        <Dropdown.Item
+                          key={cl.id}
+                          value={cl}
+                          onClick={() => setMoneySearch(cl)}
+                        >
+                          {cl.ten}
+                        </Dropdown.Item>
+                      ))
+                    ) : (
+                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
+                    )}
+                  </Dropdown>
+              </div>
+              {/* end search money*/}
+              <div className="mt-[35px] flex space-x-2">
+                <Button className="h-[40px] w-[100px]">Tìm kiếm</Button>
+                <Button className="h-[40px] w-[100px]">Làm mới</Button>
+              </div>
+            </div>
+            <div className="me-5 flex flex-row-reverse">
+              <Button
+                gradientMonochrome="info"
+                onClick={() => setOpenModalAdd(true)}
+              >
+                <HiFolderAdd size={20} />
+                Thêm
+              </Button>
+            </div>
           </div>
           <div className="">
             <div className="flex-cols mt-5 flex w-screen">
@@ -1100,7 +1257,7 @@ export default function DetailSP() {
                 <div className="w-full">
                   <Button
                     onClick={() => {
-                      updateSPCT(idSPCT)
+                      updateSPCT(idSPCT);
                     }}
                   >
                     Lưu sản phẩm
