@@ -62,10 +62,10 @@ export default function DetailSP() {
   let validateMauSacOK = false;
   let validateKichThuocOK = false;
   let validateChatLieuOK = false;
-  const [mauSacSearch,setMauSacSearch] = useState("");
-  const [kichThuocSearch,setKichThuocSearch] = useState("");
-  const [chatLieuSearch,setChatLieuSearch] = useState("");
-  const [searchRefKey,setSearchRefKey]  = useState(0);
+  const [mauSacSearch, setMauSacSearch] = useState("");
+  const [kichThuocSearch, setKichThuocSearch] = useState("");
+  const [chatLieuSearch, setChatLieuSearch] = useState("");
+  const [searchRefKey, setSearchRefKey] = useState(0);
   function onCloseModalAdd() {
     setOpenModalAdd(false);
   }
@@ -200,6 +200,7 @@ export default function DetailSP() {
       console.log("not do post");
     }
   }
+
   function addMauSac() {
     if (validateMauSacOK) {
       fetch(
@@ -304,6 +305,7 @@ export default function DetailSP() {
       console.log("not do post");
     }
   }
+
   function fillUpCBO() {
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/mau-sac/index",
@@ -388,11 +390,17 @@ export default function DetailSP() {
 
   useEffect(() => {
     let isMounted = true;
+    console.log("test render")
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/search" +
-        "?mauSac=" + mauSacSearch.id +
-        "&kichThuoc=" + kichThuocSearch.id +
-        "&chatLieu=" + chatLieuSearch.id
+        "?sp=" +
+        params.id +
+        "&mauSac=" +
+        "" +
+        "&kichThuoc=" +
+        "" +
+        "&chatLieu=" +
+        ""
     )
       .then((res) => res.json())
       .then((data) => {
@@ -576,7 +584,12 @@ export default function DetailSP() {
               </div>
               {/* end drpcl */}
               <div className="mt-[35px] flex space-x-2">
-                <Button className="h-[40px] w-[100px]" onClick={()=>setSearchRefKey(1)}>Tìm kiếm</Button>
+                <Button
+                  className="h-[40px] w-[100px]"
+                  onClick={() => setSearchRefKey(1)}
+                >
+                  Tìm kiếm
+                </Button>
                 <Button className="h-[40px] w-[100px]">Làm mới</Button>
               </div>
             </div>
