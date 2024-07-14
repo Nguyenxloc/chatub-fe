@@ -62,11 +62,10 @@ export default function DetailSP() {
   let validateMauSacOK = false;
   let validateKichThuocOK = false;
   let validateChatLieuOK = false;
-  const [mauSacValue,setMauSacValue] = useState();
-  const [kichThuocValue,setKichThuocValue] = useState();
-  const [chatLieucValue,setChatLieuValue] = useState();
-  const [khoangGiaValue,setKhoangGiaValue] = useState();
-  const [searchRefKey,setSearchRefKey]  = useState();
+  const [mauSacSearch,setMauSacSearch] = useState("");
+  const [kichThuocSearch,setKichThuocSearch] = useState("");
+  const [chatLieuSearch,setChatLieuSearch] = useState("");
+  const [searchRefKey,setSearchRefKey]  = useState(0);
   function onCloseModalAdd() {
     setOpenModalAdd(false);
   }
@@ -391,18 +390,17 @@ export default function DetailSP() {
     let isMounted = true;
     fetch(
       "http://ec2-54-179-249-209.ap-southeast-1.compute.amazonaws.com:8080/chi-tiet-sp/search" +
-        "?field1="+ params.id +
-        "&field2=" + params.id +
-        "&field3=" + params.id +
-        "&field4=" + params.id
+        "?mauSac=" + mauSacSearch.id +
+        "&kichThuoc=" + kichThuocSearch.id +
+        "&chatLieu=" + chatLieuSearch.id
     )
       .then((res) => res.json())
       .then((data) => {
         if (isMounted) {
           setDataSPCT(data);
           setIsLoadingSPCT(false);
-          setRefkey(0);
-          console.log("data spct:", data);
+          setSearchRefKey(0);
+          console.log("data spct for search:", data);
         }
       });
     fetch(
@@ -499,7 +497,7 @@ export default function DetailSP() {
                 </div>
                 <div className="flex-cols flex gap-5">
                   <Dropdown
-                    label={mauSac ? mauSac.ten : "Màu sắc"}
+                    label={mauSacSearch ? mauSacSearch.ten : "Màu sắc"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -528,7 +526,7 @@ export default function DetailSP() {
                 </div>
                 <div className="flex-cols flex gap-5">
                   <Dropdown
-                    label={kichThuoc ? kichThuoc.ten : "Kích thước"}
+                    label={kichThuocSearch ? kichThuocSearch.ten : "Kích thước"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -556,7 +554,7 @@ export default function DetailSP() {
                 </div>
                 <div className="flex-cols flex gap-5">
                   <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
+                    label={chatLieuSearch ? chatLieuSearch.ten : "Chất liệu"}
                     dismissOnClick={false}
                     style={{ width: "180px" }}
                   >
@@ -577,34 +575,8 @@ export default function DetailSP() {
                 </div>
               </div>
               {/* end drpcl */}
-              {/* start search money*/}
-              <div>
-                <div className="mb-2 block">
-                  <Label htmlFor="idKichThuoc" value="Khoảng giá" />
-                </div>
-                <Dropdown
-                    label={chatLieu ? chatLieu.ten : "Chất liệu"}
-                    dismissOnClick={false}
-                    style={{ width: "180px" }}
-                  >
-                    {!isLoadingLstChatLieu ? (
-                      lstChatLieu.map((cl) => (
-                        <Dropdown.Item
-                          key={cl.id}
-                          value={cl}
-                          onClick={() => setMoneySearch(cl)}
-                        >
-                          {cl.ten}
-                        </Dropdown.Item>
-                      ))
-                    ) : (
-                      <Dropdown.Item>Không có dữ liệu</Dropdown.Item>
-                    )}
-                  </Dropdown>
-              </div>
-              {/* end search money*/}
               <div className="mt-[35px] flex space-x-2">
-                <Button className="h-[40px] w-[100px]">Tìm kiếm</Button>
+                <Button className="h-[40px] w-[100px]" onClick={()=>setSearchRefKey(1)}>Tìm kiếm</Button>
                 <Button className="h-[40px] w-[100px]">Làm mới</Button>
               </div>
             </div>
